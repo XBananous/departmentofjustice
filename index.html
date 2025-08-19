@@ -4,134 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Department Of Justice</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome for icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        :root{
+            --bg:#0b0f14;
+            --panel:#111823;
+            --soft:#16202d;
+            --ink:#eaf2ff;
+            --muted:#b7c3d9;
+            --accent:#6aa7ff;
+            --accent-2:#8be9fd;
+            --danger:#ff5d5d;
+            --ok:#35d07f;
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background:radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, var(--bg) 60%) fixed;color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+        .wrap{max-width:980px;margin:28px auto;padding:22px}
+        header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+        h1{font-size:clamp(20px,3.6vw,28px);margin:0}
+        .subtitle{color:var(--muted);font-size:13px}
+        .card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel); border:1px solid rgba(255,255,255,.04); border-radius:16px; padding:18px; box-shadow:0 14px 40px rgba(0,0,0,.45);flex-shrink:0;}
+        .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+        button{appearance:none;border:0;padding:12px 16px;border-radius:12px;font-weight:800;cursor:pointer;letter-spacing:.2px}
+        .btn-primary{background:linear-gradient(180deg,var(--accent),#3556c7);color:white;box-shadow:0 8px 24px rgba(59,99,190,.18)}
+        .btn-danger{background:linear-gradient(180deg,var(--danger),#cc3f3f);color:white}
+        .btn-share{background:linear-gradient(180deg,var(--accent-2),#39c0d3);color:white}
+        input[type="text"]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:var(--soft);color:var(--ink);outline:none} 
+        input[type="text"]:focus{box-shadow:0 0 0 4px rgba(106,167,255,.14)}
+        .center{display:flex;align-items:center;justify-content:center}
+        .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,6,10,.85);z-index:9999;padding:12px}
+        .overlay.show{display:flex}
+        iframe{width:100%;height:100%;border:none}
+        @media(max-width:880px){
+            header{flex-direction:column;align-items:flex-start}
+            .card{min-width:180px}
+        }
+    </style>
 </head>
-<body class="bg-gray-100">
-    <header class="bg-blue-900 text-white p-6 shadow-md flex flex-col md:flex-row items-center justify-between">
-        <div class="text-center md:text-left">
-            <h1 class="text-3xl font-bold">Department Of Justice</h1>
-            <p class="mt-1 text-gray-200">Accédez aux documents officiels</p>
-        </div>
-        <div class="mt-4 md:mt-0 flex flex-wrap gap-2 justify-center">
-            <button class="tag-btn bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded" onclick="filterDocuments('ALL')">TOUS</button>
-            <button class="tag-btn bg-green-200 hover:bg-green-300 px-4 py-2 rounded" onclick="filterDocuments('RAPPORTS D\'INTERVENTION')">RAPPORTS D'INTERVENTION</button>
-            <button class="tag-btn bg-yellow-200 hover:bg-yellow-300 px-4 py-2 rounded" onclick="filterDocuments('AUDIENCES')">AUDIENCES</button>
-            <button class="tag-btn bg-purple-200 hover:bg-purple-300 px-4 py-2 rounded" onclick="filterDocuments('RAPPORTS D\'AUDIENCES')">RAPPORTS D'AUDIENCES</button>
-            <button class="tag-btn bg-red-200 hover:bg-red-300 px-4 py-2 rounded" onclick="filterDocuments('DECRETS')">DECRETS</button>
-        </div>
-    </header>
-
-    <main class="p-8 max-w-7xl mx-auto">
-        <div id="documents" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
-
-        <div id="pdf-viewer" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
-            <div class="bg-white w-11/12 md:w-4/5 lg:w-3/4 h-4/5 rounded-lg overflow-hidden flex flex-col shadow-xl">
-                <div class="flex justify-between items-center p-4 bg-blue-900 text-white">
-                    <h2 id="pdf-title" class="text-lg font-bold">Document PDF</h2>
-                    <div class="flex gap-2">
-                        <button onclick="sharePDF()" class="bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded flex items-center gap-1">
-                            <i class="fas fa-share-alt"></i> Partager
-                        </button>
-                        <button onclick="closePDF()" class="text-white text-xl font-bold">&times;</button>
-                    </div>
-                </div>
-                <iframe id="pdf-frame" class="flex-1 w-full" frameborder="0"></iframe>
+<body>
+    <div class="wrap">
+        <header>
+            <div>
+                <h1>Archives du Department Of Justice</h1>
+                <p class="subtitle">Accédez aux documents officiels</p>
             </div>
+            <input type="text" id="search" placeholder="Rechercher un document...">
+        </header>
+        <main id="categories"></main>
+    </div>
+
+    <div class="overlay" id="pdf-viewer">
+        <div class="card" style="width:100%;max-width:900px;height:80vh;display:flex;flex-direction:column;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.1);">
+                <h2 id="pdf-title">Document PDF</h2>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <button onclick="sharePDF()" class="btn-share"><i class="fas fa-share-alt"></i></button>
+                    <button onclick="closePDF()" class="btn-danger">&times;</button>
+                </div>
+            </div>
+            <iframe id="pdf-frame"></iframe>
         </div>
-    </main>
+    </div>
 
     <script>
         const documentsData = [
             { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: 'Rapport190820251.pdf', tag: "RAPPORTS D'INTERVENTION" },
+            { title: 'AUDIENCE CAS X', date: '20/08/2025', pdfUrl: 'AudienceX.pdf', tag: 'AUDIENCES' },
+            { title: 'RAPPORT AUDIENCE DPO_21082025', date: '21/08/2025', pdfUrl: 'RapportAudience21082025.pdf', tag: "RAPPORTS D'AUDIENCES" },
+            { title: 'DECRET N°123', date: '22/08/2025', pdfUrl: 'Decret123.pdf', tag: 'DECRETS' }
         ];
 
-        const container = document.getElementById('documents');
+        const categoriesContainer = document.getElementById('categories');
         const pdfViewer = document.getElementById('pdf-viewer');
         const pdfFrame = document.getElementById('pdf-frame');
         const pdfTitle = document.getElementById('pdf-title');
-        let currentPdf = null;
 
-        function displayDocuments(docs) {
-            container.innerHTML = '';
-            docs.forEach(doc => {
-                const docDiv = document.createElement('div');
-                docDiv.className = 'bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between transition-transform transform hover:scale-105';
-
-                docDiv.innerHTML = `
-                    <div>
-                        <h3 class="text-xl font-semibold mb-2">${doc.title}</h3>
-                        <p class="text-gray-500 mb-2">Date: ${doc.date}</p>
-                        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">${doc.tag}</span>
-                    </div>
-                    <div class="mt-auto flex gap-2">
-                        <button onclick="openPDF('${doc.pdfUrl}', '${doc.title}')" 
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center flex-1">
-                            <i class="fas fa-file-pdf mr-2"></i>Voir PDF
-                        </button>
-                        <button onclick="sharePDFLink('${doc.pdfUrl}')" 
-                            class="bg-gray-200 hover:bg-gray-300 font-bold py-2 px-4 rounded flex items-center justify-center flex-1">
-                            <i class="fas fa-link mr-2"></i>Partager
-                        </button>
-                    </div>
-                `;
-
-                container.appendChild(docDiv);
-            });
+        function openPDF(url, title){
+            pdfFrame.src=url;
+            pdfTitle.textContent=title;
+            pdfViewer.classList.add('show');
         }
 
-        function openPDF(url, title) {
-            currentPdf = url;
-            pdfFrame.src = url;
-            pdfTitle.textContent = title;
-            pdfViewer.classList.remove('hidden');
-            // update URL for direct access
-            const params = new URLSearchParams(window.location.search);
-            params.set('doc', url);
-            history.replaceState({}, '', `${window.location.pathname}?${params}`);
+        function closePDF(){
+            pdfFrame.src='';
+            pdfViewer.classList.remove('show');
         }
 
-        function closePDF() {
-            pdfViewer.classList.add('hidden');
-            pdfFrame.src = '';
-            currentPdf = null;
-            const params = new URLSearchParams(window.location.search);
-            params.delete('doc');
-            history.replaceState({}, '', window.location.pathname);
-        }
-
-        function filterDocuments(tag) {
-            if(tag === 'ALL') {
-                displayDocuments(documentsData);
+        function sharePDF(){
+            if(navigator.share){
+                navigator.share({
+                    title: pdfTitle.textContent,
+                    url: pdfFrame.src
+                }).catch(err=>console.error(err));
             } else {
-                displayDocuments(documentsData.filter(doc => doc.tag === tag));
+                alert('Partage non supporté sur ce navigateur');
             }
         }
 
-        function sharePDFLink(url) {
-            const link = `${window.location.origin}${window.location.pathname}?doc=${encodeURIComponent(url)}`;
-            navigator.clipboard.writeText(link).then(() => {
-                alert('Lien copié dans le presse-papiers !');
+        function renderCategories(docs){
+            const categories = [...new Set(docs.map(d=>d.tag))];
+            categoriesContainer.innerHTML='';
+            categories.forEach(tag=>{
+                const section = document.createElement('section');
+                const heading = document.createElement('h3');
+                heading.textContent=tag;
+                heading.style.margin='12px 0';
+                section.appendChild(heading);
+
+                const container = document.createElement('div');
+                container.style.display='flex';
+                container.style.overflowX='auto';
+                container.style.gap='12px';
+
+                docs.filter(d=>d.tag===tag).forEach(doc=>{
+                    const card = document.createElement('div');
+                    card.className='card';
+                    card.innerHTML=`
+                        <h4 style="margin:0 0 6px 0;font-weight:700">${doc.title}</h4>
+                        <p style="font-size:13px;color:var(--muted)">Date: ${doc.date}</p>
+                        <div class="actions">
+                            <button class="btn-primary" onclick="openPDF('${doc.pdfUrl}','${doc.title}')"><i class="fas fa-file-pdf"></i> Voir PDF</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+                section.appendChild(container);
+                categoriesContainer.appendChild(section);
             });
         }
 
-        function sharePDF() {
-            if(currentPdf) {
-                sharePDFLink(currentPdf);
-            }
-        }
+        document.getElementById('search').addEventListener('input',e=>{
+            const term=e.target.value.toLowerCase();
+            const filtered=documentsData.filter(d=>d.title.toLowerCase().includes(term)||d.tag.toLowerCase().includes(term));
+            renderCategories(filtered);
+        });
 
-        // Check URL param for direct PDF access
-        const urlParams = new URLSearchParams(window.location.search);
-        const directDoc = urlParams.get('doc');
-        if(directDoc) {
-            const docObj = documentsData.find(d => d.pdfUrl === directDoc);
-            openPDF(directDoc, docObj ? docObj.title : 'Document PDF');
-        } else {
-            displayDocuments(documentsData);
-        }
+        renderCategories(documentsData);
     </script>
 </body>
 </html>
