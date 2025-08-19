@@ -10,27 +10,33 @@
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body class="bg-gray-100">
-    <header class="bg-blue-900 text-white p-6 text-center shadow-md">
-        <h1 class="text-3xl font-bold">Department Of Justice</h1>
-        <p class="mt-2 text-gray-200">Accédez aux documents officiels</p>
-    </header>
-
-    <main class="p-8">
-        <div class="flex justify-center mb-8 flex-wrap gap-3">
+    <header class="bg-blue-900 text-white p-6 shadow-md flex flex-col md:flex-row items-center justify-between">
+        <div class="text-center md:text-left">
+            <h1 class="text-3xl font-bold">Department Of Justice</h1>
+            <p class="mt-1 text-gray-200">Accédez aux documents officiels</p>
+        </div>
+        <div class="mt-4 md:mt-0 flex flex-wrap gap-2 justify-center">
             <button class="tag-btn bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded" onclick="filterDocuments('ALL')">TOUS</button>
             <button class="tag-btn bg-green-200 hover:bg-green-300 px-4 py-2 rounded" onclick="filterDocuments('RAPPORTS D\'INTERVENTION')">RAPPORTS D'INTERVENTION</button>
             <button class="tag-btn bg-yellow-200 hover:bg-yellow-300 px-4 py-2 rounded" onclick="filterDocuments('AUDIENCES')">AUDIENCES</button>
             <button class="tag-btn bg-purple-200 hover:bg-purple-300 px-4 py-2 rounded" onclick="filterDocuments('RAPPORTS D\'AUDIENCES')">RAPPORTS D'AUDIENCES</button>
             <button class="tag-btn bg-red-200 hover:bg-red-300 px-4 py-2 rounded" onclick="filterDocuments('DECRETS')">DECRETS</button>
         </div>
+    </header>
 
-        <div id="documents" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+    <main class="p-8 max-w-7xl mx-auto">
+        <div id="documents" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
 
-        <div id="pdf-viewer" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden">
-            <div class="bg-white w-11/12 md:w-3/4 lg:w-2/3 h-4/5 rounded-lg overflow-hidden flex flex-col">
+        <div id="pdf-viewer" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50">
+            <div class="bg-white w-11/12 md:w-4/5 lg:w-3/4 h-4/5 rounded-lg overflow-hidden flex flex-col shadow-xl">
                 <div class="flex justify-between items-center p-4 bg-blue-900 text-white">
                     <h2 id="pdf-title" class="text-lg font-bold">Document PDF</h2>
-                    <button onclick="closePDF()" class="text-white text-xl font-bold">&times;</button>
+                    <div class="flex gap-2">
+                        <button onclick="sharePDF()" class="bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded flex items-center gap-1">
+                            <i class="fas fa-share-alt"></i> Partager
+                        </button>
+                        <button onclick="closePDF()" class="text-white text-xl font-bold">&times;</button>
+                    </div>
                 </div>
                 <iframe id="pdf-frame" class="flex-1 w-full" frameborder="0"></iframe>
             </div>
@@ -49,6 +55,7 @@
         const pdfViewer = document.getElementById('pdf-viewer');
         const pdfFrame = document.getElementById('pdf-frame');
         const pdfTitle = document.getElementById('pdf-title');
+        let currentPdf = null;
 
         function displayDocuments(docs) {
             container.innerHTML = '';
@@ -62,10 +69,16 @@
                         <p class="text-gray-500 mb-2">Date: ${doc.date}</p>
                         <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">${doc.tag}</span>
                     </div>
-                    <button onclick="openPDF('${doc.pdfUrl}', '${doc.title}')" 
-                        class="mt-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center">
-                        <i class="fas fa-file-pdf mr-2"></i>Voir PDF
-                    </button>
+                    <div class="mt-auto flex gap-2">
+                        <button onclick="openPDF('${doc.pdfUrl}', '${doc.title}')" 
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center flex-1">
+                            <i class="fas fa-file-pdf mr-2"></i>Voir PDF
+                        </button>
+                        <button onclick="sharePDFLink('${doc.pdfUrl}')" 
+                            class="bg-gray-200 hover:bg-gray-300 font-bold py-2 px-4 rounded flex items-center justify-center flex-1">
+                            <i class="fas fa-link mr-2"></i>Partager
+                        </button>
+                    </div>
                 `;
 
                 container.appendChild(docDiv);
@@ -73,14 +86,23 @@
         }
 
         function openPDF(url, title) {
+            currentPdf = url;
             pdfFrame.src = url;
             pdfTitle.textContent = title;
             pdfViewer.classList.remove('hidden');
+            // update URL for direct access
+            const params = new URLSearchParams(window.location.search);
+            params.set('doc', url);
+            history.replaceState({}, '', `${window.location.pathname}?${params}`);
         }
 
         function closePDF() {
             pdfViewer.classList.add('hidden');
             pdfFrame.src = '';
+            currentPdf = null;
+            const params = new URLSearchParams(window.location.search);
+            params.delete('doc');
+            history.replaceState({}, '', window.location.pathname);
         }
 
         function filterDocuments(tag) {
@@ -91,7 +113,29 @@
             }
         }
 
-        displayDocuments(documentsData);
+        function sharePDFLink(url) {
+            const link = `${window.location.origin}${window.location.pathname}?doc=${encodeURIComponent(url)}`;
+            navigator.clipboard.writeText(link).then(() => {
+                alert('Lien copié dans le presse-papiers !');
+            });
+        }
+
+        function sharePDF() {
+            if(currentPdf) {
+                sharePDFLink(currentPdf);
+            }
+        }
+
+        // Check URL param for direct PDF access
+        const urlParams = new URLSearchParams(window.location.search);
+        const directDoc = urlParams.get('doc');
+        if(directDoc) {
+            const docObj = documentsData.find(d => d.pdfUrl === directDoc);
+            openPDF(directDoc, docObj ? docObj.title : 'Document PDF');
+        } else {
+            displayDocuments(documentsData);
+        }
     </script>
 </body>
 </html>
+
