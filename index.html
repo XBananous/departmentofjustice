@@ -16,34 +16,82 @@
     </header>
 
     <main class="p-8">
+        <div class="flex justify-center mb-8 flex-wrap gap-3">
+            <button class="tag-btn bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded" onclick="filterDocuments('ALL')">TOUS</button>
+            <button class="tag-btn bg-green-200 hover:bg-green-300 px-4 py-2 rounded" onclick="filterDocuments('RAPPORTS D\'INTERVENTION')">RAPPORTS D'INTERVENTION</button>
+            <button class="tag-btn bg-yellow-200 hover:bg-yellow-300 px-4 py-2 rounded" onclick="filterDocuments('AUDIENCES')">AUDIENCES</button>
+            <button class="tag-btn bg-purple-200 hover:bg-purple-300 px-4 py-2 rounded" onclick="filterDocuments('RAPPORTS D\'AUDIENCES')">RAPPORTS D'AUDIENCES</button>
+            <button class="tag-btn bg-red-200 hover:bg-red-300 px-4 py-2 rounded" onclick="filterDocuments('DECRETS')">DECRETS</button>
+        </div>
+
         <div id="documents" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+
+        <div id="pdf-viewer" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden">
+            <div class="bg-white w-11/12 md:w-3/4 lg:w-2/3 h-4/5 rounded-lg overflow-hidden flex flex-col">
+                <div class="flex justify-between items-center p-4 bg-blue-900 text-white">
+                    <h2 id="pdf-title" class="text-lg font-bold">Document PDF</h2>
+                    <button onclick="closePDF()" class="text-white text-xl font-bold">&times;</button>
+                </div>
+                <iframe id="pdf-frame" class="flex-1 w-full" frameborder="0"></iframe>
+            </div>
+        </div>
     </main>
 
     <script>
         const documentsData = [
-
-            { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: 'Rapport190820251.pdf' },
+            { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: '/pdfs/Rapport190820251.pdf', tag: "RAPPORTS D'INTERVENTION" },
+            { title: 'AUDIENCE CAS X', date: '20/08/2025', pdfUrl: '/pdfs/AudienceX.pdf', tag: 'AUDIENCES' },
+            { title: 'RAPPORT AUDIENCE DPO_21082025', date: '21/08/2025', pdfUrl: '/pdfs/RapportAudience21082025.pdf', tag: "RAPPORTS D'AUDIENCES" },
+            { title: 'DECRET N°123', date: '22/08/2025', pdfUrl: '/pdfs/Decret123.pdf', tag: 'DECRETS' }
         ];
 
         const container = document.getElementById('documents');
+        const pdfViewer = document.getElementById('pdf-viewer');
+        const pdfFrame = document.getElementById('pdf-frame');
+        const pdfTitle = document.getElementById('pdf-title');
 
-        documentsData.forEach(doc => {
-            const docDiv = document.createElement('div');
-            docDiv.className = 'bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between';
+        function displayDocuments(docs) {
+            container.innerHTML = '';
+            docs.forEach(doc => {
+                const docDiv = document.createElement('div');
+                docDiv.className = 'bg-white rounded-xl shadow-lg p-6 flex flex-col justify-between transition-transform transform hover:scale-105';
 
-            docDiv.innerHTML = `
-                <div>
-                    <h3 class="text-xl font-semibold mb-2">${doc.title}</h3>
-                    <p class="text-gray-500 mb-4">Date: ${doc.date}</p>
-                </div>
-                <button onclick="window.open('${doc.pdfUrl}', '_blank')" 
-                    class="mt-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center">
-                    <i class="fas fa-file-pdf mr-2"></i>Voir PDF
-                </button>
-            `;
+                docDiv.innerHTML = `
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">${doc.title}</h3>
+                        <p class="text-gray-500 mb-2">Date: ${doc.date}</p>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full">${doc.tag}</span>
+                    </div>
+                    <button onclick="openPDF('${doc.pdfUrl}', '${doc.title}')" 
+                        class="mt-auto bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center">
+                        <i class="fas fa-file-pdf mr-2"></i>Voir PDF
+                    </button>
+                `;
 
-            container.appendChild(docDiv);
-        });
+                container.appendChild(docDiv);
+            });
+        }
+
+        function openPDF(url, title) {
+            pdfFrame.src = url;
+            pdfTitle.textContent = title;
+            pdfViewer.classList.remove('hidden');
+        }
+
+        function closePDF() {
+            pdfViewer.classList.add('hidden');
+            pdfFrame.src = '';
+        }
+
+        function filterDocuments(tag) {
+            if(tag === 'ALL') {
+                displayDocuments(documentsData);
+            } else {
+                displayDocuments(documentsData.filter(doc => doc.tag === tag));
+            }
+        }
+
+        displayDocuments(documentsData);
     </script>
 </body>
 </html>
