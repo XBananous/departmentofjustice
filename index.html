@@ -1,161 +1,222 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Department Of Justice</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root{--bg:#0b0f14;--panel:#111823;--soft:#16202d;--ink:#eaf2ff;--muted:#b7c3d9;--accent:#6aa7ff;--accent-2:#8be9fd;--danger:#ff5d5d;--ok:#35d07f;}
-        *{box-sizing:border-box} html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-        .wrap{max-width:980px;margin:28px auto;padding:22px}
-        header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-        h1{font-size:clamp(20px,3.6vw,28px);margin:0}
-        .subtitle{color:var(--muted);font-size:13px;margin-bottom:12px;}
-        .search-bar{margin-bottom:16px;}
-        input[type='text']{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:var(--soft);color:var(--ink);outline:none;transition:box-shadow .3s;}
-        input[type='text']:focus{box-shadow:0 0 0 4px rgba(106,167,255,.14);}
-        .tag-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
-        .tag-btn{padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer;transition:transform .2s;background:var(--panel);color:var(--ink);border:1px solid rgba(255,255,255,.05);}
-        .tag-btn:hover{transform:scale(1.05);}
-        .carousel{display:flex;overflow-x:auto;gap:12px;padding-bottom:8px;scroll-behavior:smooth;}
-        .card{flex:0 0 280px;background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);transition:transform .3s, box-shadow .3s;}
-        .card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.55);}
-        .card h3{margin:0 0 8px 0;font-size:16px;font-weight:700;}
-        .card p{margin:0 0 8px 0;color:var(--muted);font-size:13px;}
-        .tag-label{display:inline-block;background:var(--soft);color:var(--accent);font-size:11px;padding:3px 8px;border-radius:8px;}
-        .actions{display:flex;justify-between;margin-top:12px;gap:6px;}
-        .btn{flex:1;text-align:center;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer;transition:all .2s;}
-        .btn-primary{background:var(--accent);color:#fff;}
-        .btn-primary:hover{background:var(--accent-2);}
-        .btn-share{background:var(--ok);color:#fff;}
-        .btn-share:hover{background:#2dc66c;}
-        .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,6,10,.76);z-index:9999;transition:opacity .3s;}
-        .overlay.show{display:flex;opacity:1;}
-        .pdf-container{background:var(--panel);border-radius:16px;overflow:hidden;width:90%;max-width:900px;height:80%;display:flex;flex-direction:column;}
-        .pdf-header{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg);color:var(--ink);font-weight:700;}
-        .pdf-frame{flex:1;width:100%;border:none;}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Department Of Justice</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+    :root{
+        --bg:#0b0f14;
+        --panel:#111823;
+        --soft:#16202d;
+        --ink:#eaf2ff;
+        --muted:#b7c3d9;
+        --accent:#6aa7ff;
+        --accent-2:#8be9fd;
+        --danger:#ff5d5d;
+        --ok:#35d07f;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+    .wrap{max-width:980px;margin:28px auto;padding:22px}
+    
+    /* Navbar */
+    nav{display:flex;align-items:center;justify-content:space-between;padding:12px 22px;background:var(--panel);border-radius:12px;margin-bottom:20px;flex-wrap:wrap;}
+    nav h1{margin:0;font-size:clamp(18px,2.5vw,28px);}
+    nav .nav-right{display:flex;align-items:center;gap:10px;}
+    .search-bar input[type='text']{padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:var(--soft);color:var(--ink);outline:none;}
+    .search-bar input[type='text']:focus{box-shadow:0 0 0 4px rgba(106,167,255,.14);}
+    .filter-btn{padding:8px 12px;background:var(--accent);color:#fff;border:none;border-radius:10px;cursor:pointer;font-weight:700;}
+    .filter-menu{display:none;position:absolute;top:60px;right:22px;background:var(--panel);border-radius:12px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.5);}
+    .filter-menu button{display:block;width:100%;padding:10px 14px;background:none;border:none;color:var(--ink);text-align:left;cursor:pointer;}
+    .filter-menu button:hover{background:var(--soft);}
+    
+    /* Welcome section */
+    .welcome{padding:18px;margin-bottom:20px;background:var(--soft);border-radius:12px;}
+    .welcome h2{margin:0 0 8px 0;font-size:20px;}
+    .welcome p{margin:0;color:var(--muted);}
+    
+    /* Tags & Cards */
+    .tag-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+    .tag-btn{padding:10px 14px;border-radius:12px;font-weight:700;cursor:pointer;transition:transform .2s;background:var(--panel);color:var(--ink);border:1px solid rgba(255,255,255,.05);}
+    .tag-btn:hover{transform:scale(1.05);}
+    .carousel{display:flex;overflow-x:auto;gap:12px;padding-bottom:8px;scroll-behavior:smooth;}
+    .card{flex:0 0 280px;background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);transition:transform .3s, box-shadow .3s;}
+    .card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.55);}
+    .card h3{margin:0 0 8px 0;font-size:16px;font-weight:700;}
+    .card p{margin:0 0 8px 0;color:var(--muted);font-size:13px;}
+    .tag-label{display:inline-block;background:var(--soft);color:var(--accent);font-size:11px;padding:3px 8px;border-radius:8px;}
+    .actions{display:flex;justify-between;margin-top:12px;gap:6px;}
+    .btn{flex:1;text-align:center;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer;transition:all .2s;}
+    .btn-primary{background:var(--accent);color:#fff;}
+    .btn-primary:hover{background:var(--accent-2);}
+    .btn-share{background:var(--ok);color:#fff;}
+    .btn-share:hover{background:#2dc66c;}
+    
+    /* Overlay PDF */
+    .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,6,10,.76);z-index:9999;transition:opacity .3s;}
+    .overlay.show{display:flex;opacity:1;}
+    .pdf-container{background:var(--panel);border-radius:16px;overflow:hidden;width:90%;max-width:900px;height:80%;display:flex;flex-direction:column;}
+    .pdf-header{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg);color:var(--ink);font-weight:700;}
+    .pdf-frame{flex:1;width:100%;border:none;}
+    
+    /* Responsive */
+    @media(max-width:600px){
+        .carousel{flex-wrap:wrap;}
+        .card{flex:1 0 100%;}
+        nav{flex-direction:column;align-items:flex-start;}
+        .nav-right{width:100%;justify-content:space-between;margin-top:8px;}
+    }
+</style>
 </head>
 <body>
-    <div class="wrap">
-        <header>
-            <div>
-                <h1>Department Of Justice</h1>
-                <div class="subtitle">Archives du Department Of Justice</div>
-                <div class="search-bar">
-                    <input type="text" id="search" placeholder="Rechercher un document...">
-                </div>
-            </div>
-        </header>
+<div class="wrap">
 
-        <div class="tag-bar" id="tag-bar"></div>
-        <div id="categories"></div>
-    </div>
-
-    <div class="overlay" id="pdf-overlay">
-        <div class="pdf-container">
-            <div class="pdf-header">
-                <span id="pdf-title">Document PDF</span>
-                <div>
-                    <button class="btn btn-share" id="share-btn">Partager</button>
-                    <button onclick="closePDF()" class="btn btn-primary">Fermer</button>
-                </div>
+    <!-- Navbar -->
+    <nav>
+        <h1>Department Of Justice</h1>
+        <div class="nav-right">
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Rechercher un document...">
             </div>
-            <iframe class="pdf-frame" id="pdf-frame"></iframe>
+            <div style="position:relative;">
+                <button class="filter-btn" id="filter-toggle">Filtres</button>
+                <div class="filter-menu" id="filter-menu"></div>
+            </div>
         </div>
+    </nav>
+
+    <!-- Welcome Section -->
+    <div class="welcome">
+        <h2>Bienvenue sur les archives du Department Of Justice</h2>
+        <p>Explorez les documents officiels et rapports disponibles ci-dessous.</p>
     </div>
 
-    <script>
-        const documentsData = [
-            { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: 'Rapport190820251.pdf', tag: "RAPPORTS D'INTERVENTION" },
-            { title: 'AUDIENCE CAS X', date: '20/08/2025', pdfUrl: 'AudienceX.pdf', tag: 'AUDIENCES' },
-            { title: 'RAPPORT AUDIENCE DPO_21082025', date: '21/08/2025', pdfUrl: 'RapportAudience21082025.pdf', tag: "RAPPORTS D'AUDIENCES" },
-            { title: 'DECRET N°123', date: '22/08/2025', pdfUrl: 'Decret123.pdf', tag: 'DECRETS' }
-        ];
+    <!-- Tag Bar & Categories -->
+    <div class="tag-bar" id="tag-bar"></div>
+    <div id="categories"></div>
+</div>
 
-        const tags = ['TOUS', "RAPPORTS D'INTERVENTION", 'AUDIENCES', "RAPPORTS D'AUDIENCES", 'DECRETS'];
-        const tagBar = document.getElementById('tag-bar');
-        const categoriesContainer = document.getElementById('categories');
-        const pdfOverlay = document.getElementById('pdf-overlay');
-        const pdfFrame = document.getElementById('pdf-frame');
-        const pdfTitle = document.getElementById('pdf-title');
-        const shareBtn = document.getElementById('share-btn');
-        const searchInput = document.getElementById('search');
+<!-- PDF Overlay -->
+<div class="overlay" id="pdf-overlay">
+    <div class="pdf-container">
+        <div class="pdf-header">
+            <span id="pdf-title">Document PDF</span>
+            <div>
+                <button class="btn btn-share" id="share-btn">Partager</button>
+                <button onclick="closePDF()" class="btn btn-primary">Fermer</button>
+            </div>
+        </div>
+        <iframe class="pdf-frame" id="pdf-frame"></iframe>
+    </div>
+</div>
 
-        function renderTags(){
-            tags.forEach(tag=>{
-                const btn = document.createElement('button');
-                btn.className='tag-btn';
-                btn.textContent=tag;
-                btn.onclick=()=>filterByTag(tag);
-                tagBar.appendChild(btn);
-            });
-        }
+<script>
+    const documentsData = [
+        { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: 'Rapport190820251.pdf', tag: "RAPPORTS D'INTERVENTION" },
+        { title: 'AUDIENCE CAS X', date: '20/08/2025', pdfUrl: 'AudienceX.pdf', tag: 'AUDIENCES' },
+        { title: 'RAPPORT AUDIENCE DPO_21082025', date: '21/08/2025', pdfUrl: 'RapportAudience21082025.pdf', tag: "RAPPORTS D'AUDIENCES" },
+        { title: 'DECRET N°123', date: '22/08/2025', pdfUrl: 'Decret123.pdf', tag: 'DECRETS' }
+    ];
 
-        function renderCategories(docs){
-            categoriesContainer.innerHTML='';
-            let filteredTags = tags.filter(t=>t!=='TOUS');
-            filteredTags.forEach(tag=>{
-                const catDocs = docs.filter(d=>d.tag===tag);
-                if(catDocs.length>0){
-                    const catDiv = document.createElement('div');
-                    const title = document.createElement('h2');
-                    title.textContent = tag;
-                    title.style.margin='12px 0';
-                    catDiv.appendChild(title);
-                    const carousel = document.createElement('div');
-                    carousel.className='carousel';
+    const tags = ['TOUS', "RAPPORTS D'INTERVENTION", 'AUDIENCES', "RAPPORTS D'AUDIENCES", 'DECRETS'];
+    const tagBar = document.getElementById('tag-bar');
+    const categoriesContainer = document.getElementById('categories');
+    const pdfOverlay = document.getElementById('pdf-overlay');
+    const pdfFrame = document.getElementById('pdf-frame');
+    const pdfTitle = document.getElementById('pdf-title');
+    const shareBtn = document.getElementById('share-btn');
+    const searchInput = document.getElementById('search');
+    const filterToggle = document.getElementById('filter-toggle');
+    const filterMenu = document.getElementById('filter-menu');
 
-                    catDocs.forEach(doc=>{
-                        const card = document.createElement('div');
-                        card.className='card';
-                        card.innerHTML=`
-                            <h3>${doc.title}</h3>
-                            <p>${doc.date}</p>
-                            <span class='tag-label'>${doc.tag}</span>
-                            <div class='actions'>
-                                <button class='btn btn-primary' onclick="openPDF('${doc.pdfUrl}','${doc.title}')">Voir PDF</button>
-                                <button class='btn btn-share' onclick="shareDoc('${doc.pdfUrl}')">Partager</button>
-                            </div>
-                        `;
-                        carousel.appendChild(card);
-                    });
-                    catDiv.appendChild(carousel);
-                    categoriesContainer.appendChild(catDiv);
-                }
-            });
-        }
-
-        function openPDF(url,title){
-            pdfFrame.src=url;
-            pdfTitle.textContent=title;
-            pdfOverlay.classList.add('show');
-        }
-
-        function closePDF(){
-            pdfOverlay.classList.remove('show');
-            pdfFrame.src='';
-        }
-
-        function shareDoc(url){
-            navigator.clipboard.writeText(window.location.origin+'/'+url).then(()=>alert('Lien copié: '+window.location.origin+'/'+url));
-        }
-
-        function filterByTag(tag){
-            let filtered = tag==='TOUS'?documentsData:documentsData.filter(d=>d.tag===tag);
-            renderCategories(filtered);
-        }
-
-        searchInput.addEventListener('input',()=>{
-            const query = searchInput.value.toLowerCase();
-            const filtered = documentsData.filter(d=>d.title.toLowerCase().includes(query));
-            renderCategories(filtered);
+    // Render tags in tag bar
+    function renderTags(){
+        tags.forEach(tag=>{
+            const btn = document.createElement('button');
+            btn.className='tag-btn';
+            btn.textContent=tag;
+            btn.onclick=()=>filterByTag(tag);
+            tagBar.appendChild(btn);
         });
+    }
 
-        renderTags();
-        renderCategories(documentsData);
-    </script>
+    // Render categories & cards
+    function renderCategories(docs){
+        categoriesContainer.innerHTML='';
+        let filteredTags = tags.filter(t=>t!=='TOUS');
+        filteredTags.forEach(tag=>{
+            const catDocs = docs.filter(d=>d.tag===tag);
+            if(catDocs.length>0){
+                const catDiv = document.createElement('div');
+                const title = document.createElement('h2');
+                title.textContent = tag;
+                title.style.margin='12px 0';
+                catDiv.appendChild(title);
+                const carousel = document.createElement('div');
+                carousel.className='carousel';
+
+                catDocs.forEach(doc=>{
+                    const card = document.createElement('div');
+                    card.className='card';
+                    card.innerHTML=`
+                        <h3>${doc.title}</h3>
+                        <p>${doc.date}</p>
+                        <span class='tag-label'>${doc.tag}</span>
+                        <div class='actions'>
+                            <button class='btn btn-primary' onclick="openPDF('${doc.pdfUrl}','${doc.title}')">Voir PDF</button>
+                            <button class='btn btn-share' onclick="shareDoc('${doc.pdfUrl}')">Partager</button>
+                        </div>
+                    `;
+                    carousel.appendChild(card);
+                });
+                catDiv.appendChild(carousel);
+                categoriesContainer.appendChild(catDiv);
+            }
+        });
+    }
+
+    function openPDF(url,title){
+        pdfFrame.src=url;
+        pdfTitle.textContent=title;
+        pdfOverlay.classList.add('show');
+    }
+
+    function closePDF(){
+        pdfOverlay.classList.remove('show');
+        pdfFrame.src='';
+    }
+
+    function shareDoc(url){
+        pdfOverlay.classList.add('show');
+        pdfFrame.src=url;
+        pdfTitle.textContent='Document à partager';
+    }
+
+    function filterByTag(tag){
+        let filtered = tag==='TOUS'?documentsData:documentsData.filter(d=>d.tag===tag);
+        renderCategories(filtered);
+    }
+
+    searchInput.addEventListener('input',()=>{
+        const query = searchInput.value.toLowerCase();
+        const filtered = documentsData.filter(d=>d.title.toLowerCase().includes(query));
+        renderCategories(filtered);
+    });
+
+    // Filter menu toggle
+    filterToggle.addEventListener('click',()=>filterMenu.style.display=filterMenu.style.display==='block'?'none':'block');
+    tags.forEach(tag=>{
+        const btn = document.createElement('button');
+        btn.textContent=tag;
+        btn.onclick=()=>{filterByTag(tag); filterMenu.style.display='none';};
+        filterMenu.appendChild(btn);
+    });
+
+    renderTags();
+    renderCategories(documentsData);
+</script>
 </body>
 </html>
 
