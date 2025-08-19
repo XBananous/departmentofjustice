@@ -1,147 +1,271 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Department Of Justice</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="logo.png">
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <style>
-        :root{--bg:#0b0f14;--panel:#111823;--soft:#16202d;--ink:#eaf2ff;--muted:#b7c3d9;--accent:#6aa7ff;--accent-2:#8be9fd;--danger:#ff5d5d;--ok:#35d07f;}
-        *{box-sizing:border-box} html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-        .wrap{max-width:980px;margin:28px auto;padding:22px}
-        header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-        .navbar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-        .navbar img{height:40px;width:40px;border-radius:6px;}
-        h1{font-size:clamp(20px,3.6vw,28px);margin:0;display:inline-block;vertical-align:middle}
-        .subtitle{color:var(--muted);font-size:13px;margin-bottom:12px;}
-        .search-container{position:relative;margin-bottom:24px;width:100%;}
-        .search-container i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);}
-        input[type='text']{width:100%;padding:14px 14px 14px 40px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:var(--soft);color:var(--ink);outline:none;transition:box-shadow .3s;font-size:16px;}
-        input[type='text']:focus{box-shadow:0 0 0 4px rgba(106,167,255,.14);}
-        .carousel{display:flex;overflow-x:auto;gap:12px;padding-bottom:8px;scroll-behavior:smooth;}
-        .card{flex:0 0 280px;background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);transition:transform .3s, box-shadow .3s;}
-        .card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.55);}
-        .card h3{margin:0 0 8px 0;font-size:16px;font-weight:700;}
-        .card p{margin:0 0 8px 0;color:var(--muted);font-size:13px;}
-        .tag-label{display:inline-block;background:var(--soft);color:var(--accent);font-size:11px;padding:3px 8px;border-radius:8px;}
-        .actions{display:flex;justify-between;margin-top:12px;gap:6px;}
-        .btn{flex:1;text-align:center;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer;transition:all .2s;}
-        .btn-primary{background:var(--accent);color:#fff;}
-        .btn-primary:hover{background:var(--accent-2);}
-        .btn-share{background:var(--ok);color:#fff;}
-        .btn-share:hover{background:#2dc66c;}
-        .overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,6,10,.76);z-index:9999;transition:opacity .3s;}
-        .overlay.show{display:flex;opacity:1;}
-        .pdf-container{background:var(--panel);border-radius:16px;overflow:hidden;width:90%;max-width:900px;height:80%;display:flex;flex-direction:column;}
-        .pdf-header{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg);color:var(--ink);font-weight:700;}
-        .pdf-frame{flex:1;width:100%;border:none;}
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Department Of Justice</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root{ --bg:#0b0f14; --panel:#111823; --soft:#16202d; --ink:#eaf2ff; --muted:#b7c3d9; --accent:#6aa7ff; --danger:#ff5d5d; --ok:#35d07f; }
+    body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+      background: radial-gradient(1200px 600px at 80% -10%,#0f1725 0%,#0b0f14 60%) fixed;
+      color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+    .wrap{max-width:980px;margin:28px auto;padding:22px}
+
+    /* navbar */
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .nav-left{display:flex;align-items:center;gap:10px}
+    .nav-left img{height:36px;width:36px}
+    h1{text-transform:uppercase;font-size:clamp(20px,3.6vw,28px);margin:0}
+
+/* recherche */
+.search-section{margin:24px 0}
+.search-label{font-weight:700;font-size:15px;margin-bottom:10px;display:block}
+
+.search-container{
+  position:relative;
+  margin-bottom:24px;
+  width:100%;
+  max-width:800px; /* 🔥 plus large */
+}
+
+.search-container input[type='text']{
+  width:100%;
+  padding:14px; /* 🔥 icône retirée donc padding symétrique */
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.06);
+  background:var(--soft);
+  color:var(--ink);
+  outline:none;
+  transition:box-shadow .3s;
+  font-size:16px;
+}
+
+.search-container input[type='text']:focus{
+  box-shadow:0 0 0 4px rgba(106,167,255,.14);
+}
+
+/* suggestions */
+.suggestions{
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+  background:var(--panel);
+  border-radius:12px;
+  margin-top:6px;
+  overflow:hidden;
+  max-height:220px;
+  overflow-y:auto;
+  box-shadow:0 12px 30px rgba(0,0,0,.4);
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(6px);
+  transition:opacity .25s, transform .25s
+}
+.suggestions.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+.suggestion-item{padding:10px 14px;cursor:pointer;font-size:15px}
+.suggestion-item:hover,.suggestion-item.active{background:var(--soft)}
+
+/* responsive */
+@media(max-width:880px){
+  .search-container{max-width:100%} /* 🔥 prend tout l’espace sur mobile */
+}
+
+
+    /* carrousel */
+    .carousel{display:flex;overflow-x:auto;gap:12px;padding-bottom:8px;scroll-behavior:smooth}
+    .carousel::-webkit-scrollbar{height:6px}
+    .carousel::-webkit-scrollbar-thumb{background:var(--soft);border-radius:10px}
+    .card{flex:0 0 260px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0)),var(--panel);
+      border:1px solid rgba(255,255,255,.04);border-radius:14px;padding:16px;
+      box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .25s,box-shadow .25s}
+    .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+    .card h3{margin:0 0 6px;font-size:15px;font-weight:700}
+    .card p{margin:0 0 6px;color:var(--muted);font-size:12px}
+    .tag-label{display:inline-block;background:var(--soft);color:var(--accent);font-size:11px;padding:3px 8px;border-radius:8px}
+
+    /* actions */
+    .actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    button{appearance:none;border:0;padding:8px 12px;border-radius:10px;font-weight:600;
+      font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:opacity .2s}
+    .btn-primary{background:linear-gradient(180deg,var(--accent),#3556c7);color:white}
+    .btn-danger{background:linear-gradient(180deg,var(--danger),#cc3f3f);color:white}
+    .btn-share{background:linear-gradient(180deg,var(--ok),#218c57);color:white}
+    button:hover{opacity:.85}
+
+    /* overlay */
+    .overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+      background:rgba(3,6,10,.76);z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s}
+    .overlay.show{opacity:1;pointer-events:auto}
+    .pdf-container{background:var(--panel);border-radius:14px;overflow:hidden;width:90%;max-width:900px;height:80%;
+      display:flex;flex-direction:column;transform:translateY(20px);opacity:0;transition:opacity .3s,transform .3s}
+    .overlay.show .pdf-container{opacity:1;transform:translateY(0)}
+    .pdf-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg);font-weight:700;font-size:14px}
+    .pdf-frame{flex:1;width:100%;border:none}
+
+    /* notifications */
+    .notifications{position:fixed;top:20px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:10px;max-width:90%}
+    .notif{background:var(--panel);padding:10px 14px;border-radius:10px;font-size:13px;box-shadow:0 6px 16px rgba(0,0,0,.35);
+      opacity:0;transform:translateY(-10px);transition:opacity .3s,transform .3s}
+    .notif.show{opacity:1;transform:translateY(0)}
+    .notif.hide{opacity:0;transform:translateY(-10px)}
+
+    /* responsive */
+    @media(max-width:880px){
+      .wrap{padding:16px}
+      .actions{flex-direction:column}
+      .notif{font-size:12px;padding:8px 10px}
+      .search-container{max-width:100%}
+    }
+  </style>
 </head>
 <body>
-    <div class="wrap">
-        <header>
-            <div class="navbar">
-                <img src="logo.png" alt="Logo">
-                <h1>Department Of Justice</h1>
-            </div>
-            <div class="subtitle">Archives du Department Of Justice</div>
-        </header>
+  <div class="wrap">
+    <header>
+      <div class="nav-left">
+        <img src="logo.png" alt="Logo">
+        <h1>Department Of Justice</h1>
+      </div>
+    </header>
 
-        <div class="search-container">
-            <i class="fas fa-search"></i>
-            <input type="text" id="search" placeholder="Rechercher un document...">
+<div class="search-section">
+  <label for="search" class="search-label">Rechercher un document :</label>
+  <div class="search-container">
+    <input type="text" id="search" placeholder="Tapez pour rechercher...">
+    <div class="suggestions" id="suggestions"></div>
+  </div>
+</div>
+
+
+    <div id="categories"></div>
+  </div>
+
+  <!-- modal PDF -->
+  <div class="overlay" id="pdf-overlay">
+    <div class="pdf-container">
+      <div class="pdf-header">
+        <span id="pdf-title">Document PDF</span>
+        <div class="actions">
+          <button class="btn-share" id="modal-share"><i data-lucide="share-2"></i>Partager</button>
+          <button class="btn-primary" onclick="closePDF()"><i data-lucide="x"></i>Fermer</button>
         </div>
-
-        <div id="categories"></div>
+      </div>
+      <iframe class="pdf-frame" id="pdf-frame"></iframe>
     </div>
+  </div>
 
-    <div class="overlay" id="pdf-overlay">
-        <div class="pdf-container">
-            <div class="pdf-header">
-                <span id="pdf-title">Document PDF</span>
-                <div>
-                    <button class="btn btn-share" id="share-btn">Partager</button>
-                    <button onclick="closePDF()" class="btn btn-primary">Fermer</button>
-                </div>
-            </div>
-            <iframe class="pdf-frame" id="pdf-frame"></iframe>
-        </div>
-    </div>
+  <!-- notifications -->
+  <div class="notifications" id="notifications"></div>
 
-    <script>
-        const documentsData = [
-            { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: 'Rapport190820251.pdf', tag: "RAPPORTS D'INTERVENTION" },
-            { title: 'AUDIENCE CAS X', date: '20/08/2025', pdfUrl: 'AudienceX.pdf', tag: 'AUDIENCES' },
-            { title: 'RAPPORT AUDIENCE DPO_21082025', date: '21/08/2025', pdfUrl: 'RapportAudience21082025.pdf', tag: "RAPPORTS D'AUDIENCES" },
-            { title: 'DECRET N°123', date: '22/08/2025', pdfUrl: 'Decret123.pdf', tag: 'DECRETS' }
-        ];
+  <script>
+    lucide.createIcons();
 
-        const categoriesContainer = document.getElementById('categories');
-        const pdfOverlay = document.getElementById('pdf-overlay');
-        const pdfFrame = document.getElementById('pdf-frame');
-        const pdfTitle = document.getElementById('pdf-title');
-        const shareBtn = document.getElementById('share-btn');
-        const searchInput = document.getElementById('search');
+    const documentsData = [
+      { title:'RAPPORT INTERVENTION DPO_19082025_1', date:'19/08/2025', pdfUrl:'Rapport190820251.pdf', tag:"RAPPORTS D'INTERVENTION" },
+      { title:'AUDIENCE CAS X', date:'20/08/2025', pdfUrl:'AudienceX.pdf', tag:'AUDIENCES' },
+      { title:'RAPPORT AUDIENCE DPO_21082025', date:'21/08/2025', pdfUrl:'RapportAudience21082025.pdf', tag:"RAPPORTS D'AUDIENCES" },
+      { title:'DECRET N°123', date:'22/08/2025', pdfUrl:'Decret123.pdf', tag:'DECRETS' }
+    ];
 
-        function renderCategories(docs){
-            categoriesContainer.innerHTML='';
-            const tags = [...new Set(docs.map(d=>d.tag))];
-            tags.forEach(tag=>{
-                const catDocs = docs.filter(d=>d.tag===tag);
-                if(catDocs.length>0){
-                    const catDiv = document.createElement('div');
-                    const title = document.createElement('h2');
-                    title.textContent = tag;
-                    title.style.margin='12px 0';
-                    catDiv.appendChild(title);
-                    const carousel = document.createElement('div');
-                    carousel.className='carousel';
+    const categoriesContainer=document.getElementById('categories');
+    const pdfOverlay=document.getElementById('pdf-overlay');
+    const pdfFrame=document.getElementById('pdf-frame');
+    const pdfTitle=document.getElementById('pdf-title');
+    const searchInput=document.getElementById('search');
+    const suggestionsBox=document.getElementById('suggestions');
+    const notifications=document.getElementById('notifications');
+    const modalShare=document.getElementById('modal-share');
+    let currentDocTitle=null;
 
-                    catDocs.forEach(doc=>{
-                        const card = document.createElement('div');
-                        card.className='card';
-                        card.innerHTML=`
-                            <h3>${doc.title}</h3>
-                            <p>${doc.date}</p>
-                            <span class='tag-label'>${doc.tag}</span>
-                            <div class='actions'>
-                                <button class='btn btn-primary' onclick="openPDF('${doc.pdfUrl}','${doc.title}')">Voir PDF</button>
-                                <button class='btn btn-share' onclick="shareDoc('${doc.pdfUrl}')">Partager</button>
-                            </div>
-                        `;
-                        carousel.appendChild(card);
-                    });
-                    catDiv.appendChild(carousel);
-                    categoriesContainer.appendChild(catDiv);
-                }
-            });
+    function renderCategories(docs){
+      categoriesContainer.innerHTML='';
+      const tags=[...new Set(docs.map(d=>d.tag))];
+      tags.forEach(tag=>{
+        const catDocs=docs.filter(d=>d.tag===tag);
+        if(catDocs.length>0){
+          const catDiv=document.createElement('div');
+          const title=document.createElement('h2');
+          title.textContent=tag;
+          title.style.margin='12px 0';
+          catDiv.appendChild(title);
+          const carousel=document.createElement('div');
+          carousel.className='carousel';
+          carousel.addEventListener('wheel',e=>{e.preventDefault();carousel.scrollLeft+=e.deltaY;});
+          catDocs.forEach(doc=>{
+            const card=document.createElement('div');
+            card.className='card';
+            card.innerHTML=`
+              <h3>${doc.title}</h3>
+              <p>${doc.date}</p>
+              <div class="actions">
+                <button class="btn-primary" onclick="openPDF('${doc.pdfUrl}','${doc.title}')"><i data-lucide="file-text"></i>Voir PDF</button>
+                <button class="btn-share" onclick="shareDoc('${doc.title}')"><i data-lucide="share-2"></i>Partager</button>
+              </div>`;
+            carousel.appendChild(card);
+          });
+          catDiv.appendChild(carousel);
+          categoriesContainer.appendChild(catDiv);
+          lucide.createIcons();
         }
+      });
+    }
 
-        function openPDF(url,title){
-            pdfFrame.src=url;
-            pdfTitle.textContent=title;
-            pdfOverlay.classList.add('show');
-        }
+    function openPDF(url,title){
+      currentDocTitle=title;
+      pdfFrame.src=url;
+      pdfTitle.textContent=title;
+      pdfOverlay.classList.add('show');
+    }
+    function closePDF(){
+      pdfOverlay.classList.remove('show');
+      setTimeout(()=>{pdfFrame.src='';},300);
+    }
 
-        function closePDF(){
-            pdfOverlay.classList.remove('show');
-            pdfFrame.src='';
-        }
+    function shareDoc(title){
+      const shareUrl=window.location.origin+'?doc='+encodeURIComponent(title);
+      navigator.clipboard.writeText(shareUrl).then(()=>showNotif('Lien de partage copié !'));
+    }
 
-        function shareDoc(url){
-            navigator.clipboard.writeText(window.location.origin+'/'+url).then(()=>alert('Lien copié: '+window.location.origin+'/'+url));
-        }
+    modalShare.addEventListener('click',()=>{
+      if(currentDocTitle){ shareDoc(currentDocTitle); }
+    });
 
-        searchInput.addEventListener('input',()=>{
-            const query = searchInput.value.toLowerCase();
-            const filtered = documentsData.filter(d=>d.title.toLowerCase().includes(query));
-            renderCategories(filtered);
+    function showNotif(msg){
+      const notif=document.createElement('div');
+      notif.className='notif';
+      notif.textContent=msg;
+      notifications.appendChild(notif);
+      setTimeout(()=>notif.classList.add('show'),20);
+      setTimeout(()=>{notif.classList.remove('show');notif.classList.add('hide');},3000);
+      setTimeout(()=>notif.remove(),3500);
+    }
+
+    searchInput.addEventListener('input',()=>{
+      const query=searchInput.value.toLowerCase();
+      suggestionsBox.innerHTML='';
+      if(query){
+        const filtered=documentsData.filter(d=>d.title.toLowerCase().includes(query));
+        filtered.forEach(doc=>{
+          const item=document.createElement('div');
+          item.className='suggestion-item';
+          item.textContent=doc.title;
+          item.onclick=()=>{openPDF(doc.pdfUrl,doc.title);suggestionsBox.classList.remove('show');};
+          suggestionsBox.appendChild(item);
         });
+        suggestionsBox.classList.add('show');
+      }else{
+        suggestionsBox.classList.remove('show');
+      }
+    });
 
-        renderCategories(documentsData);
-    </script>
+    searchInput.addEventListener('blur',()=>setTimeout(()=>suggestionsBox.classList.remove('show'),200));
+    searchInput.addEventListener('focus',()=>{if(suggestionsBox.children.length>0)suggestionsBox.classList.add('show');});
+
+    renderCategories(documentsData);
+  </script>
 </body>
 </html>
 
