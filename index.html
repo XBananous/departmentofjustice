@@ -201,6 +201,7 @@ function openPDF(url,title,date=""){
   docCard.style.display="block";
   docCard.innerHTML=`
     <div class="doc-item">
+    <h2>Informations<h2>
       <div class="doc-info">
         <span class="doc-title">${title}</span>
         ${date ? `<span class="doc-date">${date}</span>` : ""}
@@ -232,7 +233,7 @@ function goHome(){
 function shareDoc(title,btn=null){
   if(!title) return;
   navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`)
-    .then(()=>{showToast("🔗 Lien copié !");
+    .then(()=>{showToast("Lien copié !");
       if(btn){const icon=btn.querySelector("i"); icon.setAttribute("data-lucide","check"); lucide.createIcons(); setTimeout(()=>{icon.setAttribute("data-lucide","share-2"); lucide.createIcons();},1500);}
     })
 }
