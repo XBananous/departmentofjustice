@@ -7,14 +7,9 @@
   <link rel="icon" href="logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Métas pour partage -->
-  <meta property="og:title" content="Department Of Justice – Document">
-  <meta property="og:description" content="Consultez le document officiel en ligne.">
-  <meta property="og:image" content="logo.png">
-  <meta name="twitter:card" content="summary_large_image">
   <style>
     :root{--bg:#0b0f14;--panel:#111823;--soft:#16202d;--ink:#eaf2ff;--muted:#b7c3d9;--accent:#6aa7ff;--danger:#ff5d5d;--ok:#35d07f;}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:radial-gradient(1200px 600px at 80% -10%,#0f1725 0%,#0b0f14 60%) fixed;color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+    body{margin:0;font-family:Inter,system-ui;background:var(--bg);color:var(--ink);}
     .wrap{max-width:980px;margin:28px auto;padding:22px;}
 
     /* Header */
@@ -22,6 +17,7 @@
     .nav-left{display:flex;align-items:center;gap:10px;}
     .nav-left img{height:36px;width:36px;}
     h1{text-transform:uppercase;font-size:clamp(20px,3.6vw,28px);margin:0;}
+    .nav-right button{background:linear-gradient(180deg,var(--muted),#5a6578);color:#fff;border:none;border-radius:10px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;}
 
     /* Search */
     .search-section{margin-bottom:24px;}
@@ -34,28 +30,29 @@
     .suggestion-item{padding:10px 14px;cursor:pointer;font-size:15px;}
     .suggestion-item:hover{background:var(--soft);}
 
-    /* Cards & Buttons Design */
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0)),var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);margin-bottom:16px;}
+    /* Categories */
+    .category{margin-bottom:28px;}
+    .category h2{margin-bottom:12px;font-size:18px;font-weight:800;text-transform:uppercase;}
+    
+    /* Cards */
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.3);margin-bottom:16px;}
     .card h3{margin:0 0 8px;font-size:16px;font-weight:700;}
     .card p{margin:0 0 12px;color:var(--muted);font-size:13px;}
     .actions{display:flex;gap:12px;flex-wrap:wrap;}
     button{cursor:pointer;font-weight:700;border:none;border-radius:12px;padding:10px 16px;display:flex;align-items:center;gap:8px;transition:transform .2s;}
     button:hover{transform:scale(1.05);}
-    .btn-primary{background:linear-gradient(180deg,var(--accent),#3556c7);color:#fff;box-shadow:0 8px 24px rgba(59,99,190,.18);}
+    .btn-primary{background:linear-gradient(180deg,var(--accent),#3556c7);color:#fff;}
     .btn-share{background:linear-gradient(180deg,var(--ok),#218c57);color:#fff;}
-    .btn-back{background:linear-gradient(180deg,var(--muted),#5a6578);color:#fff;}
 
     /* PDF View */
-    .pdf-view{width:100%;height:calc(100vh - 100px);}
-    .pdf-view iframe{width:100%;height:100%;border:none;}
+    .pdf-view{width:100%;height:calc(100vh - 70px);}
+    .pdf-view iframe,.pdf-view embed{width:100%;height:100%;border:none;overflow:auto;}
 
     /* Notifications */
-    .notifications{position:fixed;top:20px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:10px;max-width:90%;}
+    .notifications{position:fixed;top:20px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:10px;}
     .notif{padding:10px 14px;border-radius:10px;background:var(--panel);font-size:13px;opacity:0;transform:translateY(-10px);transition:opacity .3s,transform .3s;}
     .notif.show{opacity:1;transform:translateY(0);}
     .notif.hide{opacity:0;transform:translateY(-10px);}
-
-    @media(max-width:600px){.search-container{max-width:100%}.card{padding:14px;}button{padding:8px 12px;font-size:14px;}}
   </style>
 </head>
 <body>
@@ -65,10 +62,11 @@
         <img src="logo.png" alt="Logo">
         <h1 id="page-title">Department Of Justice</h1>
       </div>
+      <div class="nav-right" id="nav-right"></div>
     </header>
 
     <!-- Recherche -->
-    <div class="search-section">
+    <div class="search-section" id="search-section">
       <label for="search" class="search-label">Rechercher un document :</label>
       <div class="search-container">
         <input type="text" id="search" placeholder="Tapez pour rechercher...">
@@ -80,24 +78,33 @@
     <div id="list-view"></div>
   </div>
 
-  <!-- Notifications -->
   <div class="notifications" id="notifications"></div>
 
   <script>
     lucide.createIcons();
 
-    const documentsData = [
-      { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: 'Rapport190820251.pdf', tag: "RAPPORTS D'INTERVENTION" }
-      // Ajoutez d'autres documents ici
-    ];
+    const documentsData = {
+      "RAPPORTS D'INTERVENTION": [
+        { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: 'Rapport190820251.pdf' }
+      ],
+      "AUDIENCES": [
+        { title: 'AUDIENCE PUBLIQUE 20_08_2025', date: '20/08/2025', pdfUrl: 'Audience20082025.pdf' }
+      ],
+      "RAPPORTS D'AUDIENCES": [
+        { title: 'RAPPORT AUDIENCE 18_08_2025', date: '18/08/2025', pdfUrl: 'RapportAudience18082025.pdf' }
+      ],
+      "DECRETS": [
+        { title: 'DÉCRET OFFICIEL 15_08_2025', date: '15/08/2025', pdfUrl: 'Decret15082025.pdf' }
+      ]
+    };
 
     const container = document.getElementById('content-container');
     const listView = document.getElementById('list-view');
+    const navRight = document.getElementById('nav-right');
     const notifications = document.getElementById('notifications');
     const searchInput = document.getElementById('search');
     const suggestionsBox = document.getElementById('suggestions');
     const pageTitle = document.getElementById('page-title');
-
     let currentDoc = null;
 
     function showNotif(msg) {
@@ -110,21 +117,27 @@
       setTimeout(() => n.remove(), 3500);
     }
 
-    function renderList(docs) {
+    function renderList(data) {
       pageTitle.textContent = 'Department Of Justice';
+      navRight.innerHTML = ''; // suppr bouton retour
       listView.innerHTML = '';
-      container.style.height = 'auto';
-      docs.forEach(doc => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <h3>${doc.title}</h3>
-          <p>${doc.date}</p>
-          <div class="actions">
-            <button class="btn-primary" onclick="openPDF('${doc.pdfUrl}', '${doc.title}')"><i data-lucide="file-text"></i>Voir PDF</button>
-            <button class="btn-share" onclick="shareDoc('${doc.title}')"><i data-lucide="share-2"></i>Partager</button>
-          </div>`;
-        listView.appendChild(card);
+      Object.keys(data).forEach(cat => {
+        const section = document.createElement('div');
+        section.className = 'category';
+        section.innerHTML = `<h2>${cat}</h2>`;
+        data[cat].forEach(doc => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <h3>${doc.title}</h3>
+            <p>${doc.date}</p>
+            <div class="actions">
+              <button class="btn-primary" onclick="openPDF('${doc.pdfUrl}', '${doc.title}')"><i data-lucide="file-text"></i>Voir PDF</button>
+              <button class="btn-share" onclick="shareDoc('${doc.title}')"><i data-lucide="share-2"></i>Partager</button>
+            </div>`;
+          section.appendChild(card);
+        });
+        listView.appendChild(section);
       });
       lucide.createIcons();
     }
@@ -132,15 +145,11 @@
     function openPDF(url, title) {
       currentDoc = title;
       history.replaceState(null, null, `index.html?doc=${encodeURIComponent(title)}`);
-      container.innerHTML = `
-        <header><div class="nav-left">
-          <img src="logo.png" alt="Logo"><h1>${title}</h1>
-        </div></header>
+      pageTitle.textContent = title;
+      navRight.innerHTML = `<button onclick="goHome()"><i data-lucide="arrow-left"></i>Retour</button>`;
+      listView.innerHTML = `
         <div class="pdf-view">
-          <iframe src="${url}"></iframe>
-        </div>
-        <div class="actions" style="justify-content:center;padding:20px;">
-          <button class="btn-back" onclick="goHome()"><i data-lucide="arrow-left"></i>Retour</button>
+          <embed src="${url}" type="application/pdf">
         </div>`;
       lucide.createIcons();
     }
@@ -152,7 +161,7 @@
     }
 
     function shareDoc(title) {
-      const shareUrl = `${window.location.origin}/index.html?doc=${encodeURIComponent(title)}`;
+      const shareUrl = `${window.location.origin}/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`;
       navigator.clipboard.writeText(shareUrl).then(() => showNotif('Lien copié !'));
     }
 
@@ -161,7 +170,7 @@
         const q = searchInput.value.toLowerCase();
         suggestionsBox.innerHTML = '';
         if (!q) { suggestionsBox.classList.remove('show'); return; }
-        documentsData.filter(d => d.title.toLowerCase().includes(q)).forEach(doc => {
+        Object.values(documentsData).flat().filter(d => d.title.toLowerCase().includes(q)).forEach(doc => {
           const item = document.createElement('div');
           item.className = 'suggestion-item';
           item.textContent = doc.title;
@@ -171,18 +180,14 @@
         suggestionsBox.classList.add('show');
       });
       searchInput.addEventListener('blur', () => setTimeout(() => suggestionsBox.classList.remove('show'), 200));
-      searchInput.addEventListener('focus', () => {
-        if (suggestionsBox.children.length > 0) suggestionsBox.classList.add('show');
-      });
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       renderList(documentsData);
       setupSearch();
-
       const params = new URLSearchParams(window.location.search);
       if (params.has('doc')) {
-        const doc = documentsData.find(d => d.title === params.get('doc'));
+        const doc = Object.values(documentsData).flat().find(d => d.title === params.get('doc'));
         if (doc) openPDF(doc.pdfUrl, doc.title);
       }
     });
