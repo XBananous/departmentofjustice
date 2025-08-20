@@ -20,20 +20,19 @@
     .nav-left img{height:36px;width:36px}
     h1{text-transform:uppercase;font-size:clamp(20px,3.6vw,28px);margin:0}
 
-/* recherche */
-.search-section{margin:24px 0}
-.search-label{font-weight:700;font-size:15px;margin-bottom:10px;display:block}
-
+/* conteneur de recherche */
 .search-container{
   position:relative;
-  margin-bottom:24px;
+  margin:0 auto 24px;   /* 🔥 centré */
   width:100%;
-  max-width:800px; /* 🔥 plus large */
+  max-width:800px;      /* 🔥 limite sur desktop */
+  padding:0 12px;       /* 🔥 évite que ça colle sur les bords en mobile */
+  box-sizing:border-box;
 }
 
 .search-container input[type='text']{
   width:100%;
-  padding:14px; /* 🔥 icône retirée donc padding symétrique */
+  padding:14px;
   border-radius:12px;
   border:1px solid rgba(255,255,255,.06);
   background:var(--soft);
@@ -41,18 +40,19 @@
   outline:none;
   transition:box-shadow .3s;
   font-size:16px;
+  box-sizing:border-box; /* 🔥 évite tout dépassement */
 }
 
 .search-container input[type='text']:focus{
   box-shadow:0 0 0 4px rgba(106,167,255,.14);
 }
 
-/* suggestions */
+/* suggestions (inchangé mais suit largeur input) */
 .suggestions{
   position:absolute;
   top:100%;
-  left:0;
-  right:0;
+  left:12px;        /* 🔥 même padding que container */
+  right:12px;       /* 🔥 pour éviter débordement */
   background:var(--panel);
   border-radius:12px;
   margin-top:6px;
@@ -66,6 +66,7 @@
   transition:opacity .25s, transform .25s
 }
 .suggestions.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+
 .suggestion-item{padding:10px 14px;cursor:pointer;font-size:15px}
 .suggestion-item:hover,.suggestion-item.active{background:var(--soft)}
 
