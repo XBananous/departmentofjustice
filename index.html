@@ -94,7 +94,7 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
   <div id="list-view"></div>
 </div>
 
-<div class="toast" id="toast">🔗 Lien copié !</div>
+<div class="toast" id="toast">Lien copié !</div>
 
 <footer>© 2025 Department Of Justice</footer>
 
@@ -183,7 +183,6 @@ function renderList(data){
 function openPDF(url,title,date=""){
   currentDoc=title;
   history.replaceState(null,null,`index.html?doc=${encodeURIComponent(title)}`);
-  pageTitle.textContent=title;
 
   // Card pour retour + partage avec info doc
   docCard.style.display="block";
@@ -223,7 +222,6 @@ function shareDoc(title,btn=null){
     .then(()=>{showToast("🔗 Lien copié !");
       if(btn){const icon=btn.querySelector("i"); icon.setAttribute("data-lucide","check"); lucide.createIcons(); setTimeout(()=>{icon.setAttribute("data-lucide","share-2"); lucide.createIcons();},1500);}
     })
-    .catch(()=>showToast("Erreur lors de la copie !"));
 }
 
 // Recherche / suggestions
