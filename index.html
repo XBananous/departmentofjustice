@@ -2,77 +2,72 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Department Of Justice</title>
-  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="icon" href="logo.png">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
-
-  <!-- ✅ métas pour le partage -->
-  <meta property="og:title" content="Department Of Justice - Documents">
-  <meta property="og:description" content="Accédez aux documents officiels en ligne">
+  <!-- Métas pour partage -->
+  <meta property="og:title" content="Department Of Justice – Document">
+  <meta property="og:description" content="Consultez le document officiel en ligne.">
   <meta property="og:image" content="logo.png">
-  <meta property="og:url" content="https://tonsite.com">
   <meta name="twitter:card" content="summary_large_image">
-  
   <style>
-    :root{ --bg:#0b0f14; --panel:#111823; --soft:#16202d; --ink:#eaf2ff; --muted:#b7c3d9; --accent:#6aa7ff; --danger:#ff5d5d; --ok:#35d07f; }
-    body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
-      background: radial-gradient(1200px 600px at 80% -10%,#0f1725 0%,#0b0f14 60%) fixed;
-      color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-    .wrap{max-width:980px;margin:28px auto;padding:22px}
+    :root{--bg:#0b0f14;--panel:#111823;--soft:#16202d;--ink:#eaf2ff;--muted:#b7c3d9;--accent:#6aa7ff;--danger:#ff5d5d;--ok:#35d07f;}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:radial-gradient(1200px 600px at 80% -10%,#0f1725 0%,#0b0f14 60%) fixed;color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+    .wrap{max-width:980px;margin:28px auto;padding:22px;}
 
-    /* navbar */
-    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-    .nav-left{display:flex;align-items:center;gap:10px}
-    .nav-left img{height:36px;width:36px}
-    h1{text-transform:uppercase;font-size:clamp(20px,3.6vw,28px);margin:0}
+    /* Header */
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+    .nav-left{display:flex;align-items:center;gap:10px;}
+    .nav-left img{height:36px;width:36px;}
+    h1{text-transform:uppercase;font-size:clamp(20px,3.6vw,28px);margin:0;}
 
-    /* ✅ barre recherche */
-    .search-section{margin-bottom:24px}
-    .search-label{display:block;margin-bottom:6px;font-size:15px;color:var(--muted)}
-    .search-container{position:relative;margin:0 auto;width:100%;max-width:800px;padding:0 12px;box-sizing:border-box}
-    .search-container input{width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.06);
-      background:var(--soft);color:var(--ink);outline:none;font-size:16px;box-sizing:border-box}
-    .suggestions{position:absolute;top:100%;left:12px;right:12px;background:var(--panel);border-radius:12px;margin-top:6px;
-      overflow-y:auto;max-height:220px;box-shadow:0 12px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;
-      transform:translateY(6px);transition:.25s}
-    .suggestions.show{opacity:1;pointer-events:auto;transform:translateY(0)}
-    .suggestion-item{padding:10px 14px;cursor:pointer;font-size:15px}
-    .suggestion-item:hover{background:var(--soft)}
+    /* Search */
+    .search-section{margin-bottom:24px;}
+    .search-label{display:block;margin-bottom:6px;font-size:15px;color:var(--muted);}
+    .search-container{position:relative;margin:0 auto;width:100%;max-width:800px;padding:0 12px;box-sizing:border-box;}
+    .search-container input{width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:var(--soft);color:var(--ink);outline:none;font-size:16px;box-sizing:border-box;}
+    .search-container input:focus{box-shadow:0 0 0 4px rgba(106,167,255,.14);}
+    .suggestions{position:absolute;top:100%;left:12px;right:12px;background:var(--panel);border-radius:12px;margin-top:6px;max-height:220px;overflow-y:auto;box-shadow:0 12px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;transform:translateY(6px);transition:opacity .25s,transform .25s;}
+    .suggestions.show{opacity:1;pointer-events:auto;transform:translateY(0);}
+    .suggestion-item{padding:10px 14px;cursor:pointer;font-size:15px;}
+    .suggestion-item:hover{background:var(--soft);}
 
-    /* ✅ loader */
-    #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-      background:rgba(0,0,0,.75);z-index:10000;font-size:18px;opacity:0;pointer-events:none;transition:.3s}
-    #loader.show{opacity:1;pointer-events:auto}
+    /* Cards & Buttons Design */
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,0)),var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);margin-bottom:16px;}
+    .card h3{margin:0 0 8px;font-size:16px;font-weight:700;}
+    .card p{margin:0 0 12px;color:var(--muted);font-size:13px;}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;}
+    button{cursor:pointer;font-weight:700;border:none;border-radius:12px;padding:10px 16px;display:flex;align-items:center;gap:8px;transition:transform .2s;}
+    button:hover{transform:scale(1.05);}
+    .btn-primary{background:linear-gradient(180deg,var(--accent),#3556c7);color:#fff;box-shadow:0 8px 24px rgba(59,99,190,.18);}
+    .btn-share{background:linear-gradient(180deg,var(--ok),#218c57);color:#fff;}
+    .btn-back{background:linear-gradient(180deg,var(--muted),#5a6578);color:#fff;}
 
-    /* overlay */
-    .overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-      background:rgba(3,6,10,.76);z-index:9999;opacity:0;pointer-events:none;transition:.3s}
-    .overlay.show{opacity:1;pointer-events:auto}
-    .pdf-container{background:var(--panel);border-radius:14px;overflow:hidden;width:90%;max-width:900px;height:80%;
-      display:flex;flex-direction:column}
-    .pdf-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg)}
-    .pdf-frame{flex:1;width:100%;border:none;overflow:auto} /* ✅ scroll ok */
+    /* PDF View */
+    .pdf-view{width:100%;height:calc(100vh - 100px);}
+    .pdf-view iframe{width:100%;height:100%;border:none;}
 
-    /* notifications */
-    .notifications{position:fixed;top:20px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:10px;max-width:90%}
-    .notif{background:var(--panel);padding:10px 14px;border-radius:10px;font-size:13px;box-shadow:0 6px 16px rgba(0,0,0,.35);
-      opacity:0;transform:translateY(-10px);transition:.3s}
-    .notif.show{opacity:1;transform:translateY(0)}
-    .notif.hide{opacity:0;transform:translateY(-10px)}
+    /* Notifications */
+    .notifications{position:fixed;top:20px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:10px;max-width:90%;}
+    .notif{padding:10px 14px;border-radius:10px;background:var(--panel);font-size:13px;opacity:0;transform:translateY(-10px);transition:opacity .3s,transform .3s;}
+    .notif.show{opacity:1;transform:translateY(0);}
+    .notif.hide{opacity:0;transform:translateY(-10px);}
+
+    @media(max-width:600px){.search-container{max-width:100%}.card{padding:14px;}button{padding:8px 12px;font-size:14px;}}
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="wrap" id="content-container">
     <header>
       <div class="nav-left">
         <img src="logo.png" alt="Logo">
-        <h1>Department Of Justice</h1>
+        <h1 id="page-title">Department Of Justice</h1>
       </div>
     </header>
 
-    <!-- ✅ recherche -->
+    <!-- Recherche -->
     <div class="search-section">
       <label for="search" class="search-label">Rechercher un document :</label>
       <div class="search-container">
@@ -81,111 +76,118 @@
       </div>
     </div>
 
-    <div id="categories"></div>
+    <!-- Liste des documents -->
+    <div id="list-view"></div>
   </div>
 
-  <!-- modal PDF -->
-  <div class="overlay" id="pdf-overlay">
-    <div class="pdf-container">
-      <div class="pdf-header">
-        <span id="pdf-title">Document PDF</span>
-        <div class="actions">
-          <button class="btn-share" id="modal-share"><i data-lucide="share-2"></i>Partager</button>
-          <button class="btn-primary" onclick="closePDF()"><i data-lucide="x"></i>Fermer</button>
-        </div>
-      </div>
-      <iframe class="pdf-frame" id="pdf-frame"></iframe>
-    </div>
-  </div>
-
-  <!-- ✅ loader -->
-  <div id="loader">Chargement des documents...</div>
-
-  <!-- notifications -->
+  <!-- Notifications -->
   <div class="notifications" id="notifications"></div>
 
   <script>
     lucide.createIcons();
 
-    const documentsData=[{title:"RAPPORT INTERVENTION DPO_19082025_1",date:"19/08/2025",pdfUrl:"Rapport190820251.pdf",tag:"RAPPORTS D'INTERVENTION"}];
+    const documentsData = [
+      { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: 'Rapport190820251.pdf', tag: "RAPPORTS D'INTERVENTION" }
+      // Ajoutez d'autres documents ici
+    ];
 
-    const pdfOverlay=document.getElementById('pdf-overlay');
-    const pdfFrame=document.getElementById('pdf-frame');
-    const pdfTitle=document.getElementById('pdf-title');
-    const searchInput=document.getElementById('search');
-    const suggestionsBox=document.getElementById('suggestions');
-    const notifications=document.getElementById('notifications');
-    const loader=document.getElementById('loader');
-    let currentDocTitle=null;
+    const container = document.getElementById('content-container');
+    const listView = document.getElementById('list-view');
+    const notifications = document.getElementById('notifications');
+    const searchInput = document.getElementById('search');
+    const suggestionsBox = document.getElementById('suggestions');
+    const pageTitle = document.getElementById('page-title');
 
-    function renderCategories(docs){
-      const categories=document.getElementById('categories');
-      categories.innerHTML='';
-      docs.forEach(doc=>{
-        const card=document.createElement('div');
-        card.className='card';
-        card.innerHTML=`<h3>${doc.title}</h3><p>${doc.date}</p>
-          <button onclick="openPDF('${doc.pdfUrl}','${doc.title}')">Voir PDF</button>
-          <button onclick="shareDoc('${doc.title}')">Partager</button>`;
-        categories.appendChild(card);
+    let currentDoc = null;
+
+    function showNotif(msg) {
+      const n = document.createElement('div');
+      n.className = 'notif';
+      n.textContent = msg;
+      notifications.appendChild(n);
+      setTimeout(() => n.classList.add('show'), 20);
+      setTimeout(() => n.classList.remove('show'), 3000);
+      setTimeout(() => n.remove(), 3500);
+    }
+
+    function renderList(docs) {
+      pageTitle.textContent = 'Department Of Justice';
+      listView.innerHTML = '';
+      container.style.height = 'auto';
+      docs.forEach(doc => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <h3>${doc.title}</h3>
+          <p>${doc.date}</p>
+          <div class="actions">
+            <button class="btn-primary" onclick="openPDF('${doc.pdfUrl}', '${doc.title}')"><i data-lucide="file-text"></i>Voir PDF</button>
+            <button class="btn-share" onclick="shareDoc('${doc.title}')"><i data-lucide="share-2"></i>Partager</button>
+          </div>`;
+        listView.appendChild(card);
       });
-      loader.classList.remove('show');
+      lucide.createIcons();
     }
 
-    function openPDF(url,title){
-      currentDocTitle=title;
-      pdfFrame.src=url;
-      pdfTitle.textContent=title;
-      pdfOverlay.classList.add('show');
-      history.replaceState(null,null,'?doc='+encodeURIComponent(title)); // ✅ maj URL
-    }
-    function closePDF(){
-      pdfOverlay.classList.remove('show');
-      setTimeout(()=>pdfFrame.src='',300);
-      history.replaceState(null,null,'/'); // retour à la racine
-    }
-
-    function shareDoc(title){
-      const shareUrl=window.location.origin+'?doc='+encodeURIComponent(title);
-      navigator.clipboard.writeText(shareUrl).then(()=>showNotif('Lien copié !'));
+    function openPDF(url, title) {
+      currentDoc = title;
+      history.replaceState(null, null, `index.html?doc=${encodeURIComponent(title)}`);
+      container.innerHTML = `
+        <header><div class="nav-left">
+          <img src="logo.png" alt="Logo"><h1>${title}</h1>
+        </div></header>
+        <div class="pdf-view">
+          <iframe src="${url}"></iframe>
+        </div>
+        <div class="actions" style="justify-content:center;padding:20px;">
+          <button class="btn-back" onclick="goHome()"><i data-lucide="arrow-left"></i>Retour</button>
+        </div>`;
+      lucide.createIcons();
     }
 
-    function showNotif(msg){
-      const notif=document.createElement('div');
-      notif.className='notif';
-      notif.textContent=msg;
-      notifications.appendChild(notif);
-      setTimeout(()=>notif.classList.add('show'),20);
-      setTimeout(()=>{notif.classList.remove('show');notif.classList.add('hide');},3000);
-      setTimeout(()=>notif.remove(),3500);
+    function goHome() {
+      history.replaceState(null, null, 'index.html');
+      renderList(documentsData);
+      setupSearch();
     }
 
-    searchInput.addEventListener('input',()=>{
-      const q=searchInput.value.toLowerCase();
-      suggestionsBox.innerHTML='';
-      if(q){
-        documentsData.filter(d=>d.title.toLowerCase().includes(q)).forEach(doc=>{
-          const item=document.createElement('div');
-          item.className='suggestion-item';
-          item.textContent=doc.title;
-          item.onclick=()=>{openPDF(doc.pdfUrl,doc.title);suggestionsBox.classList.remove('show');};
+    function shareDoc(title) {
+      const shareUrl = `${window.location.origin}/index.html?doc=${encodeURIComponent(title)}`;
+      navigator.clipboard.writeText(shareUrl).then(() => showNotif('Lien copié !'));
+    }
+
+    function setupSearch() {
+      searchInput.addEventListener('input', () => {
+        const q = searchInput.value.toLowerCase();
+        suggestionsBox.innerHTML = '';
+        if (!q) { suggestionsBox.classList.remove('show'); return; }
+        documentsData.filter(d => d.title.toLowerCase().includes(q)).forEach(doc => {
+          const item = document.createElement('div');
+          item.className = 'suggestion-item';
+          item.textContent = doc.title;
+          item.onclick = () => openPDF(doc.pdfUrl, doc.title);
           suggestionsBox.appendChild(item);
         });
         suggestionsBox.classList.add('show');
-      }else{ suggestionsBox.classList.remove('show'); }
-    });
+      });
+      searchInput.addEventListener('blur', () => setTimeout(() => suggestionsBox.classList.remove('show'), 200));
+      searchInput.addEventListener('focus', () => {
+        if (suggestionsBox.children.length > 0) suggestionsBox.classList.add('show');
+      });
+    }
 
-    // ✅ ouverture auto si lien contient ?doc=
-    window.addEventListener('DOMContentLoaded',()=>{
-      loader.classList.add('show');
-      setTimeout(()=>renderCategories(documentsData),800);
-      const params=new URLSearchParams(window.location.search);
-      if(params.has('doc')){
-        const doc=documentsData.find(d=>d.title===params.get('doc'));
-        if(doc){ openPDF(doc.pdfUrl,doc.title); }
+    window.addEventListener('DOMContentLoaded', () => {
+      renderList(documentsData);
+      setupSearch();
+
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('doc')) {
+        const doc = documentsData.find(d => d.title === params.get('doc'));
+        if (doc) openPDF(doc.pdfUrl, doc.title);
       }
     });
   </script>
 </body>
 </html>
+
 
