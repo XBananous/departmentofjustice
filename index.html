@@ -73,9 +73,6 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
 <body>
 <div class="wrap">
 
-  <!-- Card spéciale pour doc ouvert -->
-  <div id="doc-card" style="display:none;" class="card"></div>
-
   <header>
     <div class="nav-left">
       <img src="logo.png" alt="logo">
@@ -83,6 +80,9 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
     </div>
     <div class="nav-right" id="nav-right"></div>
   </header>
+
+    <!-- Card spéciale pour doc ouvert -->
+  <div id="doc-card" style="display:none;" class="card"></div>
 
   <section class="search-section" id="search-section">
     <span class="desc">Rechercher un document officiel</span>
@@ -194,7 +194,7 @@ function openPDF(url,title,date=""){
         ${date ? `<span class="doc-date">${date}</span>` : ""}
       </div>
       <div class="doc-actions">
-        <button onclick="goHome()"><i data-lucide="arrow-left"></i> Retour</button>
+        <button onclick="goHome()"><i data-lucide="arrow-left"></i></button>
         <button id="share-main"><i data-lucide="share-2"></i></button>
       </div>
     </div>
