@@ -22,8 +22,13 @@
   --ink:#eaf2ff; --muted:#b7c3d9; --accent:#6aa7ff; --danger:#ff5d5d;
 }
 
-body {font-family:Inter,system-ui,sans-serif;background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;color:var(--ink);margin:0;}
-.wrap {max-width:980px;margin:28px auto;padding:22px;}
+body {
+  font-family:Inter,system-ui,sans-serif;
+  background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;
+  color:var(--ink); margin:0;
+}
+
+.wrap {max-width:980px;margin:28px auto;padding:22px}
 header {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
 .nav-left {display:flex;align-items:center;gap:10px;}
 .nav-left img {height:32px;}
@@ -69,7 +74,7 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
 <div class="wrap">
 
   <!-- Card spéciale pour doc ouvert -->
-  <div id="doc-card" style="display:none;" class="card"></div>
+  <div id="doc-card" style="display:none;" class="card" ></div>
 
   <header>
     <div class="nav-left">
@@ -138,72 +143,61 @@ function updateMetaForDoc(title){
   document.querySelector('meta[property="og:url"]').setAttribute("content",metaUrl);
 }
 
-function renderDocuments(filter=""){
+function renderList(data){
   listView.innerHTML = "";
-  Object.keys(documentsData).forEach(cat=>{
-    const filteredDocs = documentsData[cat].filter(d=>d.title.toLowerCase().includes(filter.toLowerCase()));
-    if(filteredDocs.length>0){
-      const catTitle = document.createElement("h2");
-      catTitle.textContent = cat;
-      listView.appendChild(catTitle);
+  for(const category in data){
+    const catDiv = document.createElement("div");
+    const catTitle = document.createElement("h2");
+    catTitle.textContent = category;
+    catDiv.appendChild(catTitle);
 
-      filteredDocs.forEach(doc=>{
-        const item = document.createElement("div");
-        item.className="doc-item";
-        const info = document.createElement("div");
-        info.className="doc-info";
-        const t = document.createElement("span");
-        t.className="doc-title";
-        t.textContent=doc.title;
-        const d = document.createElement("span");
-        d.className="doc-date";
-        d.textContent=doc.date;
-        info.appendChild(t);
-        info.appendChild(d);
-        item.appendChild(info);
+    data[category].forEach(doc=>{
+      const item = document.createElement("div");
+      item.className="doc-item";
+      const info = document.createElement("div");
+      info.className="doc-info";
+      const titleEl = document.createElement("span");
+      titleEl.className="doc-title";
+      titleEl.textContent=doc.title;
+      const dateEl = document.createElement("span");
+      dateEl.className="doc-date";
+      dateEl.textContent=doc.date;
+      info.appendChild(titleEl); info.appendChild(dateEl);
 
-        const actions = document.createElement("div");
-        actions.className="doc-actions";
-        const shareBtn = document.createElement("button");
-        shareBtn.innerHTML = '<i data-lucide="share-2"></i>';
-        shareBtn.onclick = e=>{
-          e.stopPropagation();
-          navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(doc.title)}`);
-          showToast("🔗 Lien copié !");
-        };
-        actions.appendChild(shareBtn);
-        item.appendChild(actions);
+      const actions = document.createElement("div");
+      actions.className="doc-actions";
 
-        item.onclick = ()=>openDoc(doc);
-        listView.appendChild(item);
-      });
-    }
-  });
-  lucide.replace();
+      const shareBtn = document.createElement("button");
+      shareBtn.innerHTML="🔗";
+      shareBtn.onclick=()=>{navigator.clipboard.writeText(window.location.href + "?doc=" + encodeURIComponent(doc.title)); showToast("🔗 Lien copié !")};
+
+      actions.appendChild(shareBtn);
+      item.appendChild(info); item.appendChild(actions);
+      item.onclick = ()=>{openDoc(doc)};
+      catDiv.appendChild(item);
+    });
+
+    listView.appendChild(catDiv);
+  }
 }
 
 function openDoc(doc){
   currentDoc = doc;
   searchSection.style.display="none";
   listView.style.display="none";
-  docCard.style.display="block";
 
+  docCard.style.display="block";
   docCard.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-      <div>
-        <strong>${doc.title}</strong><br>
-        <small style="color:var(--muted)">${doc.date}</small>
-      </div>
-      <div>
-        <button onclick="shareCurrentDoc()"><i data-lucide="share-2"></i>Partager</button>
-        <button onclick="closeDoc()"><i data-lucide="arrow-left"></i>Retour</button>
-      </div>
-    </div>
+    <h2 style="margin-bottom:12px;">${doc.title}</h2>
     <div class="pdf-view">
       <embed src="${doc.pdfUrl}" type="application/pdf">
     </div>
+    <div style="margin-top:12px;display:flex;gap:8px;">
+      <button onclick="closeDoc()" style="padding:10px 16px;background:var(--accent);border:none;color:white;border-radius:10px;cursor:pointer;">🔙 Retour</button>
+      <button onclick="shareCurrentDoc()" style="padding:10px 16px;background:linear-gradient(180deg,var(--accent),#3556c7);border:none;color:white;border-radius:10px;cursor:pointer;">🔗 Partager</button>
+    </div>
   `;
-  lucide.replace();
+  pageTitle.textContent = doc.title;
   updateMetaForDoc(doc.title);
 }
 
@@ -212,18 +206,42 @@ function closeDoc(){
   docCard.style.display="none";
   searchSection.style.display="block";
   listView.style.display="block";
-  updateMetaForDoc(null);
+  pageTitle.textContent="Department Of Justice";
+  updateMetaForDoc();
 }
 
 function shareCurrentDoc(){
   if(currentDoc){
-    navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(currentDoc.title)}`);
+    navigator.clipboard.writeText(window.location.href + "?doc=" + encodeURIComponent(currentDoc.title));
     showToast("🔗 Lien copié !");
   }
 }
 
-searchInput.addEventListener("input",()=>renderDocuments(searchInput.value));
-renderDocuments();
+searchInput.addEventListener("input",()=>{
+  const query = searchInput.value.toLowerCase();
+  const filteredData = {};
+  for(const category in documentsData){
+    filteredData[category] = documentsData[category].filter(d=>d.title.toLowerCase().includes(query));
+  }
+  renderList(filteredData);
+});
+
+renderList(documentsData);
+
+// Vérifie si URL contient ?doc= pour ouvrir directement un document
+const params = new URLSearchParams(window.location.search);
+if(params.has("doc")){
+  const docTitle = params.get("doc");
+  outer: for(const cat in documentsData){
+    for(const doc of documentsData[cat]){
+      if(doc.title===docTitle){
+        openDoc(doc);
+        break outer;
+      }
+    }
+  }
+}
 </script>
 </body>
 </html>
+
