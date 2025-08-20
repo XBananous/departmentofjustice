@@ -20,8 +20,8 @@
     .nav-right button{background:linear-gradient(180deg,var(--muted),#5a6578);color:#fff;border:none;border-radius:10px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;}
 
     /* Search */
-    .search-section{margin-bottom:24px;}
-    .search-label{display:block;margin-bottom:6px;font-size:15px;color:var(--muted);}
+    .search-section{margin-bottom:24px;text-align:center;}
+    .search-label{display:block;margin-bottom:10px;font-size:15px;color:var(--muted);font-weight:bold;}
     .search-container{position:relative;margin:0 auto;width:100%;max-width:800px;padding:0 12px;box-sizing:border-box;}
     .search-container input{width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:var(--soft);color:var(--ink);outline:none;font-size:16px;box-sizing:border-box;}
     .search-container input:focus{box-shadow:0 0 0 4px rgba(106,167,255,.14);}
@@ -85,7 +85,6 @@
 
     const documentsData = {
       "RAPPORTS D'INTERVENTION": [
-        { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: 'Rapport190820251.pdf' },
         { title: 'RAPPORT INTERVENTION DPO_19082025_1', date: '19/08/2025', pdfUrl: 'Rapport190820251.pdf' }
       ],
       "AUDIENCES": [
@@ -103,6 +102,7 @@
     const listView = document.getElementById('list-view');
     const navRight = document.getElementById('nav-right');
     const notifications = document.getElementById('notifications');
+    const searchSection = document.getElementById('search-section');
     const searchInput = document.getElementById('search');
     const suggestionsBox = document.getElementById('suggestions');
     const pageTitle = document.getElementById('page-title');
@@ -121,6 +121,7 @@
     function renderList(data) {
       pageTitle.textContent = 'Department Of Justice';
       navRight.innerHTML = ''; // suppr bouton retour
+      searchSection.style.display = "block"; // on ré-affiche la recherche
       listView.innerHTML = '';
       Object.keys(data).forEach(cat => {
         const section = document.createElement('div');
@@ -148,6 +149,7 @@
       history.replaceState(null, null, `index.html?doc=${encodeURIComponent(title)}`);
       pageTitle.textContent = title;
       navRight.innerHTML = `<button onclick="goHome()"><i data-lucide="arrow-left"></i>Retour</button>`;
+      searchSection.style.display = "none"; // cacher la barre de recherche
       listView.innerHTML = `
         <div class="pdf-view">
           <embed src="${url}" type="application/pdf">
@@ -162,7 +164,7 @@
     }
 
     function shareDoc(title) {
-      const shareUrl = `${window.location.origin}/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`;
+      const shareUrl = `https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`;
       navigator.clipboard.writeText(shareUrl).then(() => showNotif('Lien copié !'));
     }
 
@@ -195,5 +197,3 @@
   </script>
 </body>
 </html>
-
-
