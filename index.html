@@ -1,324 +1,237 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  
-  <!-- Meta par défaut -->
-  <title>Department Of Justice</title>
-  <meta name="description" content="Consultez les rapports, audiences et décrets officiels du Department Of Justice.">
-  <meta property="og:title" content="Department Of Justice">
-  <meta property="og:description" content="Consultez les documents officiels.">
-  <meta property="og:image" content="https://xbananous.github.io/departmentofjustice/logo.png">
-  <meta property="og:url" content="https://xbananous.github.io/departmentofjustice/index.html">
-  <meta name="twitter:card" content="summary_large_image">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="icon" href="logo.png">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+<title>Department Of Justice</title>
+<meta name="description" content="Consultez les rapports, audiences et décrets officiels du Department Of Justice.">
+<meta property="og:title" content="Department Of Justice">
+<meta property="og:description" content="Consultez les documents officiels.">
+<meta property="og:image" content="https://xbananous.github.io/departmentofjustice/logo.png">
+<meta property="og:url" content="https://xbananous.github.io/departmentofjustice/index.html">
+<meta name="twitter:card" content="summary_large_image">
 
-  <style>
-    :root {
-      --bg:#0b0f14;
-      --panel:#111823;
-      --soft:#16202d;
-      --ink:#eaf2ff;
-      --muted:#b7c3d9;
-      --accent:#6aa7ff;
-      --danger:#ff5d5d;
-    }
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
 
-    body {
-      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;
-      color:var(--ink);
-      margin:0;
-    }
+<style>
+:root {
+  --bg:#0b0f14; --panel:#111823; --soft:#16202d;
+  --ink:#eaf2ff; --muted:#b7c3d9; --accent:#6aa7ff; --danger:#ff5d5d;
+}
 
-    .wrap {max-width:980px;margin:28px auto;padding:22px}
+body {
+  font-family:Inter,system-ui,sans-serif;
+  background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;
+  color:var(--ink); margin:0;
+}
 
-    header {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:18px;
-    }
+.wrap {max-width:980px;margin:28px auto;padding:22px}
+header {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+.nav-left {display:flex;align-items:center;gap:10px;}
+.nav-left img {height:32px;}
+.nav-left h1 {font-size:20px;margin:0;font-weight:800;text-transform:uppercase;}
+.nav-right {display:flex;gap:8px;}
+.nav-right button {appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,var(--accent),#3556c7);color:white;display:flex;align-items:center;gap:6px;transition:all .2s ease;}
+.nav-right button:hover{transform:scale(1.05)}
 
-    .nav-left {
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
+.search-section {text-align:center;margin-bottom:24px;transition:opacity .3s;}
+.search-section .desc {font-weight:700;font-size:15px;margin-bottom:10px;display:block;}
+.search-container {position:relative;margin:0 auto;width:100%;max-width:600px;}
+.search-container input[type="text"] {width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:var(--soft);color:var(--ink);outline:none;font-size:16px;transition:box-shadow .3s;}
+.search-container input[type="text"]:focus {box-shadow:0 0 0 4px rgba(106,167,255,.14);}
 
-    .nav-left img {height:32px;}
+.card {background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);margin-bottom:20px;opacity:0;transform:translateY(10px);animation:fadeSlide .5s forwards;}
+@keyframes fadeSlide {to {opacity:1; transform:translateY(0);}}
 
-    .nav-left h1 {
-      font-size:20px;
-      margin:0;
-      font-weight:800;
-      text-transform:uppercase;
-    }
+.doc-item {padding:12px;margin:8px 0;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.03);display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:transform .12s,box-shadow .12s;}
+.doc-item:hover {transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.doc-info {display:flex;flex-direction:column;}
+.doc-title {font-weight:700;}
+.doc-date {font-size:13px;color:var(--muted);}
+.doc-actions {display:flex;gap:8px;}
+.doc-actions button {border:0;background:transparent;cursor:pointer;color:var(--muted);padding:4px;transition:color .2s;}
+.doc-actions button:hover{color:var(--accent);}
 
-    .nav-right {display:flex;gap:8px;}
+.pdf-view {width:100%;height:85vh;}
+.pdf-view embed{width:100%;height:100%;border:none;}
 
-    .nav-right button {
-      appearance:none;
-      border:0;
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:700;
-      cursor:pointer;
-      background:linear-gradient(180deg,var(--accent),#3556c7);
-      color:white;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
+.toast {position:fixed;bottom:20px;right:20px;background:var(--accent);color:white;padding:12px 20px;border-radius:10px;opacity:0;transform:translateY(10px);transition:opacity .3s, transform .3s;z-index:9999;}
+.toast.show{opacity:1; transform:translateY(0);}
 
-    .search-section {
-      text-align:center;
-      margin-bottom:24px;
-    }
+footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-top:1px solid rgba(255,255,255,.1);margin-top:40px;}
 
-    .search-section .desc {
-      font-weight:700;
-      font-size:15px;
-      margin-bottom:10px;
-      display:block;
-    }
-
-    .search-container {
-      position:relative;
-      margin:0 auto;
-      width:100%;
-      max-width:600px;
-    }
-
-    .search-container input[type="text"] {
-      width:100%;
-      padding:14px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.06);
-      background:var(--soft);
-      color:var(--ink);
-      outline:none;
-      font-size:16px;
-      transition:box-shadow .3s;
-    }
-
-    .search-container input[type="text"]:focus {
-      box-shadow:0 0 0 4px rgba(106,167,255,.14);
-    }
-
-    .card {
-      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);
-      border:1px solid rgba(255,255,255,.04);
-      border-radius:16px;
-      padding:18px;
-      box-shadow:0 14px 40px rgba(0,0,0,.45);
-      margin-bottom:20px;
-    }
-
-    .card h2 {margin-top:0;font-size:18px;}
-
-    .doc-item {
-      padding:12px;
-      margin:8px 0;
-      border-radius:10px;
-      background:rgba(255,255,255,.02);
-      border:1px solid rgba(255,255,255,.03);
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      cursor:pointer;
-      transition:transform .12s,box-shadow .12s;
-    }
-
-    .doc-item:hover {
-      transform:translateY(-3px);
-      box-shadow:0 6px 20px rgba(0,0,0,.4);
-    }
-
-    .doc-info {display:flex;flex-direction:column;}
-    .doc-title {font-weight:700;}
-    .doc-date {font-size:13px;color:var(--muted);}
-
-    .doc-actions {display:flex;gap:8px;}
-
-    .doc-actions button {
-      border:0;
-      background:transparent;
-      cursor:pointer;
-      color:var(--muted);
-      padding:4px;
-    }
-
-    .doc-actions button:hover {color:var(--accent);}
-
-    .pdf-view {width:100%;height:90vh;}
-    .pdf-view embed {width:100%;height:100%;border:none;}
-
-    @media(max-width:880px){
-      .wrap {padding:16px}
-      .pdf-view {height:85vh;}
-    }
-  </style>
+@media(max-width:880px){
+  .wrap{padding:16px;}
+  .pdf-view{height:80vh;}
+  .search-container{max-width:90%;}
+}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="nav-left">
-        <img src="logo.png" alt="logo">
-        <h1 id="page-title">Department Of Justice</h1>
-      </div>
-      <div class="nav-right" id="nav-right"></div>
-    </header>
+<div class="wrap">
+  <header>
+    <div class="nav-left">
+      <img src="logo.png" alt="logo">
+      <h1 id="page-title">Department Of Justice</h1>
+    </div>
+    <div class="nav-right" id="nav-right"></div>
+  </header>
 
-    <section class="search-section" id="search-section">
-      <span class="desc">Rechercher un document officiel</span>
-      <div class="search-container">
-        <input type="text" id="search" placeholder="Rechercher...">
-      </div>
-    </section>
+  <section class="search-section" id="search-section">
+    <span class="desc">Rechercher un document officiel</span>
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Rechercher...">
+    </div>
+  </section>
 
-    <div id="list-view"></div>
-  </div>
+  <div id="list-view"></div>
+</div>
 
-  <script>
-    const documentsData = {
-      "Rapports d'intervention": [
-        { title: "RAPPORT INTERVENTION DPO_19082025_1", pdfUrl: "Rapport190820251.pdf", date: "19/08/2025" },
-        { title: "RAPPORT INTERVENTION DPO_19082025_2", pdfUrl: "Rapport190820251.pdf", date: "19/08/2025" }
-      ],
-      "Audiences": [
-        { title: "AUDIENCE 12/08/2025", pdfUrl: "docs/doc3.pdf", date: "12/08/2025" }
-      ],
-      "Rapports d'audiences": [
-        { title: "RAPPORT AUDIENCE 05/08/2025", pdfUrl: "docs/doc4.pdf", date: "05/08/2025" }
-      ],
-      "Décrets": [
-        { title: "DÉCRET JUSTICE 2025/08", pdfUrl: "docs/doc5.pdf", date: "01/08/2025" }
-      ]
-    };
+<div class="toast" id="toast">🔗 Lien copié !</div>
 
-    const listView = document.getElementById("list-view");
-    const pageTitle = document.getElementById("page-title");
-    const navRight = document.getElementById("nav-right");
-    const searchSection = document.getElementById("search-section");
-    const searchInput = document.getElementById("search");
-    let currentDoc = null;
+<footer>© 2025 Department Of Justice</footer>
 
-    function updateMetaForDoc(title) {
-      const metaTitle = title ? title : "Department Of Justice";
-      const metaDesc = title ? `Consultez le document officiel : ${title}` : "Consultez les rapports, audiences et décrets officiels.";
-      const metaImg = "https://xbananous.github.io/departmentofjustice/logo.png";
-      const metaUrl = title 
-          ? `https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`
-          : "https://xbananous.github.io/departmentofjustice/index.html";
+<script>
+const documentsData = {
+  "Rapports d'intervention":[
+    {title:"RAPPORT INTERVENTION DPO_19082025_1",pdfUrl:"docs/doc1.pdf",date:"19/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_19082025_2",pdfUrl:"docs/doc2.pdf",date:"19/08/2025"}
+  ],
+  "Audiences":[
+    {title:"AUDIENCE 12/08/2025",pdfUrl:"docs/doc3.pdf",date:"12/08/2025"}
+  ],
+  "Rapports d'audiences":[
+    {title:"RAPPORT AUDIENCE 05/08/2025",pdfUrl:"docs/doc4.pdf",date:"05/08/2025"}
+  ],
+  "Décrets":[
+    {title:"DÉCRET JUSTICE 2025/08",pdfUrl:"docs/doc5.pdf",date:"01/08/2025"}
+  ]
+};
 
-      document.title = metaTitle;
-      document.querySelector('meta[name="description"]').setAttribute("content", metaDesc);
-      document.querySelector('meta[property="og:title"]').setAttribute("content", metaTitle);
-      document.querySelector('meta[property="og:description"]').setAttribute("content", metaDesc);
-      document.querySelector('meta[property="og:image"]').setAttribute("content", metaImg);
-      document.querySelector('meta[property="og:url"]').setAttribute("content", metaUrl);
-    }
+const listView = document.getElementById("list-view");
+const pageTitle = document.getElementById("page-title");
+const navRight = document.getElementById("nav-right");
+const searchSection = document.getElementById("search-section");
+const searchInput = document.getElementById("search");
+const toast = document.getElementById("toast");
+let currentDoc = null;
 
-    function renderList(data) {
-      listView.innerHTML = "";
-      for (let category in data) {
-        const section = document.createElement("div");
-        section.className = "card";
-        section.innerHTML = `<h2>${category}</h2>`;
-        data[category].forEach(doc => {
-          const div = document.createElement("div");
-          div.className = "doc-item";
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),2000);
+}
 
-          const info = document.createElement("div");
-          info.className = "doc-info";
-          info.innerHTML = `<span class="doc-title">${doc.title}</span><span class="doc-date">${doc.date}</span>`;
+function updateMetaForDoc(title){
+  const metaTitle = title ? title : "Department Of Justice";
+  const metaDesc = title ? `Consultez le document officiel : ${title}` : "Consultez les rapports, audiences et décrets officiels.";
+  const metaImg = "https://xbananous.github.io/departmentofjustice/logo.png";
+  const metaUrl = title ? `https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}` : "https://xbananous.github.io/departmentofjustice/index.html";
 
-          const actions = document.createElement("div");
-          actions.className = "doc-actions";
+  document.title = metaTitle;
+  document.querySelector('meta[name="description"]').setAttribute("content",metaDesc);
+  document.querySelector('meta[property="og:title"]').setAttribute("content",metaTitle);
+  document.querySelector('meta[property="og:description"]').setAttribute("content",metaDesc);
+  document.querySelector('meta[property="og:image"]').setAttribute("content",metaImg);
+  document.querySelector('meta[property="og:url"]').setAttribute("content",metaUrl);
+}
 
-          const openBtn = document.createElement("button");
-          openBtn.innerHTML = `<i data-lucide="file-text"></i>`;
-          openBtn.onclick = (e) => { e.stopPropagation(); openPDF(doc.pdfUrl, doc.title); };
+function renderList(data){
+  listView.innerHTML="";
+  for(let category in data){
+    const section=document.createElement("div");
+    section.className="card";
+    section.innerHTML=`<h2>${category}</h2>`;
+    data[category].forEach(doc=>{
+      const div=document.createElement("div");
+      div.className="doc-item";
 
-          const shareBtn = document.createElement("button");
-          shareBtn.innerHTML = `<i data-lucide="share-2"></i>`;
-          shareBtn.onclick = (e) => { e.stopPropagation(); shareDoc(doc.title); };
+      const info=document.createElement("div");
+      info.className="doc-info";
+      info.innerHTML=`<span class="doc-title">${doc.title}</span><span class="doc-date">${doc.date}</span>`;
 
-          actions.appendChild(openBtn);
-          actions.appendChild(shareBtn);
+      const actions=document.createElement("div");
+      actions.className="doc-actions";
 
-          div.appendChild(info);
-          div.appendChild(actions);
+      const openBtn=document.createElement("button");
+      openBtn.innerHTML=`<i data-lucide="file-text"></i>`;
+      openBtn.onclick=(e)=>{e.stopPropagation(); openPDF(doc.pdfUrl,doc.title);};
 
-          section.appendChild(div);
-        });
-        listView.appendChild(section);
-      }
-      lucide.createIcons();
-    }
+      const shareBtn=document.createElement("button");
+      shareBtn.innerHTML=`<i data-lucide="share-2"></i>`;
+      shareBtn.onclick=(e)=>{e.stopPropagation(); shareDoc(doc.title,shareBtn);};
 
-    function openPDF(url, title) {
-      currentDoc = title;
-      history.replaceState(null, null, `index.html?doc=${encodeURIComponent(title)}`);
+      actions.appendChild(openBtn);
+      actions.appendChild(shareBtn);
 
-      pageTitle.textContent = title;
-      navRight.innerHTML = `
-        <button onclick="goHome()"><i data-lucide="arrow-left"></i> Retour</button>
-        <button onclick="shareDoc('${title}')"><i data-lucide="share-2"></i></button>
-      `;
-      searchSection.style.display = "none";
-
-      listView.innerHTML = `<div class="pdf-view"><embed src="${url}" type="application/pdf"></div>`;
-      lucide.createIcons();
-
-      updateMetaForDoc(title);
-    }
-
-    function goHome() {
-      history.replaceState(null, null, 'index.html');
-      renderList(documentsData);
-      pageTitle.textContent = "Department Of Justice";
-      navRight.innerHTML = "";
-      searchSection.style.display = "block";
-      updateMetaForDoc(null);
-    }
-
-    function shareDoc(title) {
-      const url = `https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`;
-      navigator.clipboard.writeText(url).then(() => {
-        alert("🔗 Lien copié !");
-      });
-    }
-
-    searchInput.addEventListener("input", () => {
-      const query = searchInput.value.toLowerCase();
-      if (!query) {
-        renderList(documentsData);
-        return;
-      }
-      const results = {};
-      for (let cat in documentsData) {
-        results[cat] = documentsData[cat].filter(doc => doc.title.toLowerCase().includes(query));
-      }
-      renderList(results);
+      div.appendChild(info);
+      div.appendChild(actions);
+      section.appendChild(div);
     });
+    listView.appendChild(section);
+  }
+  lucide.createIcons();
+}
 
-    window.addEventListener('DOMContentLoaded', () => {
-      renderList(documentsData);
-      const params = new URLSearchParams(window.location.search);
-      if (params.has('doc')) {
-        const doc = Object.values(documentsData).flat().find(d => d.title === params.get('doc'));
-        if (doc) openPDF(doc.pdfUrl, doc.title);
-      } else {
-        updateMetaForDoc(null);
-      }
-    });
-  </script>
+function openPDF(url,title){
+  currentDoc=title;
+  history.replaceState(null,null,`index.html?doc=${encodeURIComponent(title)}`);
+  pageTitle.textContent=title;
+  navRight.innerHTML=`
+    <button onclick="goHome()"><i data-lucide="arrow-left"></i> Retour</button>
+    <button id="share-main"><i data-lucide="share-2"></i></button>
+  `;
+  document.getElementById("share-main").onclick=()=>shareDoc(title);
+  searchSection.style.display="none";
+  listView.innerHTML=`<div class="pdf-view"><embed src="${url}" type="application/pdf"></div>`;
+  updateMetaForDoc(title);
+  lucide.createIcons();
+}
+
+function goHome(){
+  searchSection.style.display="block";
+  renderList(documentsData);
+  navRight.innerHTML="";
+  pageTitle.textContent="Department Of Justice";
+  updateMetaForDoc();
+  history.replaceState(null,null,"index.html");
+}
+
+function shareDoc(title,btn=null){
+  navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`)
+    .then(()=>{showToast("🔗 Lien copié !");
+      if(btn){const icon=btn.querySelector("i"); icon.setAttribute("data-lucide","check"); lucide.createIcons(); setTimeout(()=>{icon.setAttribute("data-lucide","share-2"); lucide.createIcons();},1500);}
+    })
+    .catch(()=>showToast("Erreur lors de la copie !"));
+}
+
+// Recherche / suggestions
+searchInput.addEventListener("input",(e)=>{
+  const val=e.target.value.toLowerCase();
+  if(!val){renderList(documentsData); return;}
+  const filtered={};
+  for(let cat in documentsData){
+    filtered[cat]=documentsData[cat].filter(d=>d.title.toLowerCase().includes(val));
+    if(!filtered[cat].length) delete filtered[cat];
+  }
+  renderList(filtered);
+});
+
+// Initial render
+renderList(documentsData);
+
+// Chargement via URL
+const urlParams=new URLSearchParams(window.location.search);
+if(urlParams.get("doc")){
+  const title=urlParams.get("doc");
+  for(let cat in documentsData){
+    const doc=documentsData[cat].find(d=>d.title===title);
+    if(doc){openPDF(doc.pdfUrl,title); break;}
+  }
+}
+</script>
 </body>
 </html>
