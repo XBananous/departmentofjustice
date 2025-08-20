@@ -72,6 +72,10 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
 </head>
 <body>
 <div class="wrap">
+
+  <!-- Card spéciale pour doc ouvert -->
+  <div id="doc-card" style="display:none;" class="card" ></div>
+
   <header>
     <div class="nav-left">
       <img src="logo.png" alt="logo">
@@ -117,6 +121,7 @@ const navRight = document.getElementById("nav-right");
 const searchSection = document.getElementById("search-section");
 const searchInput = document.getElementById("search");
 const toast = document.getElementById("toast");
+const docCard = document.getElementById("doc-card");
 let currentDoc = null;
 
 function showToast(msg){
@@ -180,11 +185,17 @@ function openPDF(url,title){
   currentDoc=title;
   history.replaceState(null,null,`index.html?doc=${encodeURIComponent(title)}`);
   pageTitle.textContent=title;
-  navRight.innerHTML=`
-    <button onclick="goHome()"><i data-lucide="arrow-left"></i> Retour</button>
-    <button id="share-main"><i data-lucide="share-2"></i></button>
+
+  // Card pour retour + partage
+  docCard.style.display="block";
+  docCard.innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <button onclick="goHome()"><i data-lucide="arrow-left"></i> Retour</button>
+      <button id="share-main"><i data-lucide="share-2"></i></button>
+    </div>
   `;
   document.getElementById("share-main").onclick=()=>shareDoc(title);
+
   searchSection.style.display="none";
   listView.innerHTML=`<div class="pdf-view"><embed src="${url}" type="application/pdf"></div>`;
   updateMetaForDoc(title);
@@ -192,15 +203,17 @@ function openPDF(url,title){
 }
 
 function goHome(){
+  currentDoc=null;
+  docCard.style.display="none";
   searchSection.style.display="block";
   renderList(documentsData);
-  navRight.innerHTML="";
   pageTitle.textContent="Department Of Justice";
   updateMetaForDoc();
   history.replaceState(null,null,"index.html");
 }
 
 function shareDoc(title,btn=null){
+  if(!title) return;
   navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`)
     .then(()=>{showToast("🔗 Lien copié !");
       if(btn){const icon=btn.querySelector("i"); icon.setAttribute("data-lucide","check"); lucide.createIcons(); setTimeout(()=>{icon.setAttribute("data-lucide","share-2"); lucide.createIcons();},1500);}
