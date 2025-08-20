@@ -74,7 +74,7 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
 <div class="wrap">
 
   <!-- Card spéciale pour doc ouvert -->
-  <div id="doc-card" style="display:none;" class="card" ></div>
+  <div id="doc-card" style="display:none;" class="card"></div>
 
   <header>
     <div class="nav-left">
@@ -144,104 +144,112 @@ function updateMetaForDoc(title){
 }
 
 function renderList(data){
-  listView.innerHTML = "";
-  for(const category in data){
-    const catDiv = document.createElement("div");
-    const catTitle = document.createElement("h2");
-    catTitle.textContent = category;
-    catDiv.appendChild(catTitle);
-
+  listView.innerHTML="";
+  for(let category in data){
+    const section=document.createElement("div");
+    section.className="card";
+    section.innerHTML=`<h2>${category}</h2>`;
     data[category].forEach(doc=>{
-      const item = document.createElement("div");
-      item.className="doc-item";
-      const info = document.createElement("div");
-      info.className="doc-info";
-      const titleEl = document.createElement("span");
-      titleEl.className="doc-title";
-      titleEl.textContent=doc.title;
-      const dateEl = document.createElement("span");
-      dateEl.className="doc-date";
-      dateEl.textContent=doc.date;
-      info.appendChild(titleEl); info.appendChild(dateEl);
+      const div=document.createElement("div");
+      div.className="doc-item";
 
-      const actions = document.createElement("div");
+      const info=document.createElement("div");
+      info.className="doc-info";
+      info.innerHTML=`<span class="doc-title">${doc.title}</span><span class="doc-date">${doc.date}</span>`;
+
+      const actions=document.createElement("div");
       actions.className="doc-actions";
 
-      const shareBtn = document.createElement("button");
-      shareBtn.innerHTML="🔗";
-      shareBtn.onclick=()=>{navigator.clipboard.writeText(window.location.href + "?doc=" + encodeURIComponent(doc.title)); showToast("🔗 Lien copié !")};
+      const openBtn=document.createElement("button");
+      openBtn.innerHTML=`<i data-lucide="file-text"></i>`;
+      openBtn.onclick=(e)=>{e.stopPropagation(); openPDF(doc.pdfUrl,doc.title,doc.date);};
 
+      const shareBtn=document.createElement("button");
+      shareBtn.innerHTML=`<i data-lucide="share-2"></i>`;
+      shareBtn.onclick=(e)=>{e.stopPropagation(); shareDoc(doc.title,shareBtn);};
+
+      actions.appendChild(openBtn);
       actions.appendChild(shareBtn);
-      item.appendChild(info); item.appendChild(actions);
-      item.onclick = ()=>{openDoc(doc)};
-      catDiv.appendChild(item);
-    });
 
-    listView.appendChild(catDiv);
+      div.appendChild(info);
+      div.appendChild(actions);
+      section.appendChild(div);
+    });
+    listView.appendChild(section);
   }
+  lucide.createIcons();
 }
 
-function openDoc(doc){
-  currentDoc = doc;
-  searchSection.style.display="none";
-  listView.style.display="none";
+function openPDF(url,title,date=""){
+  currentDoc=title;
+  history.replaceState(null,null,`index.html?doc=${encodeURIComponent(title)}`);
+  pageTitle.textContent=title;
 
+  // Card pour retour + partage avec info doc
   docCard.style.display="block";
-  docCard.innerHTML = `
-    <h2 style="margin-bottom:12px;">${doc.title}</h2>
-    <div class="pdf-view">
-      <embed src="${doc.pdfUrl}" type="application/pdf">
-    </div>
-    <div style="margin-top:12px;display:flex;gap:8px;">
-      <button onclick="closeDoc()" style="padding:10px 16px;background:var(--accent);border:none;color:white;border-radius:10px;cursor:pointer;">🔙 Retour</button>
-      <button onclick="shareCurrentDoc()" style="padding:10px 16px;background:linear-gradient(180deg,var(--accent),#3556c7);border:none;color:white;border-radius:10px;cursor:pointer;">🔗 Partager</button>
+  docCard.innerHTML=`
+    <div class="doc-item">
+      <div class="doc-info">
+        <span class="doc-title">${title}</span>
+        ${date ? `<span class="doc-date">${date}</span>` : ""}
+      </div>
+      <div class="doc-actions">
+        <button onclick="goHome()"><i data-lucide="arrow-left"></i> Retour</button>
+        <button id="share-main"><i data-lucide="share-2"></i></button>
+      </div>
     </div>
   `;
-  pageTitle.textContent = doc.title;
-  updateMetaForDoc(doc.title);
+  document.getElementById("share-main").onclick=()=>shareDoc(title);
+
+  searchSection.style.display="none";
+  listView.innerHTML=`<div class="pdf-view"><embed src="${url}" type="application/pdf"></div>`;
+  updateMetaForDoc(title);
+  lucide.createIcons();
 }
 
-function closeDoc(){
+function goHome(){
   currentDoc=null;
   docCard.style.display="none";
   searchSection.style.display="block";
-  listView.style.display="block";
+  renderList(documentsData);
   pageTitle.textContent="Department Of Justice";
   updateMetaForDoc();
+  history.replaceState(null,null,"index.html");
 }
 
-function shareCurrentDoc(){
-  if(currentDoc){
-    navigator.clipboard.writeText(window.location.href + "?doc=" + encodeURIComponent(currentDoc.title));
-    showToast("🔗 Lien copié !");
-  }
+function shareDoc(title,btn=null){
+  if(!title) return;
+  navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`)
+    .then(()=>{showToast("🔗 Lien copié !");
+      if(btn){const icon=btn.querySelector("i"); icon.setAttribute("data-lucide","check"); lucide.createIcons(); setTimeout(()=>{icon.setAttribute("data-lucide","share-2"); lucide.createIcons();},1500);}
+    })
+    .catch(()=>showToast("Erreur lors de la copie !"));
 }
 
-searchInput.addEventListener("input",()=>{
-  const query = searchInput.value.toLowerCase();
-  const filteredData = {};
-  for(const category in documentsData){
-    filteredData[category] = documentsData[category].filter(d=>d.title.toLowerCase().includes(query));
+// Recherche / suggestions
+searchInput.addEventListener("input",(e)=>{
+  const val=e.target.value.toLowerCase();
+  if(!val){renderList(documentsData); return;}
+  const filtered={};
+  for(let cat in documentsData){
+    filtered[cat]=documentsData[cat].filter(d=>d.title.toLowerCase().includes(val));
+    if(!filtered[cat].length) delete filtered[cat];
   }
-  renderList(filteredData);
+  renderList(filtered);
 });
 
+// Initial render
 renderList(documentsData);
 
-// Vérifie si URL contient ?doc= pour ouvrir directement un document
-const params = new URLSearchParams(window.location.search);
-if(params.has("doc")){
-  const docTitle = params.get("doc");
-  outer: for(const cat in documentsData){
-    for(const doc of documentsData[cat]){
-      if(doc.title===docTitle){
-        openDoc(doc);
-        break outer;
-      }
-    }
+// Chargement via URL
+const urlParams=new URLSearchParams(window.location.search);
+if(urlParams.get("doc")){
+  const title=urlParams.get("doc");
+  for(let cat in documentsData){
+    const doc=documentsData[cat].find(d=>d.title===title);
+    if(doc){openPDF(doc.pdfUrl,title,doc.date); break;}
   }
 }
 </script>
 </body>
 </html>
-
