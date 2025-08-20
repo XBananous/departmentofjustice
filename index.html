@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Department Of Justice</title>
   <link rel="icon" href="logo.png" type="image/png">
-
-  <!-- 🟢 Open Graph metas pour partage -->
-  <meta property="og:title" content="Department Of Justice - Documents">
-  <meta property="og:description" content="Accédez aux rapports et documents officiels">
-  <meta property="og:image" content="logo.png">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://tonsite.com">
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- ✅ métas pour le partage -->
+  <meta property="og:title" content="Department Of Justice - Documents">
+  <meta property="og:description" content="Accédez aux documents officiels en ligne">
+  <meta property="og:image" content="logo.png">
+  <meta property="og:url" content="https://tonsite.com">
+  <meta name="twitter:card" content="summary_large_image">
+  
   <style>
     :root{ --bg:#0b0f14; --panel:#111823; --soft:#16202d; --ink:#eaf2ff; --muted:#b7c3d9; --accent:#6aa7ff; --danger:#ff5d5d; --ok:#35d07f; }
     body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
@@ -28,48 +28,39 @@
     .nav-left img{height:36px;width:36px}
     h1{text-transform:uppercase;font-size:clamp(20px,3.6vw,28px);margin:0}
 
-    /* barre recherche */
-    .search-section{margin-bottom:18px}
-    .search-label{display:block;margin-bottom:6px;font-size:15px;font-weight:600;color:var(--muted)}
+    /* ✅ barre recherche */
+    .search-section{margin-bottom:24px}
+    .search-label{display:block;margin-bottom:6px;font-size:15px;color:var(--muted)}
     .search-container{position:relative;margin:0 auto;width:100%;max-width:800px;padding:0 12px;box-sizing:border-box}
-    .search-container input[type='text']{width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.06);
+    .search-container input{width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.06);
       background:var(--soft);color:var(--ink);outline:none;font-size:16px;box-sizing:border-box}
-    .search-container input[type='text']:focus{box-shadow:0 0 0 4px rgba(106,167,255,.14)}
     .suggestions{position:absolute;top:100%;left:12px;right:12px;background:var(--panel);border-radius:12px;margin-top:6px;
-      overflow:hidden;max-height:220px;overflow-y:auto;box-shadow:0 12px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;
-      transform:translateY(6px);transition:opacity .25s, transform .25s}
+      overflow-y:auto;max-height:220px;box-shadow:0 12px 30px rgba(0,0,0,.4);opacity:0;pointer-events:none;
+      transform:translateY(6px);transition:.25s}
     .suggestions.show{opacity:1;pointer-events:auto;transform:translateY(0)}
     .suggestion-item{padding:10px 14px;cursor:pointer;font-size:15px}
-    .suggestion-item:hover,.suggestion-item.active{background:var(--soft)}
+    .suggestion-item:hover{background:var(--soft)}
 
-    /* PDF overlay */
+    /* ✅ loader */
+    #loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+      background:rgba(0,0,0,.75);z-index:10000;font-size:18px;opacity:0;pointer-events:none;transition:.3s}
+    #loader.show{opacity:1;pointer-events:auto}
+
+    /* overlay */
     .overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
-      background:rgba(3,6,10,.76);z-index:9999;opacity:0;pointer-events:none;transition:opacity .3s}
+      background:rgba(3,6,10,.76);z-index:9999;opacity:0;pointer-events:none;transition:.3s}
     .overlay.show{opacity:1;pointer-events:auto}
     .pdf-container{background:var(--panel);border-radius:14px;overflow:hidden;width:90%;max-width:900px;height:80%;
-      display:flex;flex-direction:column;transform:translateY(20px);opacity:0;transition:opacity .3s,transform .3s}
-    .overlay.show .pdf-container{opacity:1;transform:translateY(0)}
-    .pdf-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg);font-weight:700;font-size:14px}
-    .pdf-frame{flex:1;width:100%;height:100%;border:none;overflow:auto} /* 🔥 permet de scroller sur mobile */
-
-    /* loader */
-    .loader-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;
-      z-index:10000;opacity:0;pointer-events:none;transition:opacity .3s}
-    .loader-overlay.show{opacity:1;pointer-events:auto}
-    .spinner{border:4px solid rgba(255,255,255,.2);border-top:4px solid var(--accent);border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
+      display:flex;flex-direction:column}
+    .pdf-header{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--bg)}
+    .pdf-frame{flex:1;width:100%;border:none;overflow:auto} /* ✅ scroll ok */
 
     /* notifications */
-    .notifications{position:fixed;top:20px;right:20px;z-index:11000;display:flex;flex-direction:column;gap:10px;max-width:90%}
+    .notifications{position:fixed;top:20px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:10px;max-width:90%}
     .notif{background:var(--panel);padding:10px 14px;border-radius:10px;font-size:13px;box-shadow:0 6px 16px rgba(0,0,0,.35);
-      opacity:0;transform:translateY(-10px);transition:opacity .3s,transform .3s}
+      opacity:0;transform:translateY(-10px);transition:.3s}
     .notif.show{opacity:1;transform:translateY(0)}
     .notif.hide{opacity:0;transform:translateY(-10px)}
-
-    @media(max-width:880px){
-      .wrap{padding:16px}
-      .search-container{max-width:100%}
-    }
   </style>
 </head>
 <body>
@@ -77,11 +68,11 @@
     <header>
       <div class="nav-left">
         <img src="logo.png" alt="Logo">
-        <h1 id="nav-title">Department Of Justice</h1>
+        <h1>Department Of Justice</h1>
       </div>
     </header>
 
-    <!-- 🟢 recherche -->
+    <!-- ✅ recherche -->
     <div class="search-section">
       <label for="search" class="search-label">Rechercher un document :</label>
       <div class="search-container">
@@ -107,82 +98,57 @@
     </div>
   </div>
 
-  <!-- loader -->
-  <div class="loader-overlay" id="loader"><div class="spinner"></div></div>
+  <!-- ✅ loader -->
+  <div id="loader">Chargement des documents...</div>
 
   <!-- notifications -->
   <div class="notifications" id="notifications"></div>
 
   <script>
     lucide.createIcons();
-    const documentsData = [
-      { title:'RAPPORT INTERVENTION DPO_19082025_1', date:'19/08/2025', pdfUrl:'Rapport190820251.pdf', tag:"RAPPORTS D'INTERVENTION" },
-    ];
 
-    const categoriesContainer=document.getElementById('categories');
+    const documentsData=[{title:"RAPPORT INTERVENTION DPO_19082025_1",date:"19/08/2025",pdfUrl:"Rapport190820251.pdf",tag:"RAPPORTS D'INTERVENTION"}];
+
     const pdfOverlay=document.getElementById('pdf-overlay');
     const pdfFrame=document.getElementById('pdf-frame');
     const pdfTitle=document.getElementById('pdf-title');
-    const navTitle=document.getElementById('nav-title');
     const searchInput=document.getElementById('search');
     const suggestionsBox=document.getElementById('suggestions');
     const notifications=document.getElementById('notifications');
-    const modalShare=document.getElementById('modal-share');
     const loader=document.getElementById('loader');
     let currentDocTitle=null;
 
     function renderCategories(docs){
-      categoriesContainer.innerHTML='';
-      const tags=[...new Set(docs.map(d=>d.tag))];
-      tags.forEach(tag=>{
-        const catDocs=docs.filter(d=>d.tag===tag);
-        if(catDocs.length>0){
-          const catDiv=document.createElement('div');
-          const title=document.createElement('h2');
-          title.textContent=tag;
-          catDiv.appendChild(title);
-          const carousel=document.createElement('div');
-          carousel.className='carousel';
-          carousel.addEventListener('wheel',e=>{e.preventDefault();carousel.scrollLeft+=e.deltaY;});
-          catDocs.forEach(doc=>{
-            const card=document.createElement('div');
-            card.className='card';
-            card.innerHTML=`
-              <h3>${doc.title}</h3>
-              <p>${doc.date}</p>
-              <div class="actions">
-                <button class="btn-primary" onclick="openPDF('${doc.pdfUrl}','${doc.title}')"><i data-lucide="file-text"></i>Voir PDF</button>
-                <button class="btn-share" onclick="shareDoc('${doc.title}')"><i data-lucide="share-2"></i>Partager</button>
-              </div>`;
-            carousel.appendChild(card);
-          });
-          catDiv.appendChild(carousel);
-          categoriesContainer.appendChild(catDiv);
-          lucide.createIcons();
-        }
+      const categories=document.getElementById('categories');
+      categories.innerHTML='';
+      docs.forEach(doc=>{
+        const card=document.createElement('div');
+        card.className='card';
+        card.innerHTML=`<h3>${doc.title}</h3><p>${doc.date}</p>
+          <button onclick="openPDF('${doc.pdfUrl}','${doc.title}')">Voir PDF</button>
+          <button onclick="shareDoc('${doc.title}')">Partager</button>`;
+        categories.appendChild(card);
       });
+      loader.classList.remove('show');
     }
 
     function openPDF(url,title){
       currentDocTitle=title;
-      loader.classList.add('show'); // loader on
-      pdfFrame.onload=()=>{loader.classList.remove('show')}; // loader off quand chargé
       pdfFrame.src=url;
       pdfTitle.textContent=title;
-      navTitle.textContent=title; // 🔥 affiche dans navbar
       pdfOverlay.classList.add('show');
+      history.replaceState(null,null,'?doc='+encodeURIComponent(title)); // ✅ maj URL
     }
     function closePDF(){
       pdfOverlay.classList.remove('show');
-      navTitle.textContent="Department Of Justice"; // reset navbar
-      setTimeout(()=>{pdfFrame.src='';},300);
+      setTimeout(()=>pdfFrame.src='',300);
+      history.replaceState(null,null,'/'); // retour à la racine
     }
 
     function shareDoc(title){
       const shareUrl=window.location.origin+'?doc='+encodeURIComponent(title);
-      navigator.clipboard.writeText(shareUrl).then(()=>showNotif('Lien de partage copié !'));
+      navigator.clipboard.writeText(shareUrl).then(()=>showNotif('Lien copié !'));
     }
-    modalShare.addEventListener('click',()=>{ if(currentDocTitle){ shareDoc(currentDocTitle); } });
 
     function showNotif(msg){
       const notif=document.createElement('div');
@@ -195,11 +161,10 @@
     }
 
     searchInput.addEventListener('input',()=>{
-      const query=searchInput.value.toLowerCase();
+      const q=searchInput.value.toLowerCase();
       suggestionsBox.innerHTML='';
-      if(query){
-        const filtered=documentsData.filter(d=>d.title.toLowerCase().includes(query));
-        filtered.forEach(doc=>{
+      if(q){
+        documentsData.filter(d=>d.title.toLowerCase().includes(q)).forEach(doc=>{
           const item=document.createElement('div');
           item.className='suggestion-item';
           item.textContent=doc.title;
@@ -207,16 +172,20 @@
           suggestionsBox.appendChild(item);
         });
         suggestionsBox.classList.add('show');
-      }else{
-        suggestionsBox.classList.remove('show');
+      }else{ suggestionsBox.classList.remove('show'); }
+    });
+
+    // ✅ ouverture auto si lien contient ?doc=
+    window.addEventListener('DOMContentLoaded',()=>{
+      loader.classList.add('show');
+      setTimeout(()=>renderCategories(documentsData),800);
+      const params=new URLSearchParams(window.location.search);
+      if(params.has('doc')){
+        const doc=documentsData.find(d=>d.title===params.get('doc'));
+        if(doc){ openPDF(doc.pdfUrl,doc.title); }
       }
     });
-    searchInput.addEventListener('blur',()=>setTimeout(()=>suggestionsBox.classList.remove('show'),200));
-    searchInput.addEventListener('focus',()=>{if(suggestionsBox.children.length>0)suggestionsBox.classList.add('show');});
-
-    renderCategories(documentsData);
   </script>
 </body>
 </html>
-
 
