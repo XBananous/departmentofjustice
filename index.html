@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Department Of Justice</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+:root {
+  --bg:#0b0f14;--panel:#111823;--soft:#16202d;
+  --ink:#eaf2ff;--muted:#b7c3d9;--accent:#6aa7ff;
+  --shadow:0 14px 40px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);}
+.wrap{max-width:980px;margin:0 auto;padding:22px;}
+header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+header img{height:42px;}
+header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
+.nav-section{text-align:center;margin:20px 0;opacity:0;animation:fadeUp .8s ease forwards;}
+.nav-section .desc{font-weight:700;font-size:15px;margin-bottom:10px;}
+.nav-container{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;max-width:600px;margin:0 auto;}
+.nav-container a,.nav-container button{
+  flex:1;background:var(--soft);border:1px solid rgba(255,255,255,.06);
+  padding:12px;border-radius:12px;color:var(--ink);display:flex;align-items:center;justify-content:center;
+  transition:all .25s ease;cursor:pointer;text-decoration:none;
+}
+.nav-container a:hover,.nav-container button:hover{box-shadow:0 0 0 4px rgba(106,167,255,.18);color:var(--accent);transform:translateY(-3px);}
+.hero{text-align:center;padding:40px 20px;opacity:0;animation:fadeUp .8s ease .15s forwards;}
+.hero h2{font-size:28px;font-weight:800;margin-bottom:16px;}
+.hero p{font-size:16px;color:var(--muted);max-width:700px;margin:0 auto;}
+.carousel{position:relative;max-width:800px;margin:30px auto;background:var(--panel);
+  border-radius:16px;padding:32px;border:1px solid rgba(255,255,255,.05);box-shadow:var(--shadow);
+  opacity:0;animation:fadeUp .8s ease .3s forwards;}
+.carousel-item{display:none;animation:fade .6s ease;}
+.carousel-item.active{display:block;}
+.carousel-item h3{font-size:22px;margin-bottom:12px;}
+.carousel-item p{font-size:17px;line-height:1.6;}
+.carousel-controls{margin-top:16px;display:flex;justify-content:center;gap:10px;}
+.carousel-controls button{background:var(--soft);border:none;padding:8px;border-radius:8px;cursor:pointer;color:var(--ink);}
+.carousel-controls button:hover{background:var(--accent);color:#fff;}
+.actions, .infos{margin:40px auto;padding:24px;max-width:700px;background:var(--panel);
+  border-radius:16px;border:1px solid rgba(255,255,255,.05);box-shadow:var(--shadow);opacity:0;animation:fadeUp .8s ease .45s forwards;}
+.actions p, .infos p{color:var(--muted);line-height:1.6;}
+.actions a{background:var(--soft);border:1px solid rgba(255,255,255,.06);padding:12px 18px;border-radius:12px;color:var(--ink);
+  text-decoration:none;font-weight:600;transition:.25s;display:inline-flex;align-items:center;gap:6px;}
+.actions a:hover{background:var(--accent);color:#fff;transform:translateY(-3px);}
+.members{margin:50px auto;max-width:100%;overflow:hidden;opacity:0;animation:fadeUp .8s ease .6s forwards;}
+.members h3{font-size:24px;margin-bottom:20px;text-align:center;}
+.member-track{display:flex;gap:20px;animation:scrollLeft 40s linear infinite;}
+.member-card{min-width:200px;background:var(--panel);border:1px solid rgba(255,255,255,.05);
+  border-radius:14px;padding:16px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,.4);}
+.member-card img{width:90px;height:90px;border-radius:50%;margin-bottom:10px;border:2px solid var(--accent);object-fit:cover;}
+.member-card h4{margin:6px 0;font-size:16px;}
+.member-card span{display:block;color:var(--muted);font-size:14px;}
+.member-card.glow{position:relative;overflow:hidden;}
+.member-card.glow::before{content:"";position:absolute;inset:-2px;border-radius:14px;background:conic-gradient(from 0deg,#6aa7ff,transparent,#6aa7ff);
+  animation:rotateGlow 6s linear infinite;filter:blur(12px);z-index:-1;}
+@keyframes rotateGlow{100%{transform:rotate(360deg);}}
+@keyframes scrollLeft{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);
+  backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s ease; padding:20px;}
+.modal.open{opacity:1;pointer-events:auto;}
+.modal-content{background:var(--panel);padding:24px;border-radius:12px;width:min(92vw,420px);box-shadow:var(--shadow);
+  transform:translateY(20px);opacity:0;transition:transform .3s ease,opacity .3s ease;}
+.modal.open .modal-content{transform:translateY(0);opacity:1;}
+.modal-actions{display:flex;flex-direction:column;gap:10px;}
+.modal-actions button{background:var(--soft);border:1px solid rgba(255,255,255,.06);padding:12px;border-radius:12px;color:var(--ink);
+  cursor:pointer;transition:.25s;}
+.modal-actions button:hover{background:var(--accent);color:#fff;}
+@keyframes fade{from{opacity:0;transform:translateY(15px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.slideable.kick{animation:slidePop .6s ease both;}
+@keyframes slidePop{from{opacity:.2;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><img src="logo.png" alt="logo"><h1>Department Of Justice</h1></header>
+  <section class="nav-section">
+    <span class="desc">Navigation</span>
+    <div class="nav-container">
+      <a href="#presentation" data-target="#presentation"><i data-lucide="building"></i></a>
+      <a href="#archives" data-target="#archives"><i data-lucide="folder"></i></a>
+      <a href="#barreau" data-target="#barreau"><i data-lucide="scale"></i></a>
+      <button id="joinBtn"><i data-lucide="user-plus"></i></button>
+    </div>
+  </section>
+
+  <section class="hero slideable" id="hero">
+    <h2>Bienvenue au Department Of Justice</h2>
+    <p>Nous sommes une institution dédiée au respect de la loi, opérant avec équité, transparence et coopération interinstitutionnelle.</p>
+  </section>
+
+  <!-- Présentation revue et plus grande -->
+  <section id="presentation" class="carousel slideable">
+    <div class="carousel-item active">
+      <h3>DOJ — Department Of Justice</h3>
+      <p>Le DOJ est une institution indépendante œuvrant pour défendre la démocratie, garantir l’impartialité de la justice et maintenir la confiance du public.  
+      La collaboration étroite avec la LAPD, la CHP et la LAFD est essentielle à notre mission.</p>
+    </div>
+    <div class="carousel-item">
+      <h3>Missions principales</h3>
+      <p>Assurer l’application impartiale des lois, lutter contre le crime organisé et protéger les droits civils.</p>
+    </div>
+    <div class="carousel-item">
+      <h3>Nos valeurs</h3>
+      <p>Intégrité, équité et impartialité au service de l’intérêt public. La coopération entre services est au cœur de notre action.</p>
+    </div>
+    <div class="carousel-controls">
+      <button id="prev"><i data-lucide="chevron-left"></i></button>
+      <button id="next"><i data-lucide="chevron-right"></i></button>
+    </div>
+  </section>
+
+  <section id="archives" class="actions slideable">
+    <h3>Nos actions</h3>
+    <p>Découvrez nos principales réalisations et initiatives en matière de justice.</p>
+    <a href="archives.html"><i data-lucide="folder"></i> Voir les archives</a>
+  </section>
+
+  <section id="barreau" class="actions slideable">
+    <h3>Barreau</h3>
+    <p>Visitez la page d’examen du barreau pour en savoir plus.</p>
+    <a href="barreau.html"><i data-lucide="scale"></i> Voir la page du barreau</a>
+  </section>
+
+  <!-- Membres générés via JS -->
+  <section class="members slideable">
+    <h3>Membres principaux</h3>
+    <div class="member-track" id="memberTrack"></div>
+  </section>
+
+  <!-- À propos revu -->
+  <section class="infos slideable">
+    <h3>À propos</h3>
+    <p>Le Department Of Justice (DOJ) travaille main dans la main avec la LAPD, la CHP et la LAFD pour garantir une justice équitable et efficace.  
+    Nous mettons un point d’honneur à la collaboration interservices et à la transparence pour assurer la confiance du public.</p>
+  </section>
+</div>
+
+<div class="modal" id="joinModal">
+  <div class="modal-content">
+    <p>Pour être recruté, il faut :<br>
+       – Avoir fait des études de droit,<br>
+       – Ou avoir travaillé au LAPD en liaison avec la DOJ,<br>
+       – Ou au CHP.<br>
+       Les pompiers (LAFD) ne peuvent pas être recrutés sans études de droit.</p>
+    <div class="modal-actions"><button id="closeModal">Fermer</button></div>
+  </div>
+</div>
+
+<footer style="text-align:center;padding:20px;color:var(--muted);">© 2025 Department Of Justice</footer>
+
+<script>
+lucide.createIcons();
+
+// Présentation Carousel
+(function(){
+  const items=document.querySelectorAll('.carousel-item'), prev=document.getElementById('prev'), next=document.getElementById('next');
+  let cur=0, t;
+  function show(i){items.forEach((el,idx)=>el.classList.toggle('active', idx===i));}
+  function go(n){cur=(n+items.length)%items.length;show(cur);}
+  function start(){clearInterval(t);t=setInterval(()=>go(cur+1),6000);}
+  prev.onclick=()=>{go(cur-1);start();};
+  next.onclick=()=>{go(cur+1);start();};
+  start();
+})();
+
+// Modal
+(function(){
+  const btn=document.getElementById('joinBtn'), modal=document.getElementById('joinModal'), close=document.getElementById('closeModal');
+  btn.onclick=()=>modal.classList.add('open');
+  close.onclick=()=>modal.classList.remove('open');
+  modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open');};
+})();
+
+// Slide scroll + kick anim
+document.querySelectorAll('.nav-container a[data-target]').forEach(link=>{
+  link.addEventListener('click',e=>{
+    e.preventDefault();
+    const target=document.querySelector(link.dataset.target);
+    if(!target)return;
+    target.scrollIntoView({behavior:'smooth'});
+    target.classList.remove('kick'); void target.offsetWidth; target.classList.add('kick');
+  });
+});
+
+// Membres déclarés en JS
+const members = [
+  {id:2400481241, name:"X-Bananous", role:"Procureur Général / Président de la Cour Suprême", glow:true},
+  {img:"headshot-district.png", name:"John Doe", role:"Procureur de district"},
+  {img:"headshot-adjoint.png", name:"Jane Smith", role:"Procureur adjoint"},
+  {img:"headshot-judge.png", name:"Alan Walker", role:"Juge"},
+  {img:"headshot-greffier.png", name:"Emily Rose", role:"Greffier"},
+  {img:"headshot-avocat.png", name:"Cabinet Partenaire", role:"Avocats"}
+];
+
+const track=document.getElementById('memberTrack');
+members.forEach(m=>{
+  const card=document.createElement('div');
+  card.className="member-card"+(m.glow?" glow":"");
+  const img=document.createElement('img');
+  if(m.id){
+    // Si l'ID est fourni, on fetch l'avatar Roblox
+    fetch(`https://thumbnails.roproxy.com/v1/users/avatar-headshot?userIds=${m.id}&size=420x420&format=Png&isCircular=false&thumbnailType=HeadShot`)
+      .then(r=>r.json()).then(j=>{img.src=j.data[0].imageUrl;});
+  } else {
+    img.src=m.img;
+  }
+  card.appendChild(img);
+  const h4=document.createElement('h4');h4.textContent=m.name;card.appendChild(h4);
+  const span=document.createElement('span');span.textContent=m.role;card.appendChild(span);
+  track.appendChild(card);
+});
+
+// Rejoue animations on return
+window.addEventListener('pageshow',()=>{
+  document.querySelectorAll('.nav-section,.hero,.carousel,.actions,.members,.infos').forEach(el=>{
+    el.style.animation='none'; el.offsetHeight; el.style.animation='';
+  });
+});
+</script>
+</body>
+</html>
+
