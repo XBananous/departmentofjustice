@@ -34,31 +34,29 @@ header {display:flex;align-items:center;justify-content:space-between;gap:12px;m
 .nav-left img {height:32px;}
 .nav-left h1 {font-size:20px;margin:0;font-weight:800;text-transform:uppercase;}
 .nav-right {display:flex;gap:8px;}
-.nav-right button {appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,var(--accent),#3556c7);color:white;display:flex;align-items:center;gap:6px;transition:all .2s ease;}
-.nav-right button:hover{transform:scale(1.05)}
+/* Bouton retour style identique à nav-container index */
+.nav-right a {
+  flex:1;background:var(--soft);
+  border:1px solid rgba(255,255,255,.06);
+  padding:12px;border-radius:12px;
+  color:var(--ink);display:flex;align-items:center;justify-content:center;
+  transition:all .25s ease;cursor:pointer;text-decoration:none;font-weight:600;
+}
+.nav-right a:hover {box-shadow:0 0 0 4px rgba(106,167,255,.18);color:var(--accent);transform:translateY(-3px);}
+
 .search-section {text-align:center;margin-bottom:24px;transition:opacity .3s;}
 .search-section .desc {font-weight:700;font-size:15px;margin-bottom:10px;display:block;}
 .search-container {position:relative;margin:0 auto;width:100%;max-width:600px;box-sizing:border-box;}
 .search-container input[type="text"] {
-  width:100%;
-  padding:14px;
-  border-radius:12px;
+  width:100%; padding:14px; border-radius:12px;
   border:1px solid rgba(255,255,255,.06);
-  background:var(--soft);
-  color:var(--ink);
-  outline:none;
-  font-size:16px;
-  transition:box-shadow .3s;
-  box-sizing:border-box; /* inclut le padding dans la largeur */
+  background:var(--soft); color:var(--ink); outline:none;
+  font-size:16px; transition:box-shadow .3s; box-sizing:border-box;
 }
 .search-container input[type="text"]:focus {box-shadow:0 0 0 4px rgba(106,167,255,.14);}
 
 @media(max-width:880px){
-  .search-container{
-    max-width:95%; /* ajuste légèrement la largeur pour mobile */
-    margin-left:auto;
-    margin-right:auto;
-  }
+  .search-container{max-width:95%;}
 }
 .card {background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);margin-bottom:20px;opacity:0;transform:translateY(10px);animation:fadeSlide .5s forwards;}
 @keyframes fadeSlide {to {opacity:1; transform:translateY(0);}}
@@ -95,10 +93,13 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
       <img src="logo.png" alt="logo">
       <h1 id="page-title">Department Of Justice</h1>
     </div>
-    <div class="nav-right" id="nav-right"></div>
+    <div class="nav-right" id="nav-right">
+      <!-- Bouton retour -->
+      <a href="index.html"><i data-lucide="arrow-left"></i></a>
+    </div>
   </header>
 
-    <!-- Card spéciale pour doc ouvert -->
+  <!-- Card spéciale pour doc ouvert -->
   <div id="doc-card" style="display:none;" class="card"></div>
 
   <section class="search-section" id="search-section">
@@ -116,6 +117,7 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
 <footer>© 2025 Department Of Justice</footer>
 
 <script>
+lucide.createIcons();
 const documentsData = {
   "Rapports":[
     {title:"RAPPORT INTERVENTION DPO_19082025_1",pdfUrl:"Rapport190820251.pdf",date:"19/08/2025"},
