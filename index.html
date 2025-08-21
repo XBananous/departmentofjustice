@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Department Of Justice</title>
+
+<!-- META DE PARTAGE -->
+<meta property="og:title" content="Department Of Justice">
+<meta property="og:description" content="Institution indépendante œuvrant pour défendre la démocratie, garantir l’impartialité de la justice et maintenir la confiance du public.">
+<meta property="og:image" content="logo.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ton-domaine.fr">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Department Of Justice">
+<meta name="twitter:description" content="Institution dédiée à la loi, l’équité et la transparence.">
+<meta name="twitter:image" content="logo.png">
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
@@ -93,7 +105,6 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
     <p>Nous sommes une institution dédiée au respect de la loi, opérant avec équité, transparence et coopération interinstitutionnelle.</p>
   </section>
 
-  <!-- Présentation revue et plus grande -->
   <section id="presentation" class="carousel slideable">
     <div class="carousel-item active">
       <h3>DOJ — Department Of Justice</h3>
@@ -115,7 +126,7 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
   </section>
 
   <section id="archives" class="actions slideable">
-    <h3>Nos actions</h3>
+    <h3>Archives</h3>
     <p>Découvrez nos principales réalisations et initiatives en matière de justice.</p>
     <a href="archives.html"><i data-lucide="folder"></i> Voir les archives</a>
   </section>
@@ -126,13 +137,11 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
     <a href="barreau.html"><i data-lucide="scale"></i> Voir la page du barreau</a>
   </section>
 
-  <!-- Membres générés via JS -->
   <section class="members slideable">
     <h3>Membres principaux</h3>
     <div class="member-track" id="memberTrack"></div>
   </section>
 
-  <!-- À propos revu -->
   <section class="infos slideable">
     <h3>À propos</h3>
     <p>Le Department Of Justice (DOJ) travaille main dans la main avec la LAPD, la CHP et la LAFD pour garantir une justice équitable et efficace.  
@@ -156,7 +165,7 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
 <script>
 lucide.createIcons();
 
-// Présentation Carousel
+// Carousel
 (function(){
   const items=document.querySelectorAll('.carousel-item'), prev=document.getElementById('prev'), next=document.getElementById('next');
   let cur=0, t;
@@ -176,7 +185,7 @@ lucide.createIcons();
   modal.onclick=e=>{if(e.target===modal)modal.classList.remove('open');};
 })();
 
-// Slide scroll + kick anim
+// Scroll + animation
 document.querySelectorAll('.nav-container a[data-target]').forEach(link=>{
   link.addEventListener('click',e=>{
     e.preventDefault();
@@ -187,25 +196,21 @@ document.querySelectorAll('.nav-container a[data-target]').forEach(link=>{
   });
 });
 
-// Membres déclarés en JS
+// Membres
 const members = [
-{id:2400481241, name:"X-Bananous", role:"Procureur Général / Président de la Cour Suprême", glow:true},
+  {id:2400481241, name:"X-Bananous", role:"Procureur Général / Président de la Cour Suprême", glow:true},
   {id:6034981257, name:"Wesley Del Monte", role:"Procureur de district"},
   {id:4647090120, name:"James Carter", role:"Chef du LAPD"},
   {id:4647090120, name:"Morginstar J.", role:"Chef de la CHP"},
 ];
-
 const track=document.getElementById('memberTrack');
 members.forEach(m=>{
   const card=document.createElement('div');
   card.className="member-card"+(m.glow?" glow":"");
   const img=document.createElement('img');
   if(m.id){
-    // Si l'ID est fourni, on fetch l'avatar Roblox
     fetch(`https://thumbnails.roproxy.com/v1/users/avatar-headshot?userIds=${m.id}&size=420x420&format=Png&isCircular=false&thumbnailType=HeadShot`)
       .then(r=>r.json()).then(j=>{img.src=j.data[0].imageUrl;});
-  } else {
-    img.src=m.img;
   }
   card.appendChild(img);
   const h4=document.createElement('h4');h4.textContent=m.name;card.appendChild(h4);
@@ -222,4 +227,3 @@ window.addEventListener('pageshow',()=>{
 </script>
 </body>
 </html>
-
