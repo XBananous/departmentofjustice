@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Department Of Justice</title>
+<link rel="icon" href="logo.png" type="image/png">
 
 <!-- META DE PARTAGE -->
 <meta property="og:title" content="Department Of Justice">
@@ -31,7 +32,7 @@ header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
 header img{height:42px;}
 header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
 .nav-section{text-align:center;margin:20px 0;opacity:0;animation:fadeUp .8s ease forwards;}
-.nav-section .desc{font-weight:700;font-size:15px;margin-bottom:10px;}
+.nav-section .desc{font-weight:700;font-size:15px;margin-bottom:14px;display:block;}
 .nav-container{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;max-width:600px;margin:0 auto;}
 .nav-container a,.nav-container button{
   flex:1;background:var(--soft);border:1px solid rgba(255,255,255,.06);
@@ -44,7 +45,7 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
 .hero p{font-size:16px;color:var(--muted);max-width:700px;margin:0 auto;}
 .carousel{position:relative;max-width:800px;margin:30px auto;background:var(--panel);
   border-radius:16px;padding:32px;border:1px solid rgba(255,255,255,.05);box-shadow:var(--shadow);
-  opacity:0;animation:fadeUp .8s ease .3s forwards;}
+  opacity:0;animation:fadeUp .8s ease .3s forwards;min-height:280px; /* hauteur fixe */}
 .carousel-item{display:none;animation:fade .6s ease;}
 .carousel-item.active{display:block;}
 .carousel-item h3{font-size:22px;margin-bottom:12px;}
@@ -62,13 +63,13 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
 .members h3{font-size:24px;margin-bottom:20px;text-align:center;}
 .member-track{display:flex;gap:20px;animation:scrollLeft 40s linear infinite;}
 .member-card{min-width:200px;background:var(--panel);border:1px solid rgba(255,255,255,.05);
-  border-radius:14px;padding:16px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,.4);}
+  border-radius:14px;padding:16px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,.4);position:relative;}
 .member-card img{width:90px;height:90px;border-radius:50%;margin-bottom:10px;border:2px solid var(--accent);object-fit:cover;}
 .member-card h4{margin:6px 0;font-size:16px;}
 .member-card span{display:block;color:var(--muted);font-size:14px;}
-.member-card.glow{position:relative;overflow:hidden;}
-.member-card.glow::before{content:"";position:absolute;inset:-2px;border-radius:14px;background:conic-gradient(from 0deg,#6aa7ff,transparent,#6aa7ff);
-  animation:rotateGlow 6s linear infinite;filter:blur(12px);z-index:-1;}
+.member-card.glow::before{content:"";position:absolute;inset:-3px;border-radius:14px;background:conic-gradient(from 0deg,#6aa7ff,transparent,#6aa7ff);
+  animation:rotateGlow 6s linear infinite;filter:blur(12px);z-index:0;}
+.member-card.glow > *{position:relative;z-index:1;}
 @keyframes rotateGlow{100%{transform:rotate(360deg);}}
 @keyframes scrollLeft{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
 .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);
@@ -119,6 +120,11 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
       <h3>Nos valeurs</h3>
       <p>Intégrité, équité et impartialité au service de l’intérêt public. La coopération entre services est au cœur de notre action.</p>
     </div>
+    <div class="carousel-item">
+      <h3>À propos</h3>
+      <p>Le Department Of Justice (DOJ) travaille main dans la main avec la LAPD, la CHP et la LAFD pour garantir une justice équitable et efficace.  
+      Nous mettons un point d’honneur à la collaboration interservices et à la transparence pour assurer la confiance du public.</p>
+    </div>
     <div class="carousel-controls">
       <button id="prev"><i data-lucide="chevron-left"></i></button>
       <button id="next"><i data-lucide="chevron-right"></i></button>
@@ -140,12 +146,6 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
   <section class="members slideable">
     <h3>Membres principaux</h3>
     <div class="member-track" id="memberTrack"></div>
-  </section>
-
-  <section class="infos slideable">
-    <h3>À propos</h3>
-    <p>Le Department Of Justice (DOJ) travaille main dans la main avec la LAPD, la CHP et la LAFD pour garantir une justice équitable et efficace.  
-    Nous mettons un point d’honneur à la collaboration interservices et à la transparence pour assurer la confiance du public.</p>
   </section>
 </div>
 
@@ -220,10 +220,11 @@ members.forEach(m=>{
 
 // Rejoue animations on return
 window.addEventListener('pageshow',()=>{
-  document.querySelectorAll('.nav-section,.hero,.carousel,.actions,.members,.infos').forEach(el=>{
+  document.querySelectorAll('.nav-section,.hero,.carousel,.actions,.members').forEach(el=>{
     el.style.animation='none'; el.offsetHeight; el.style.animation='';
   });
 });
 </script>
 </body>
 </html>
+
