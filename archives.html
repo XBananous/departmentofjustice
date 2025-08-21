@@ -34,7 +34,6 @@ header {display:flex;align-items:center;justify-content:space-between;gap:12px;m
 .nav-left img {height:32px;}
 .nav-left h1 {font-size:20px;margin:0;font-weight:800;text-transform:uppercase;}
 .nav-right {display:flex;gap:8px;}
-/* Bouton retour style identique à nav-container index */
 .nav-right a {
   flex:1;background:var(--soft);
   border:1px solid rgba(255,255,255,.06);
@@ -55,9 +54,6 @@ header {display:flex;align-items:center;justify-content:space-between;gap:12px;m
 }
 .search-container input[type="text"]:focus {box-shadow:0 0 0 4px rgba(106,167,255,.14);}
 
-@media(max-width:880px){
-  .search-container{max-width:95%;}
-}
 .card {background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);margin-bottom:20px;opacity:0;transform:translateY(10px);animation:fadeSlide .5s forwards;}
 @keyframes fadeSlide {to {opacity:1; transform:translateY(0);}}
 
@@ -77,12 +73,6 @@ header {display:flex;align-items:center;justify-content:space-between;gap:12px;m
 .toast.show{opacity:1; transform:translateY(0);}
 
 footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-top:1px solid rgba(255,255,255,.1);margin-top:40px;}
-
-@media(max-width:880px){
-  .wrap{padding:16px;}
-  .pdf-view{height:80vh;}
-  .search-container{max-width:90%;}
-}
 </style>
 </head>
 <body>
@@ -94,12 +84,10 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
       <h1 id="page-title">Department Of Justice</h1>
     </div>
     <div class="nav-right" id="nav-right">
-      <!-- Bouton retour -->
       <a href="index.html"><i data-lucide="arrow-left"></i></a>
     </div>
   </header>
 
-  <!-- Card spéciale pour doc ouvert -->
   <div id="doc-card" style="display:none;" class="card"></div>
 
   <section class="search-section" id="search-section">
@@ -121,49 +109,24 @@ lucide.createIcons();
 const documentsData = {
   "Rapports":[
     {title:"RAPPORT INTERVENTION DPO_19082025_1",pdfUrl:"Rapport190820251.pdf",date:"19/08/2025"},
-    {title:"RAPPORT INTERVENTION DPO_20082025_1",pdfUrl:"Rapport200820251.pdf",date:"20/08/2025"},
-    {title:"RAPPORT INTERVENTION DPO_20082025_2",pdfUrl:"Rapport200820252.pdf",date:"20/08/2025"},
-    {title:"RAPPORT INTERVENTION DPO_20082025_3",pdfUrl:"Rapport200820253.pdf",date:"20/08/2025"},
-    {title:"ACCORD : RAPPORT INTERVENTION DPO_20082025_3",pdfUrl:"AccordRapport200820253.pdf",date:"20/08/2025"},
-    {title:"RAPPORT INTERVENTION DPO_20082025_4",pdfUrl:"Rapport200820254.pdf",date:"20/08/2025"},
-    {title:"RAPPORT INTERVENTION DPO_21082025_1",pdfUrl:"Rapport210820251.pdf",date:"21/08/2025"},
-  ],
-    "Mandats":[
-  ],
-  "Audiences":[
+    {title:"RAPPORT INTERVENTION DPO_20082025_1",pdfUrl:"Rapport200820251.pdf",date:"20/08/2025"}
   ],
   "Autres":[
     {title:"AUTORISATION EXP : DUBOIS NOAH",pdfUrl:"DuboisNoahAutoExp21082025.pdf",date:"21/08/2025"},
   ],
 };
 
-const listView = document.getElementById("list-view");
-const pageTitle = document.getElementById("page-title");
-const searchSection = document.getElementById("search-section");
-const searchInput = document.getElementById("search");
-const toast = document.getElementById("toast");
-const docCard = document.getElementById("doc-card");
-let currentDoc = null;
+const listView=document.getElementById("list-view");
+const pageTitle=document.getElementById("page-title");
+const searchSection=document.getElementById("search-section");
+const searchInput=document.getElementById("search");
+const toast=document.getElementById("toast");
+const docCard=document.getElementById("doc-card");
+let currentDoc=null;
 
-function showToast(msg){
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'),2000);
-}
+function showToast(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2000);}
 
-function updateMetaForDoc(title){
-  const metaTitle = title ? title : "Department Of Justice";
-  const metaDesc = title ? `Consultez le document officiel : ${title}` : "Consultez les rapports, audiences et décrets officiels.";
-  const metaImg = "https://xbananous.github.io/departmentofjustice/logo.png";
-  const metaUrl = title ? `https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}` : "https://xbananous.github.io/departmentofjustice/index.html";
-
-  document.title = metaTitle;
-  document.querySelector('meta[name="description"]').setAttribute("content",metaDesc);
-  document.querySelector('meta[property="og:title"]').setAttribute("content",metaTitle);
-  document.querySelector('meta[property="og:description"]').setAttribute("content",metaDesc);
-  document.querySelector('meta[property="og:image"]').setAttribute("content",metaImg);
-  document.querySelector('meta[property="og:url"]').setAttribute("content",metaUrl);
-}
+function isMobile(){return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);}
 
 function renderList(data){
   listView.innerHTML="";
@@ -174,7 +137,6 @@ function renderList(data){
     data[category].forEach(doc=>{
       const div=document.createElement("div");
       div.className="doc-item";
-
       const info=document.createElement("div");
       info.className="doc-info";
       info.innerHTML=`<span class="doc-title">${doc.title}</span><span class="doc-date">${doc.date}</span>`;
@@ -184,13 +146,18 @@ function renderList(data){
 
       const openBtn=document.createElement("button");
       openBtn.innerHTML=`<i data-lucide="file-text"></i>`;
-      openBtn.onclick=(e)=>{e.stopPropagation(); openPDF(doc.pdfUrl,doc.title,doc.date);};
+      openBtn.onclick=(e)=>{e.stopPropagation();openPDF(doc.pdfUrl,doc.title,doc.date);};
+
+      const dlBtn=document.createElement("button");
+      dlBtn.innerHTML=`<i data-lucide="download"></i>`;
+      dlBtn.onclick=(e)=>{e.stopPropagation();window.open(doc.pdfUrl,'_blank');};
 
       const shareBtn=document.createElement("button");
       shareBtn.innerHTML=`<i data-lucide="share-2"></i>`;
-      shareBtn.onclick=(e)=>{e.stopPropagation(); shareDoc(doc.title,shareBtn);};
+      shareBtn.onclick=(e)=>{e.stopPropagation();shareDoc(doc.title,shareBtn);};
 
       actions.appendChild(openBtn);
+      actions.appendChild(dlBtn);
       actions.appendChild(shareBtn);
 
       div.appendChild(info);
@@ -203,73 +170,36 @@ function renderList(data){
 }
 
 function openPDF(url,title,date=""){
+  if(isMobile()){window.location.href=url;return;}
+
   currentDoc=title;
   history.replaceState(null,null,`index.html?doc=${encodeURIComponent(title)}`);
-
-  // Card pour retour + partage avec info doc
   docCard.style.display="block";
   docCard.innerHTML=`
     <div class="doc-item">
       <div class="doc-info">
         <span class="doc-title">${title}</span>
-        ${date ? `<span class="doc-date">${date}</span>` : ""}
+        ${date?`<span class="doc-date">${date}</span>`:""}
       </div>
       <div class="doc-actions">
         <button onclick="goHome()"><i data-lucide="arrow-left"></i></button>
+        <button onclick="window.open('${url}','_blank')"><i data-lucide="download"></i></button>
         <button id="share-main"><i data-lucide="share-2"></i></button>
       </div>
-    </div>
-  `;
+    </div>`;
   document.getElementById("share-main").onclick=()=>shareDoc(title);
-
   searchSection.style.display="none";
   listView.innerHTML=`<div class="pdf-view"><embed src="${url}" type="application/pdf"></div>`;
-  updateMetaForDoc(title);
   lucide.createIcons();
 }
 
-function goHome(){
-  currentDoc=null;
-  docCard.style.display="none";
-  searchSection.style.display="block";
-  renderList(documentsData);
-  pageTitle.textContent="Department Of Justice";
-  updateMetaForDoc();
-  history.replaceState(null,null,"index.html");
-}
+function goHome(){currentDoc=null;docCard.style.display="none";searchSection.style.display="block";renderList(documentsData);pageTitle.textContent="Department Of Justice";history.replaceState(null,null,"index.html");}
 
-function shareDoc(title,btn=null){
-  if(!title) return;
-  navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`)
-    .then(()=>{showToast("Lien copié !");
-      if(btn){const icon=btn.querySelector("i"); icon.setAttribute("data-lucide","check"); lucide.createIcons(); setTimeout(()=>{icon.setAttribute("data-lucide","share-2"); lucide.createIcons();},1500);}
-    })
-}
+function shareDoc(title,btn=null){if(!title)return;navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`).then(()=>{showToast("Lien copié !");if(btn){const icon=btn.querySelector("i");icon.setAttribute("data-lucide","check");lucide.createIcons();setTimeout(()=>{icon.setAttribute("data-lucide","share-2");lucide.createIcons();},1500);}})}
 
-// Recherche / suggestions
-searchInput.addEventListener("input",(e)=>{
-  const val=e.target.value.toLowerCase();
-  if(!val){renderList(documentsData); return;}
-  const filtered={};
-  for(let cat in documentsData){
-    filtered[cat]=documentsData[cat].filter(d=>d.title.toLowerCase().includes(val));
-    if(!filtered[cat].length) delete filtered[cat];
-  }
-  renderList(filtered);
-});
+searchInput.addEventListener("input",(e)=>{const val=e.target.value.toLowerCase();if(!val){renderList(documentsData);return;}const filtered={};for(let cat in documentsData){filtered[cat]=documentsData[cat].filter(d=>d.title.toLowerCase().includes(val));if(!filtered[cat].length)delete filtered[cat];}renderList(filtered);});
 
-// Initial render
 renderList(documentsData);
-
-// Chargement via URL
-const urlParams=new URLSearchParams(window.location.search);
-if(urlParams.get("doc")){
-  const title=urlParams.get("doc");
-  for(let cat in documentsData){
-    const doc=documentsData[cat].find(d=>d.title===title);
-    if(doc){openPDF(doc.pdfUrl,title,doc.date); break;}
-  }
-}
 </script>
 </body>
 </html>
