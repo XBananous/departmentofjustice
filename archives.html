@@ -9,7 +9,7 @@
 <meta property="og:title" content="Department Of Justice">
 <meta property="og:description" content="Consultez les documents officiels.">
 <meta property="og:image" content="https://xbananous.github.io/departmentofjustice/logo.png">
-<meta property="og:url" content="https://xbananous.github.io/departmentofjustice/index.html">
+<meta property="og:url" content="https://xbananous.github.io/departmentofjustice/archives.html">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="logo.png">
@@ -84,7 +84,7 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
       <h1 id="page-title">Department Of Justice</h1>
     </div>
     <div class="nav-right" id="nav-right">
-      <a href="index.html"><i data-lucide="arrow-left"></i></a>
+      <a href="archives.html"><i data-lucide="arrow-left"></i></a>
     </div>
   </header>
 
@@ -185,7 +185,7 @@ function openPDF(url,title,date=""){
   if(isMobile()){window.location.href=url;return;}
 
   currentDoc=title;
-  history.replaceState(null,null,`index.html?doc=${encodeURIComponent(title)}`);
+  history.replaceState(null,null,`archives.html?doc=${encodeURIComponent(title)}`);
   docCard.style.display="block";
   docCard.innerHTML=`
     <div class="doc-item">
@@ -205,9 +205,9 @@ function openPDF(url,title,date=""){
   lucide.createIcons();
 }
 
-function goHome(){currentDoc=null;docCard.style.display="none";searchSection.style.display="block";renderList(documentsData);pageTitle.textContent="Department Of Justice";history.replaceState(null,null,"index.html");}
+function goHome(){currentDoc=null;docCard.style.display="none";searchSection.style.display="block";renderList(documentsData);pageTitle.textContent="Department Of Justice";history.replaceState(null,null,"archives.html");}
 
-function shareDoc(title,btn=null){if(!title)return;navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/index.html?doc=${encodeURIComponent(title)}`).then(()=>{showToast("Lien copié !");if(btn){const icon=btn.querySelector("i");icon.setAttribute("data-lucide","check");lucide.createIcons();setTimeout(()=>{icon.setAttribute("data-lucide","share-2");lucide.createIcons();},1500);}})}
+function shareDoc(title,btn=null){if(!title)return;navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/archives.html?doc=${encodeURIComponent(title)}`).then(()=>{showToast("Lien copié !");if(btn){const icon=btn.querySelector("i");icon.setAttribute("data-lucide","check");lucide.createIcons();setTimeout(()=>{icon.setAttribute("data-lucide","share-2");lucide.createIcons();},1500);}})}
 
 searchInput.addEventListener("input",(e)=>{const val=e.target.value.toLowerCase();if(!val){renderList(documentsData);return;}const filtered={};for(let cat in documentsData){filtered[cat]=documentsData[cat].filter(d=>d.title.toLowerCase().includes(val));if(!filtered[cat].length)delete filtered[cat];}renderList(filtered);});
 
