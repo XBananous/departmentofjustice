@@ -112,59 +112,6 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
 <script>
 lucide.createIcons();
 
-const webhooks = {
-  "Rapports":"https://discord.com/api/webhooks/1408562768763818204/PQhYBeQTDP5KeelYHZm4Hf1G_VsUzKC8Fja8_Oi-vTkTNJlUDLQv_DcCiqXqmWuDnPXU",
-  "Mandats":"https://discord.com/api/webhooks/1408562935659364542/JQj4Wiy5SJbYCKZYbsq3YD6uVT8352ol48f4glmRxe8JST0wIHOhJfwVxMjMEs2V3eB_",
-  "Audiences":"https://discord.com/api/webhooks/1408563001493033104/VwFr-CLVrw6OeUdyHwtFGqT4xD8Y9WeP1FG5paC8gdRnL0hOpWJy1tpg3cER8KlYD_1K",
-  "Autres":"https://discord.com/api/webhooks/1408563052932104372/XHenKp_83g3fHHX2xdKDgb3XmsRlyE9uVndvtOFEnZO87DxSEvlmpDZ9UROofaYZXd5n"
-};
-
-// Hash SHA-256 du code "secret123"
-const CODE_HASH="d5bba56a25c3a8b27f58e8f8ddf3e912e7a20c2e9d4b5a516e55c1b8b630f35d"; 
-
-async function sha256(message){
-  const msgBuffer=new TextEncoder().encode(message);
-  const hashBuffer=await crypto.subtle.digest("SHA-256",msgBuffer);
-  return Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-
-const modal=document.getElementById("modal");
-document.getElementById("open-modal").onclick=()=>{modal.style.display="flex";}
-window.onclick=(e)=>{if(e.target==modal)modal.style.display="none";}
-
-document.getElementById("send-webhooks").onclick=async()=>{
-  const code=document.getElementById("access-code").value;
-  const hash=await sha256(code);
-  if(hash!==CODE_HASH){alert("Code invalide !");return;}
-  modal.style.display="none";
-  sendAllWebhooks();
-};
-
-async function sendAllWebhooks(){
-  for(let cat in documentsData){
-    if(!webhooks[cat])continue;
-    for(let doc of documentsData[cat]){
-      await fetch(webhooks[cat],{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          embeds:[{
-            title:doc.title,
-            description:`📅 ${doc.date}`,
-            url:`https://xbananous.github.io/departmentofjustice/${doc.pdfUrl}`,
-            author:{name:`${cat}`},
-            footer:{text:"Envoi automatique via Department Of Justice"}
-          }]
-        })
-      });
-    }
-  }
-  showToast("Tous les documents ont été envoyés ✅");
-}
-
-// ========================
-// Ton code initial inchangé (render list, search, openPDF...)
-// ========================
 const documentsData = {
   "Rapports":[
     {title:"RAPPORT INTERVENTION DPO_21082025_1",pdfUrl:"Rapport210820251.pdf",date:"21/08/2025"},
@@ -179,38 +126,54 @@ const documentsData = {
   ],
 };
 
-const listView=document.getElementById("list-view");
-const pageTitle=document.getElementById("page-title");
-const searchSection=document.getElementById("search-section");
-const searchInput=document.getElementById("search");
-const toast=document.getElementById("toast");
-const docCard=document.getElementById("doc-card");
-let currentDoc=null;
+const webhooks = {
+  "Rapports":"https://discord.com/api/webhooks/1408562768763818204/PQhYBeQTDP5KeelYHZm4Hf1G_VsUzKC8Fja8_Oi-vTkTNJlUDLQv_DcCiqXqmWuDnPXU",
+  "Mandats":"https://discord.com/api/webhooks/1408562935659364542/JQj4Wiy5SJbYCKZYbsq3YD6uVT8352ol48f4glmRxe8JST0wIHOhJfwVxMjMEs2V3eB_",
+  "Audiences":"https://discord.com/api/webhooks/1408563001493033104/VwFr-CLVrw6OeUdyHwtFGqT4xD8Y9WeP1FG5paC8gdRnL0hOpWJy1tpg3cER8KlYD_1K",
+  "Autres":"https://discord.com/api/webhooks/1408563052932104372/XHenKp_83g3fHHX2xdKDgb3XmsRlyE9uVndvtOFEnZO87DxSEvlmpDZ9UROofaYZXd5n"
+};
 
-function showToast(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2000);}
+// Code secret à entrer
+const SECRET_CODE = "dcp";
+
+// Hash SHA-256 du code secret
+async function sha256(message){
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+  return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2,"0")).join("");
+}
+
+const listView = document.getElementById("list-view");
+const pageTitle = document.getElementById("page-title");
+const searchSection = document.getElementById("search-section");
+const searchInput = document.getElementById("search");
+const toast = document.getElementById("toast");
+const docCard = document.getElementById("doc-card");
+let currentDoc = null;
+
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),2000);
+}
 
 function renderList(data){
-  listView.innerHTML="";
-  for(let category in data){
-    const section=document.createElement("div");
-    section.className="card";
-    section.innerHTML=`<h2>${category}</h2>`;
-    data[category].forEach(doc=>{
-      const div=document.createElement("div");
-      div.className="doc-item";
-      const info=document.createElement("div");
-      info.className="doc-info";
-      info.innerHTML=`<span class="doc-title">${doc.title}</span><span class="doc-date">${doc.date}</span>`;
+  listView.innerHTML = "";
+  for(let cat in data){
+    const section = document.createElement("div");
+    section.className = "card";
+    section.innerHTML = `<h2>${cat}</h2>`;
+    data[cat].forEach(doc=>{
+      const div = document.createElement("div");
+      div.className = "doc-item";
 
-      const actions=document.createElement("div");
-      actions.className="doc-actions";
-
-      const openBtn=document.createElement("button");
-      openBtn.innerHTML=`<i data-lucide="file-text"></i>`;
-      openBtn.onclick=(e)=>{e.stopPropagation();openPDF(doc.pdfUrl,doc.title,doc.date);};
+      const info = document.createElement("div");
+      info.className = "doc-info";
+      info.innerHTML = `<span class="doc-title">${doc.title}</span><span class="doc-date">${doc.date}</span>`;
 
       div.appendChild(info);
-      div.appendChild(actions);
+      div.onclick = ()=>openPDF(doc.pdfUrl, doc.title, doc.date);
+
       section.appendChild(div);
     });
     listView.appendChild(section);
@@ -218,28 +181,86 @@ function renderList(data){
   lucide.createIcons();
 }
 
-function openPDF(url,title,date=""){
-  currentDoc=title;
+function openPDF(url, title, date=""){
+  currentDoc = title;
   history.replaceState(null,null,`archives.html?doc=${encodeURIComponent(title)}`);
-  docCard.style.display="block";
-  docCard.innerHTML=`<div class="doc-item"><div class="doc-info"><span class="doc-title">${title}</span><span class="doc-date">${date}</span></div></div>`;
-  searchSection.style.display="none";
-  listView.innerHTML=`<div class="pdf-view"><embed src="${url}" type="application/pdf"></div>`;
+  docCard.style.display = "block";
+  docCard.innerHTML = `<div class="doc-item"><div class="doc-info"><span class="doc-title">${title}</span><span class="doc-date">${date}</span></div></div>`;
+  searchSection.style.display = "none";
+  listView.innerHTML = `<div class="pdf-view"><embed src="${url}" type="application/pdf"></div>`;
   lucide.createIcons();
 }
 
-function goHome(){currentDoc=null;docCard.style.display="none";searchSection.style.display="block";renderList(documentsData);pageTitle.textContent="Department Of Justice";history.replaceState(null,null,"archives.html");}
+function goHome(){
+  currentDoc = null;
+  docCard.style.display = "none";
+  searchSection.style.display = "block";
+  renderList(documentsData);
+  pageTitle.textContent = "Department Of Justice";
+  history.replaceState(null,null,"archives.html");
+}
+
+// Recherche
+searchInput.addEventListener("input",(e)=>{
+  const val = e.target.value.toLowerCase().trim();
+  if(!val){ renderList(documentsData); return; }
+  const filtered = {};
+  for(let cat in documentsData){
+    filtered[cat] = documentsData[cat].filter(d=>d.title.toLowerCase().includes(val));
+    if(!filtered[cat].length) delete filtered[cat];
+  }
+  renderList(filtered);
+});
 
 renderList(documentsData);
 
-// ouverture auto si ?doc
-const params=new URLSearchParams(window.location.search);
+// Ouverture automatique si ?doc
+const params = new URLSearchParams(window.location.search);
 if(params.get("doc")){
-  const title=params.get("doc");
+  const title = params.get("doc");
   for(let cat in documentsData){
-    const found=documentsData[cat].find(d=>d.title===title);
-    if(found){openPDF(found.pdfUrl,found.title,found.date);}
+    const found = documentsData[cat].find(d=>d.title===title);
+    if(found){ openPDF(found.pdfUrl,found.title,found.date); }
   }
+}
+
+// ================= MODAL ET WEBHOOK =================
+const modal = document.getElementById("modal");
+document.getElementById("open-modal").onclick = ()=> modal.style.display = "flex";
+window.onclick = (e)=> { if(e.target == modal) modal.style.display = "none"; }
+
+document.getElementById("send-webhooks").onclick = async ()=>{
+  const code = document.getElementById("access-code").value.trim();
+  const hash = await sha256(code);
+  const secretHash = await sha256(SECRET_CODE);
+  if(hash !== secretHash){
+    alert("Code invalide !");
+    return;
+  }
+  modal.style.display = "none";
+  sendAllWebhooks();
+};
+
+async function sendAllWebhooks(){
+  for(let cat in documentsData){
+    if(!webhooks[cat]) continue;
+    for(let doc of documentsData[cat]){
+      await fetch(webhooks[cat],{
+        method:"POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({
+          embeds: [{
+            title: doc.title,
+            description: `📅 ${doc.date}`,
+            url: `https://xbananous.github.io/departmentofjustice/${doc.pdfUrl}`,
+            author: {name: cat},
+            footer: {text: "Envoi automatique via Department Of Justice"}
+          }]
+        })
+      });
+    }
+  }
+  showToast("Tous les documents ont été envoyés ✅");
 }
 </script>
 </body>
