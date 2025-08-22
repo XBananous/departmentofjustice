@@ -1,93 +1,94 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Department Of Justice — Examen Barreau</title>
-<meta name="description" content="Examen type barreau basé sur le Code Pénal.">
-<meta property="og:title" content="Department Of Justice — Examen Barreau">
-<meta property="og:description" content="Passez l'examen de 15 questions tirées du Code Pénal.">
-<meta property="og:image" content="https://xbananous.github.io/departmentofjustice/logo.png">
-<meta property="og:url" content="https://xbananous.github.io/departmentofjustice/index.html">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Passez l'examen du barreau et devenez membre officiel du registre du Department Of Justice.">
+<meta property="og:title" content="Department Of Justice">
+<meta property="og:description" content="Passez l'examen du barreau et devenez membre officiel du registre du Department Of Justice.">
+<meta property="og:url" content="https://xbananous.github.io/departmentofjustice/barreau.html">
 
 <link rel="icon" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
-<!-- html2canvas pour export image -->
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
 <style>
-:root {
+:root{
   --bg:#0b0f14; --panel:#111823; --soft:#16202d;
   --ink:#eaf2ff; --muted:#b7c3d9; --accent:#6aa7ff; --danger:#ff5d5d; --success:#5dff8a;
 }
-
-body {
-  font-family:Inter,system-ui,sans-serif;
-  background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;
-  color:var(--ink); margin:0;
-}
-
-.wrap {max-width:980px;margin:28px auto;padding:22px}
-header {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
-.nav-left {display:flex;align-items:center;gap:10px;}
-.nav-left img {height:32px;}
-.nav-left h1 {font-size:20px;margin:0;font-weight:800;text-transform:uppercase;}
-.nav-right {display:flex;gap:8px;}
-.nav-right button {appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,var(--accent),#3556c7);color:white;display:flex;align-items:center;gap:6px;transition:all .2s ease;}
-.nav-right button:hover{transform:scale(1.05)}
-
-/* Section "connexion" / "recherche" réutilisée pour le champ étudiant */
-.search-section {text-align:center;margin-bottom:24px;transition:opacity .3s;}
-.search-section .desc {font-weight:700;font-size:15px;margin-bottom:10px;display:block;}
-.search-container {position:relative;margin:0 auto;width:100%;max-width:600px;box-sizing:border-box;}
-.search-container input[type="text"] {
-  width:100%;
-  padding:14px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.06);
-  background:var(--soft);
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  background:radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;
   color:var(--ink);
-  outline:none;
-  font-size:16px;
-  transition:box-shadow .3s;
-  box-sizing:border-box;
 }
-.search-container input[type="text"]:focus {box-shadow:0 0 0 4px rgba(106,167,255,.14);}
-@media(max-width:880px){
-  .search-container{max-width:95%;margin-left:auto;margin-right:auto;}
+.wrap{max-width:980px;margin:28px auto;padding:22px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.nav-left{display:flex;align-items:center;gap:10px}
+.nav-left img{height:32px}
+.nav-left h1{font-size:18px;margin:0;font-weight:800;text-transform:uppercase}
+.nav-right{display:flex;gap:8px;align-items:center}
+.nav-icon{width:44px;height:44px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--accent),#3556c7);border:0;color:white;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.nav-icon.ghost{background:transparent;border:1px solid rgba(255,255,255,.06)}
+.nav-icon[hidden]{display:none}
+
+/* main components */
+.card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)),var(--panel);
+  border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);
+  margin-bottom:20px;opacity:0;transform:translateY(10px);animation:fadeSlide .45s forwards}
+@keyframes fadeSlide{to{opacity:1;transform:translateY(0)}}
+
+.search-section{text-align:center;margin-bottom:24px;transition:opacity .3s}
+.search-section .desc{font-weight:700;font-size:15px;margin-bottom:10px;display:block}
+.search-container{position:relative;margin:0 auto;width:100%;max-width:600px;box-sizing:border-box}
+.search-container input[type="text"]{
+  width:100%;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.06);
+  background:var(--soft);color:var(--ink);outline:none;font-size:16px;transition:box-shadow .3s;box-sizing:border-box;
 }
+.search-container input[type="text"]:focus{box-shadow:0 0 0 4px rgba(106,167,255,.14)}
+@media(max-width:880px){.search-container{max-width:95%}}
 
-.card {background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);margin-bottom:20px;opacity:0;transform:translateY(10px);animation:fadeSlide .5s forwards;}
-@keyframes fadeSlide {to {opacity:1; transform:translateY(0);}}
+/* buttons */
+.btn{appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,var(--accent),#3556c7);color:white;display:inline-flex;align-items:center;gap:8px;transition:all .18s ease}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.08)}
+.icon-only{padding:10px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center}
 
-.btn {appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,var(--accent),#3556c7);color:white;display:inline-flex;align-items:center;gap:8px;transition:all .2s ease;}
-.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
-.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.14);}
+/* exam pieces */
+.question{padding:12px;margin:12px 0;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);animation:slideIn .35s ease both}
+@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.question h3{margin:0 0 8px;font-size:15px}
+.choices label{display:block;margin:6px 0;padding:10px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:transform .12s,box-shadow .12s}
+.choices label:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.choices input{margin-right:8px}
 
-.question {padding:12px;margin:12px 0;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);}
-.question h3 {margin:0 0 8px;}
-.choices label {display:block;margin:6px 0;padding:10px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:transform .12s, box-shadow .12s;}
-.choices label:hover {transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
-.choices input{margin-right:8px;}
+/* KPI & status */
+.status{display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:14px;margin:8px 0 0}
+.kpi{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
 
-.status {display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:14px;margin:8px 0 0;}
-.kpi {padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);}
+/* results */
+.result{padding:14px;margin-top:10px;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
+.correct{background:rgba(93,255,138,.08);border-color:rgba(93,255,138,.25)}
+.incorrect{background:rgba(255,93,93,.08);border-color:rgba(255,93,93,.25)}
+.note{font-size:13px;color:var(--muted);margin-top:6px}
 
-.result {padding:14px;margin-top:10px;border-radius:12px;border:1px solid rgba(255,255,255,.08);}
-.correct {background:rgba(93,255,138,.08);border-color:rgba(93,255,138,.25)}
-.incorrect {background:rgba(255,93,93,.08);border-color:rgba(255,93,93,.25)}
-.note {font-size:13px;color:var(--muted)}
+/* toast */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--accent);color:white;padding:12px 20px;border-radius:10px;opacity:0;transform:translateY(10px);transition:opacity .3s,transform .3s;z-index:9999}
+.toast.show{opacity:1;transform:translateY(0)}
 
-.toast {position:fixed;bottom:20px;right:20px;background:var(--accent);color:white;padding:12px 20px;border-radius:10px;opacity:0;transform:translateY(10px);transition:opacity .3s, transform .3s;z-index:9999;}
-.toast.show{opacity:1; transform:translateY(0);}
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:saturate(1.2) blur(4px);display:none;align-items:center;justify-content:center;z-index:9998;opacity:0;transition:opacity .2s}
+.modal{width:min(620px,94vw);background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)),var(--panel);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,.6);transform:translateY(12px);transition:transform .2s}
+.modal-backdrop.show{display:flex;opacity:1}.modal-backdrop.show .modal{transform:translateY(0)}
+/* modal mobile padding fix */
+@media(max-width:420px){ .modal{padding:14px;border-radius:12px} .modal h3{font-size:16px} .modal ul{font-size:14px} }
 
-footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-top:1px solid rgba(255,255,255,.1);margin-top:40px;}
-
-.hidden{display:none !important;}
-.fade-out{animation:fadeOut .35s forwards}@keyframes fadeOut{to{opacity:0;transform:translateY(6px)}}
+/* small helpers */
+.hidden{display:none !important}
+.center{display:flex;align-items:center;justify-content:center}
+.countdown{font-weight:800;font-family:monospace}
 </style>
 </head>
 <body>
@@ -96,80 +97,140 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
   <header>
     <div class="nav-left">
       <img src="logo.png" alt="logo">
-      <h1 id="page-title">Department Of Justice — Examen</h1>
+      <h1 id="page-title">Department Of Justice</h1>
     </div>
-    <div class="nav-right" id="nav-right">
-      <button class="btn" id="btn-export" title="Exporter l'image des résultats" style="display:none;">
-        <i data-lucide="image"></i> Exporter l'image
-      </button>
-      <button class="btn btn-ghost" id="btn-restart" style="display:none;">
-        <i data-lucide="rotate-ccw"></i> Recommencer
-      </button>
+    <div class="nav-right">
+      <!-- Retour vers index sauf en cours d'examen (icone uniquement) -->
+      <button id="nav-back" class="nav-icon ghost" title="Retour" aria-label="Retour"><i data-lucide="arrow-left"></i></button>
+      <!-- Icones uniquement -->
+      <button id="nav-link" class="nav-icon" title="Partager résultat" aria-label="Partager" hidden><i data-lucide="link-2"></i></button>
     </div>
   </header>
 
-  <!-- Bandeau de doc actif (réutilisation esthétique) -->
+  <!-- Card doc (esthétique) -->
   <div id="doc-card" class="card hidden"></div>
 
-  <!-- Connexion / Code étudiant -->
-  <section class="search-section" id="login-section">
+  <!-- Login -->
+  <section id="login-section" class="search-section card">
     <span class="desc">Entrez votre <b>code étudiant</b> pour commencer l’examen</span>
     <div class="search-container">
       <input type="text" id="student-code" placeholder="Code étudiant..." autocomplete="one-time-code">
     </div>
     <div style="margin-top:14px;">
-      <button class="btn" id="btn-start"><i data-lucide="play"></i> Commencer l’examen</button>
+      <button id="btn-start" class="btn"><i data-lucide="play"></i> Commencer l’examen</button>
     </div>
     <div class="status" id="login-status"></div>
   </section>
 
-  <!-- Vue Examen -->
+  <!-- Examen -->
   <div id="exam-card" class="card hidden">
-    <h2 style="margin:0 0 10px;">Examen — Code Pénal</h2>
+    <h2 style="margin:0 0 10px">Examen — Code Pénal</h2>
     <div class="status">
-      <span class="kpi" id="kpi-student"></span>
+      <span class="kpi" id="kpi-student">Code: —</span>
+      <span class="kpi" id="kpi-session">Session: —</span>
       <span class="kpi" id="kpi-progress">0 / 15</span>
+      <span class="kpi" id="kpi-timer">07:00</span>
       <span class="kpi" id="kpi-cheat">Surveillance activée</span>
     </div>
-    <div id="exam-form" style="margin-top:10px;"></div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
-      <button class="btn" id="btn-submit"><i data-lucide="check-circle-2"></i> Valider mes réponses</button>
-      <button class="btn btn-ghost" id="btn-cancel"><i data-lucide="x"></i> Annuler</button>
+
+    <div id="exam-form" style="margin-top:10px"></div>
+
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+      <button id="btn-submit" class="btn"><i data-lucide="check-circle-2"></i> Valider</button>
+      <button id="btn-cancel" class="btn ghost"><i data-lucide="x"></i> Annuler</button>
     </div>
-    <p class="note" style="margin-top:8px;">⚠️ Quitter l’onglet ou l’application invalide l’examen après 2 avertissements.</p>
+
+    <p class="note" style="margin-top:8px">⚠️ Quitter l’onglet ou l’application est autorisé <b>une seule fois</b>. Au 2ᵉ événement, l’examen est invalidé.</p>
   </div>
 
   <!-- Résultats -->
   <div id="result-card" class="card hidden">
     <h2>Résultats</h2>
     <p id="score"></p>
-    <div id="corrections" style="margin-top:10px;"></div>
-    <div class="status" style="margin-top:12px;">
+    <div id="corrections" style="margin-top:10px"></div>
+    <div class="status" style="margin-top:12px">
       <span class="kpi" id="kpi-violations"></span>
       <span class="kpi" id="kpi-questions"></span>
+    </div>
+    <p class="note" id="share-hint" style="margin-top:8px"></p>
+  </div>
+
+</div>
+
+<!-- Modal règles (adaptée mobile) -->
+<div id="rules-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal" role="document">
+    <h3 style="margin:0 0 8px">Règlement de l’examen</h3>
+    <ul style="margin:0 0 12px 18px;line-height:1.5;color:var(--muted)">
+      <li>Entrez votre <b>code étudiant</b> correct.</li>
+      <li>Vous aurez <b>15 questions</b> tirées aléatoirement (durée 7 minutes).</li>
+      <li>Quitter l’onglet/l’application : <b>1 avertissement toléré</b>. Au 2ᵉ, examen invalidé et soumis.</li>
+      <li>À la fin, un <b>lien partageable</b> contiendra vos réponses et score. Si le lien a été modifié, une suspicion sera signalée.</li>
+    </ul>
+    <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center">
+      <button id="modal-cancel" class="btn ghost"><i data-lucide="x"></i> Annuler</button>
+      <!-- Accept puis cooldown -->
+      <button id="modal-accept" class="btn"><i data-lucide="shield-check"></i> J’accepte</button>
+    </div>
+    <div id="modal-countdown" class="center" style="margin-top:10px;display:none">
+      <span class="note">Début dans </span>&nbsp;<span class="countdown" id="start-count">5</span>&nbsp;<span class="note">s</span>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast">Lien copié !</div>
+<!-- Popup suspicion (reutilisable) -->
+<div id="suspicion-modal" class="modal-backdrop" aria-hidden="true" style="display:none">
+  <div class="modal">
+    <h3 style="margin:0 0 8px">Attention</h3>
+    <p id="suspicion-text" style="color:var(--muted);margin:0 0 12px"></p>
+    <div style="display:flex;justify-content:flex-end;gap:8px">
+      <button id="suspicion-ok" class="btn">OK</button>
+    </div>
+  </div>
+</div>
 
-<footer>© 2025 Department Of Justice</footer>
+<div id="toast" class="toast">Copié !</div>
+
+<footer style="text-align:center;padding:18px;color:var(--muted);border-top:1px solid rgba(255,255,255,.06)">© 2025 Department Of Justice</footer>
 
 <script>
 /* =========================
-   Utilitaires UI / Toast & Icons
+   Utilitaires
 ========================= */
-const toast = document.getElementById("toast");
+function $(sel){ return document.querySelector(sel) }
+function $all(sel){ return Array.from(document.querySelectorAll(sel)) }
+const toast = $("#toast");
 function showToast(msg){
   toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'),2200);
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),2200);
 }
 function refreshIcons(){ lucide.createIcons(); }
 
+/* simple checksum (djb2) pour détecter modification de lien */
+function checksumStr(s){
+  let h=5381;
+  for(let i=0;i<s.length;i++){ h=((h<<5)+h) + s.charCodeAt(i); h = h >>> 0 }
+  return h.toString(16);
+}
+
+/* base64url encode/decode */
+function b64uEncode(str){
+  return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function b64uDecode(str){
+  str = str.replace(/-/g,'+').replace(/_/g,'/');
+  try{ return decodeURIComponent(escape(atob(str))); } catch(e){ return null }
+}
+
+/* shuffle */
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]] }
+  return arr;
+}
+
 /* =========================
-   Banque de 30 questions (Code Pénal fourni)
-   Chaque entrée: { q, choices:[], answer:index, ref:"Article ..." }
+   Banque 30 QCM (inchangée)
 ========================= */
 const QUESTIONS_BANK = [
   { q:"Quelle est la durée maximale de la garde à vue sans décision judiciaire ?", choices:["24 heures","48 heures","72 heures","96 heures"], answer:1, ref:"Art. 1.12" },
@@ -177,24 +238,24 @@ const QUESTIONS_BANK = [
   { q:"En zone résidentielle, la limite de vitesse est :", choices:["20 km/h","25 km/h","30 km/h","40 km/h"], answer:2, ref:"Art. 2.1.1" },
   { q:"Quel taux d’alcoolémie maximal pour un conducteur particulier ?", choices:["0,02%","0,05%","0,08%","0,10%"], answer:2, ref:"Art. 2.1.5" },
   { q:"Et pour un conducteur professionnel, taux maximal :", choices:["0,02%","0,04%","0,06%","0,08%"], answer:1, ref:"Art. 2.1.5" },
-  { q:"Les véhicules d’urgence peuvent déroger au Code de la Route si :", choices:["Ils activent des signaux lumineux et sonores","Ils roulent de nuit uniquement","Ils sont vides","Le conducteur est seul"], answer:0, ref:"Art. 2.1.3" },
-  { q:"Les limites de vitesse peuvent être adaptées :", choices:["Jamais","Uniquement par décret fédéral","Selon les conditions climatiques","Selon l’âge du conducteur"], answer:2, ref:"Art. 2.1.4" },
-  { q:"Stationnement interdit :", choices:["Sur trottoirs et passages piétons","En zone commerciale à toute heure","Dans son garage privé","Devant chez soi"], answer:0, ref:"Art. 2.1.6" },
-  { q:"Conduite sans ceinture :", choices:["Légal","Avertissement oral","Amende $100 à $300","Prison 5 min"], answer:2, ref:"Infractions mineures" },
-  { q:"Utilisation du téléphone au volant :", choices:["Aucune sanction","Amende $50-$150","Amende $150-$500","Retrait automatique du permis"], answer:2, ref:"Infractions mineures" },
+  { q:"Les véhicules d’urgence peuvent déroger au Code si :", choices:["Signaux lumineux et sonores activés","Uniquement la nuit","Si la route est vide","Si le chef le dit"], answer:0, ref:"Art. 2.1.3" },
+  { q:"Les limites de vitesse peuvent être adaptées :", choices:["Jamais","Par décret fédéral uniquement","Selon le climat","Selon l’âge du conducteur"], answer:2, ref:"Art. 2.1.4" },
+  { q:"Stationnement interdit :", choices:["Sur trottoirs et passages piétons","En zone commerciale", "Dans son garage","Devant chez soi"], answer:0, ref:"Art. 2.1.6" },
+  { q:"Conduite sans ceinture :", choices:["Légal","Avertissement","Amende $100 à $300","Prison 5 min"], answer:2, ref:"Infractions mineures" },
+  { q:"Téléphone au volant :", choices:["Aucune","Amende $50-$150","Amende $150-$500","Retrait permis automatique"], answer:2, ref:"Infractions mineures" },
   { q:"Petit vol à l’étalage :", choices:["$50-$200","$100-$500","$1000-$5000","Prison uniquement"], answer:1, ref:"Infractions mineures" },
   { q:"Tapage nocturne :", choices:["$50-$200","$100-$300","$300-$600","Aucune"], answer:1, ref:"Infractions mineures" },
   { q:"Jet de déchets dans la rue :", choices:["$10-$50","$50-$150","$100-$500","$500-$1000"], answer:2, ref:"Infractions mineures" },
   { q:"Dégradation mineure de biens publics :", choices:["$50-$150","$200-$1,000 + réparation","Prison uniquement","Avertissement"], answer:1, ref:"Infractions mineures" },
   { q:"Dégradations mineures de propriétés privées :", choices:["$200-$1,000 + réparation","Aucune","$50-$150","Prison 10 min"], answer:0, ref:"Infractions mineures" },
   { q:"Vente ambulante non autorisée :", choices:["Légal","$200-$1,000 + confiscation","$50-$150","Avertissement"], answer:1, ref:"Infractions mineures" },
-  { q:"Consommation d’alcool dans les lieux publics :", choices:["Légal","$100-$300","$300-$600","Prison 5 min"], answer:1, ref:"Infractions mineures" },
+  { q:"Alcool dans lieux publics :", choices:["Légal","$100-$300","$300-$600","Prison 5 min"], answer:1, ref:"Infractions mineures" },
   { q:"Traversée dangereuse des piétons :", choices:["$50-$200","Aucune","$300-$600","Prison 5 min"], answer:0, ref:"Infractions mineures" },
   { q:"Drifting sur parking :", choices:["$50-$150","$200-$500","$2,000-$15,000","Aucune"], answer:2, ref:"Infractions mineures" },
-  { q:"Diffamation (définition) :", choices:["Déclaration vraie nuisible","Déclaration fausse qui porte préjudice","Opinion privée","Plainte anonyme"], answer:1, ref:"Art. 3.1" },
-  { q:"Harcèlement (sanction) :", choices:["Aucune","Amende jusqu’à $10,000 et prison jusqu’à 10 min","Prison 30 min obligatoire","Lettre d’excuses"], answer:1, ref:"Art. 4 — Sanctions" },
-  { q:"Menaces de mort :", choices:["Amende seulement","Amende jusqu’à $15,000 et 10-15 min de prison","Aucune","Travaux d’intérêt général uniquement"], answer:1, ref:"Art. 4 — Sanctions" },
-  { q:"Tentative d’assassinat (peine de prison) :", choices:["5-10 min","10-20 min","20-30 min","Aucune"], answer:1, ref:"Art. 4 — Sanctions" },
+  { q:"Diffamation (définition) :", choices:["Déclaration vraie nuisible","Déclaration fausse portant préjudice","Opinion privée","Plainte anonyme"], answer:1, ref:"Art. 3.1" },
+  { q:"Harcèlement (sanction) :", choices:["Aucune","Amende ≤ $10,000 et prison ≤ 10 min","Prison 30 min obligatoire","Lettre d’excuses"], answer:1, ref:"Art. 4 — Sanctions" },
+  { q:"Menaces de mort :", choices:["Amende seulement","Amende ≤ $15,000 et 10-15 min de prison","Aucune","TIG uniquement"], answer:1, ref:"Art. 4 — Sanctions" },
+  { q:"Tentative d’assassinat :", choices:["5-10 min","10-20 min","20-30 min","Aucune"], answer:1, ref:"Art. 4 — Sanctions" },
   { q:"Cambriolage (peine) :", choices:["5-10 min","10-15 min","15-20 min","30-40 min"], answer:1, ref:"Art. 4 — Sanctions" },
   { q:"Cambriolage de maison (peine) :", choices:["5-10 min","10-15 min","15-20 min","20-30 min"], answer:0, ref:"Art. 4 — Peines spécifiques" },
   { q:"Braquage (peine) :", choices:["5-10 min","5-20 min","10-15 min","20-30 min"], answer:1, ref:"Art. 4 — Peines spécifiques" },
@@ -205,52 +266,86 @@ const QUESTIONS_BANK = [
 ];
 
 /* =========================
-   État global
+   State & UI refs
 ========================= */
-const loginSection = document.getElementById("login-section");
-const examCard     = document.getElementById("exam-card");
-const resultCard   = document.getElementById("result-card");
-const examForm     = document.getElementById("exam-form");
-const kpiStudent   = document.getElementById("kpi-student");
-const kpiProgress  = document.getElementById("kpi-progress");
-const kpiCheat     = document.getElementById("kpi-cheat");
-const btnStart     = document.getElementById("btn-start");
-const btnSubmit    = document.getElementById("btn-submit");
-const btnCancel    = document.getElementById("btn-cancel");
-const btnRestart   = document.getElementById("btn-restart");
-const btnExport    = document.getElementById("btn-export");
-const scoreP       = document.getElementById("score");
-const corrections  = document.getElementById("corrections");
-const loginStatus  = document.getElementById("login-status");
+const rulesModal = $("#rules-modal");
+const modalAccept = $("#modal-accept");
+const modalCancel = $("#modal-cancel");
+const modalCount = $("#modal-countdown");
+const modalCountNum = $("#start-count");
+const suspicionModal = $("#suspicion-modal");
+const suspicionText = $("#suspicion-text");
+const suspicionOk = $("#suspicion-ok");
+
+const loginSection = $("#login-section");
+const examCard = $("#exam-card");
+const resultCard = $("#result-card");
+const examForm = $("#exam-form");
+const kpiStudent = $("#kpi-student");
+const kpiSession = $("#kpi-session");
+const kpiProgress = $("#kpi-progress");
+const kpiTimer = $("#kpi-timer");
+const kpiCheat = $("#kpi-cheat");
+
+const btnStart = $("#btn-start");
+const btnSubmit = $("#btn-submit");
+const btnCancel = $("#btn-cancel");
+const btnBack = $("#nav-back");
+const navLink = $("#nav-link");
+const btnCopyLink = $("#nav-link"); // same icon used for copying link when available
+
+const scoreP = $("#score");
+const corrections = $("#corrections");
+const shareHint = $("#share-hint");
+const studentInput = $("#student-code");
 
 let currentStudent = "";
+let sessionCode = "";
 let selectedQuestions = [];
 let cheatCount = 0;
 let finished = false;
+let examTimer = null;
+let timeLeft = 420; // 7 minutes in seconds
+let proctoringEnabled = false;
+let allowBackButton = true; // show back button unless exam running
+let shareUrlGlobal = "";
 
 /* =========================
-   Helpers
+   Helper functions
 ========================= */
-function shuffle(arr){
-  for (let i=arr.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]] = [arr[j],arr[i]];
-  }
-  return arr;
-}
+function showModal(){ rulesModal.classList.add("show"); rulesModal.setAttribute("aria-hidden","false") }
+function hideModal(){ rulesModal.classList.remove("show"); rulesModal.setAttribute("aria-hidden","true") }
+function showSuspicion(text){ suspicionText.textContent = text; suspicionModal.style.display = "flex"; suspicionModal.classList.add("show") }
+function hideSuspicion(){ suspicionModal.classList.remove("show"); suspicionModal.style.display = "none" }
+suspicionOk && suspicionOk.addEventListener("click", ()=>hideSuspicion());
+
 function updateProgress(){
-  const answered = [...document.querySelectorAll('input[type="radio"]:checked')].length;
+  const answered = $all('input[type="radio"]:checked').length;
   kpiProgress.textContent = `${answered} / 15`;
 }
 
+/* format mm:ss */
+function formatTime(s){
+  const m = Math.floor(s/60); const ss = s%60;
+  return `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+}
+
+/* session code generator */
+function makeSessionCode(){
+  const d = new Date();
+  const pad = n=>String(n).padStart(2,'0');
+  return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
+}
+
 /* =========================
-   Rendu des questions
+   Render exam questions
 ========================= */
 function renderExam(){
   examForm.innerHTML = "";
   selectedQuestions.forEach((q, idx) => {
     const qEl = document.createElement("div");
     qEl.className = "question";
+    qEl.style.animationDelay = `${idx*30}ms`;
     qEl.innerHTML = `<h3>Q${idx+1}. ${q.q}</h3>`;
     const choices = document.createElement("div");
     choices.className = "choices";
@@ -268,146 +363,31 @@ function renderExam(){
     qEl.appendChild(ref);
     examForm.appendChild(qEl);
   });
-
-  // écouteurs pour mettre à jour la progression
   examForm.addEventListener("change", updateProgress);
 }
 
 /* =========================
-   Démarrage / soumission / annulation
+   Proctoring (1 toléré, 2ème -> invalidation)
 ========================= */
-btnStart.addEventListener("click", () => {
-  const code = document.getElementById("student-code").value.trim();
-  if(!code){ showToast("Veuillez entrer votre code étudiant."); return; }
-  currentStudent = code;
-
-  // Tirage aléatoire de 15 questions
-  selectedQuestions = shuffle([...QUESTIONS_BANK]).slice(0,15);
-
-  // Mise à jour UI (animations fluides)
-  loginSection.classList.add("fade-out");
-  setTimeout(()=>{ loginSection.classList.add("hidden"); }, 320);
-  document.getElementById("page-title").textContent = "Examen — Code Pénal";
-  kpiStudent.textContent = `Code: ${currentStudent}`;
-  renderExam();
-  examCard.classList.remove("hidden");
-  refreshIcons();
-
-  // Activer surveillance anti-abandon
-  enableProctoring();
-});
-
-btnCancel.addEventListener("click", () => {
-  if(confirm("Annuler l'examen ? Les réponses seront perdues.")){
-    location.reload();
-  }
-});
-
-btnSubmit.addEventListener("click", submitExam);
-btnRestart.addEventListener("click", ()=>location.reload());
-
-/* =========================
-   Correction + Résultats
-========================= */
-function submitExam(forceInvalid=false){
-  if(finished) return;
-  finished = true;
-
-  let score = 0;
-  corrections.innerHTML = "";
-
-  selectedQuestions.forEach((q,i)=>{
-    const radios = document.getElementsByName("q"+i);
-    let chosen = -1;
-    for (const r of radios){ if(r.checked){ chosen = parseInt(r.value); break; } }
-    const result = document.createElement("div");
-    result.className = "result";
-    if(chosen===q.answer && !forceInvalid){
-      score++;
-      result.classList.add("correct");
-      result.innerHTML = `Q${i+1} ✔ Correct — <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
-    } else {
-      result.classList.add("incorrect");
-      const nv = (chosen>=0) ? q.choices[chosen] : "Non répondu";
-      result.innerHTML = `Q${i+1} ✘ Faux — Votre réponse: <i>${nv}</i>. <br>Réponse correcte : <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
-    }
-    corrections.appendChild(result);
-  });
-
-  // Score & KPIs
-  const total = 15;
-  const msgInvalid = forceInvalid ? " (invalidé)" : "";
-  scoreP.innerHTML = `<b>${currentStudent}</b>, votre score est <b>${score}/${total}</b>${msgInvalid}.`;
-  document.getElementById("kpi-violations").textContent = `Avertissements: ${cheatCount}`;
-  document.getElementById("kpi-questions").textContent = `Questions: ${total}`;
-
-  // Basculer UI
-  examCard.classList.add("fade-out");
-  setTimeout(()=>{
-    examCard.classList.add("hidden");
-    resultCard.classList.remove("hidden");
-    btnExport.style.display = "inline-flex";
-    btnRestart.style.display = "inline-flex";
-    refreshIcons();
-    // Auto-capture
-    setTimeout(captureResults, 300);
-  }, 320);
-
-  // Désactiver surveillance
-  disableProctoring();
-}
-
-/* =========================
-   Export Image (html2canvas)
-========================= */
-btnExport.addEventListener("click", captureResults);
-
-function captureResults(){
-  const target = document.getElementById("result-card");
-  html2canvas(target, {backgroundColor:null, scale:2}).then(canvas=>{
-    const link = document.createElement("a");
-    const ts = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
-    link.download = `Examen_Resultats_${currentStudent}_${ts}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-    showToast("Image des résultats téléchargée.");
-  });
-}
-
-/* =========================
-   Anti-cheat / Proctoring
-   - visibilitychange (changement d’onglet)
-   - window blur/focus (perte/gain de focus)
-   - beforeunload (tentative de quitter la page)
-   Au 1er événement: avertissement
-   Au 2e: examen invalidé (soumission forcée)
-========================= */
-let proctoringEnabled = false;
 const proctorHandlers = {
-  visibility: () => {
-    if(document.hidden && proctoringEnabled) registerCheat("Changement d'onglet détecté");
-  },
-  blur: () => {
-    if(proctoringEnabled) registerCheat("Perte de focus de la fenêtre détectée");
-  },
+  visibility: () => { if(document.hidden && proctoringEnabled) registerCheat("Changement d'onglet détecté"); },
+  blur: () => { if(proctoringEnabled) registerCheat("Perte de focus de la fenêtre détectée"); },
   beforeunload: (e) => {
     if(proctoringEnabled && !finished){
       registerCheat("Tentative de quitter la page");
-      e.preventDefault();
-      e.returnValue = "";
+      // ask confirmation (some browsers ignore custom text)
+      e.preventDefault(); e.returnValue = "";
       return "";
     }
   }
 };
-
 function enableProctoring(){
-  proctoringEnabled = true;
+  proctoringEnabled = true; cheatCount = 0;
   document.addEventListener("visibilitychange", proctorHandlers.visibility);
   window.addEventListener("blur", proctorHandlers.blur);
   window.addEventListener("beforeunload", proctorHandlers.beforeunload);
   kpiCheat.textContent = "Surveillance activée";
 }
-
 function disableProctoring(){
   proctoringEnabled = false;
   document.removeEventListener("visibilitychange", proctorHandlers.visibility);
@@ -415,25 +395,253 @@ function disableProctoring(){
   window.removeEventListener("beforeunload", proctorHandlers.beforeunload);
   kpiCheat.textContent = "Surveillance arrêtée";
 }
-
 function registerCheat(reason){
   cheatCount++;
   showToast(`⚠️ ${reason}. Avertissement ${cheatCount}/2`);
-  if(cheatCount>=2){
-    showToast("Examen invalidé pour abandon.");
-    submitExam(true); // forceInvalid = true
-  }
+  if(cheatCount>=2){ showToast("Examen invalidé pour abandon."); submitExam(true); }
 }
 
 /* =========================
-   Init
+   Timer 7 minutes
+========================= */
+function startTimer(){
+  timeLeft = 420; // 7*60
+  kpiTimer.textContent = formatTime(timeLeft);
+  examTimer = setInterval(()=>{
+    timeLeft--;
+    kpiTimer.textContent = formatTime(timeLeft);
+    if(timeLeft<=0){ clearInterval(examTimer); showToast("Temps écoulé — soumission automatique"); submitExam(false); }
+  },1000);
+}
+function stopTimer(){ if(examTimer) clearInterval(examTimer); examTimer = null }
+
+/* =========================
+   Start flow (modal -> cooldown 5s -> start exam)
+========================= */
+btnStart.addEventListener("click", ()=>{
+  const code = studentInput.value.trim();
+  if(!code){ showToast("Veuillez entrer votre code étudiant."); return; }
+  currentStudent = code;
+  // show rules modal
+  showModal();
+  refreshIcons();
+});
+
+modalCancel.addEventListener("click", ()=>{
+  hideModal();
+});
+modalAccept.addEventListener("click", ()=>{
+  // on accepte -> start cooldown 5s, show counter, disable accept
+  modalAccept.setAttribute("disabled","disabled");
+  modalCancel.setAttribute("disabled","disabled");
+  modalCount.style.display = "flex";
+  let cd = 5;
+  modalCountNum.textContent = cd;
+  const cdInterval = setInterval(()=>{
+    cd--; modalCountNum.textContent = cd;
+    if(cd<=0){
+      clearInterval(cdInterval);
+      modalCount.style.display = "none";
+      hideModal();
+      modalAccept.removeAttribute("disabled");
+      modalCancel.removeAttribute("disabled");
+      beginExamAfterAccept();
+    }
+  },1000);
+});
+
+/* begin exam */
+function beginExamAfterAccept(){
+  // prepare session
+  sessionCode = makeSessionCode();
+  selectedQuestions = shuffle([...QUESTIONS_BANK]).slice(0,15);
+  // UI transitions
+  loginSection.classList.add("fade-out");
+  setTimeout(()=>{ loginSection.classList.add("hidden"); }, 320);
+  setTimeout(()=>{
+    kpiStudent.textContent = `Code: ${currentStudent}`;
+    kpiSession.textContent = `Session: ${sessionCode}`;
+    renderExam();
+    examCard.classList.remove("hidden");
+    examCard.classList.add("slide-up");
+    // hide back button while exam in progress
+    btnBack.setAttribute("hidden","true");
+    allowBackButton = false;
+    refreshIcons();
+    enableProctoring();
+    startTimer();
+  }, 360);
+}
+
+/* Cancel exam */
+btnCancel.addEventListener("click", ()=>{
+  if(confirm("Annuler l'examen ? Les réponses seront perdues.")){
+    // reset page without query
+    location.replace(location.pathname);
+  }
+});
+
+/* =========================
+   Submit -> build share link (payload + checksum)
+========================= */
+btnSubmit.addEventListener("click", ()=>submitExam(false));
+
+function submitExam(forceInvalid){
+  if(finished) return;
+  finished = true;
+  stopTimer();
+  disableProctoring();
+
+  const answers = [];
+  const qIdx = []; // indices in bank
+  let score = 0;
+  corrections.innerHTML = "";
+
+  selectedQuestions.forEach((q,i)=>{
+    const bankIndex = QUESTIONS_BANK.indexOf(q);
+    qIdx.push(bankIndex);
+    const radios = document.getElementsByName("q"+i);
+    let chosen = -1;
+    for(const r of radios){ if(r.checked){ chosen = parseInt(r.value); break; } }
+    answers.push(chosen);
+    const div = document.createElement("div");
+    div.className = "result";
+    if(chosen === q.answer && !forceInvalid){
+      score++;
+      div.classList.add("correct");
+      div.innerHTML = `Q${i+1} ✔ Correct — <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
+    } else {
+      div.classList.add("incorrect");
+      const nv = (chosen>=0) ? q.choices[chosen] : "Non répondu";
+      div.innerHTML = `Q${i+1} ✘ Faux — Votre réponse: <i>${nv}</i>.<br>Réponse correcte: <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
+    }
+    corrections.appendChild(div);
+  });
+
+  const total = 15;
+  const invalid = !!forceInvalid;
+  scoreP.innerHTML = `<b>${currentStudent}</b>, votre score est <b>${score}/${total}</b>${invalid ? " (invalidé)" : ""}.`;
+  $("#kpi-violations").textContent = `Avertissements: ${cheatCount}`;
+  $("#kpi-questions").textContent = `Questions: ${total}`;
+
+  // build payload with checksum
+  const payload = {
+    v:1, session:sessionCode, student:currentStudent, score, total, invalid, violations:cheatCount, qIdx, ans:answers
+  };
+  const json = JSON.stringify(payload);
+  const chk = checksumStr(json);
+  const container = {payload, chk};
+  const encoded = b64uEncode(JSON.stringify(container));
+  const shareUrl = `${location.origin}${location.pathname}?result=${encoded}`;
+  shareUrlGlobal = shareUrl;
+
+  // UI swap
+  examCard.classList.add("fade-out");
+  setTimeout(()=>{
+    examCard.classList.add("hidden");
+    resultCard.classList.remove("hidden");
+    // show nav icon for copy link (icon only)
+    btnBack.hidden = false; // allow back after exam finished
+    navLink.hidden = false; // use navLink to copy the share url
+    // If we are viewing via link, do not show restart (we handle below)
+    refreshIcons();
+    showToast("Examen soumis. Lien prêt à être copié.");
+    $("#share-hint").textContent = "Copiez le lien via l'icône en haut à droite pour le partager.";
+    // store share url on element
+    navLink.dataset.share = shareUrl;
+  }, 320);
+}
+
+/* copy link via nav icon */
+navLink.addEventListener("click", ()=>{
+  const link = navLink.dataset.share;
+  if(!link){ showToast("Aucun lien disponible."); return; }
+  navigator.clipboard.writeText(link).then(()=>showToast("Lien résultat copié."));
+});
+
+/* back button behavior */
+btnBack.addEventListener("click", ()=>{
+  if(!allowBackButton){ showToast("Impossible de revenir pendant l'examen."); return; }
+  location.href = "index.html";
+});
+
+/* =========================
+   Restore from result link (if ?result=...)
+   - checks checksum and shows suspicion popup if mismatch
+   - if violations >=2, show pop-up informing invalidation
+   - when viewing link: hide restart/back where requested (no restart)
+========================= */
+(function restoreFromLink(){
+  const qp = new URLSearchParams(location.search);
+  const encoded = qp.get("result");
+  if(!encoded) return;
+  const json = b64uDecode(encoded);
+  if(!json) return;
+  let container = null;
+  try{ container = JSON.parse(json); }catch(e){ return; }
+  if(!container || !container.payload) return;
+  const payload = container.payload;
+  const providedChk = container.chk || "";
+  const recomputed = checksumStr(JSON.stringify(payload));
+  const tampered = providedChk !== recomputed;
+
+  // reconstruct selected questions from qIdx
+  if(!Array.isArray(payload.qIdx) || !Array.isArray(payload.ans)) return;
+  selectedQuestions = payload.qIdx.map(i => QUESTIONS_BANK[i]).filter(Boolean);
+  currentStudent = payload.student || "Étudiant";
+  sessionCode = payload.session || "(session)";
+  // show results view
+  loginSection.classList.add("hidden");
+  examCard.classList.add("hidden");
+  resultCard.classList.remove("hidden");
+  // set KPIs
+  $("#kpi-violations").textContent = `Avertissements: ${payload.violations || 0}`;
+  $("#kpi-questions").textContent = `Questions: ${payload.total || 15}`;
+  scoreP.innerHTML = `<b>${currentStudent}</b> — session <b>${sessionCode}</b> — score <b>${payload.score}/${payload.total}</b>${payload.invalid ? " (invalidé)" : ""}.`;
+  $("#share-hint").textContent = "Affichage d'un résultat partagé.";
+
+  // populate corrections based on payload.ans
+  corrections.innerHTML = "";
+  selectedQuestions.forEach((q,i)=>{
+    const chosen = payload.ans[i] ?? -1;
+    const div = document.createElement("div");
+    div.className = "result";
+    if(chosen === q.answer && !payload.invalid){
+      div.classList.add("correct");
+      div.innerHTML = `Q${i+1} ✔ Correct — <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
+    } else {
+      div.classList.add("incorrect");
+      const nv = (chosen>=0) ? q.choices[chosen] : "Non répondu";
+      div.innerHTML = `Q${i+1} ✘ Faux — Réponse partagée: <i>${nv}</i>.<br>Réponse correcte: <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
+    }
+    corrections.appendChild(div);
+  });
+
+  // When viewing shared link:
+  // - hide restart/submit buttons (user asked no "recommencer" button when consulting a link)
+  $("#btn-start") && $("#btn-start").classList && $("#btn-start").classList.add("hidden");
+  $("#btn-submit") && $("#btn-submit").classList && $("#btn-submit").classList.add("hidden");
+  $("#btn-cancel") && $("#btn-cancel").classList && $("#btn-cancel").classList.add("hidden");
+  // nav: show copy icon for link, but hide restart/back per request
+  navLink.hidden = false;
+  btnBack.hidden = true;
+
+  // if checksum mismatch -> show suspicion popup
+  if(tampered){
+    showSuspicion("Suspicion : Le lien partagé a été modifié ou corrompu. Les résultats peuvent ne pas être authentiques.");
+  }
+  // if too many violations -> show popup invalidation
+  if((payload.violations || 0) >= 2){
+    showSuspicion("Résultat provenant d'une session avec trop d'avertissements — examen invalidé.");
+  }
+  refreshIcons();
+})();
+
+/* =========================
+   Initialize icons & keyboard
 ========================= */
 refreshIcons();
-
-// Accessibilité: Enter pour démarrer
-document.getElementById("student-code").addEventListener("keydown", (e)=>{
-  if(e.key==="Enter"){ btnStart.click(); }
-});
+studentInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") btnStart.click() });
 
 </script>
 </body>
