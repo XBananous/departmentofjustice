@@ -1,1 +1,217 @@
-<!DOCTYPE html> <html lang="fr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Department Of Justice - Archives</title> <meta name="description" content="Consultez les rapports, audiences et décrets officiels du Department Of Justice."> <meta property="og:title" content="Department Of Justice"> <meta property="og:description" content="Consultez les documents officiels."> <meta property="og:image" content="https://xbananous.github.io/departmentofjustice/logo.png"> <meta property="og:url" content="https://xbananous.github.io/departmentofjustice/archives.html"> <link rel="icon" href="logo.png"> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet"> <script src="https://unpkg.com/lucide@latest"></script> <style> :root { --bg:#0b0f14; --panel:#111823; --soft:#16202d; --ink:#eaf2ff; --muted:#b7c3d9; --accent:#6aa7ff; --danger:#ff5d5d; } body { font-family:Inter,system-ui,sans-serif; background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed; color:var(--ink); margin:0; } .wrap {max-width:980px;margin:28px auto;padding:22px} header {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;} .nav-left {display:flex;align-items:center;gap:10px;} .nav-left img {height:32px;} .nav-left h1 {font-size:20px;margin:0;font-weight:800;text-transform:uppercase;} .nav-right {display:flex;gap:8px;} .nav-right a { flex:1;background:var(--soft); border:1px solid rgba(255,255,255,.06); padding:12px;border-radius:12px; color:var(--ink);display:flex;align-items:center;justify-content:center; transition:all .25s ease;cursor:pointer;text-decoration:none;font-weight:600; } .nav-right a:hover {box-shadow:0 0 0 4px rgba(106,167,255,.18);color:var(--accent);transform:translateY(-3px);} .search-section {text-align:center;margin-bottom:24px;transition:opacity .3s;} .search-section .desc {font-weight:700;font-size:15px;margin-bottom:10px;display:block;} .search-container {position:relative;margin:0 auto;width:100%;max-width:600px;box-sizing:border-box;} .search-container input[type="text"] { width:100%; padding:14px; border-radius:12px; border:1px solid rgba(255,255,255,.06); background:var(--soft); color:var(--ink); outline:none; font-size:16px; transition:box-shadow .3s; box-sizing:border-box; } .search-container input[type="text"]:focus {box-shadow:0 0 0 4px rgba(106,167,255,.14);} .card {background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);margin-bottom:20px;opacity:0;transform:translateY(10px);animation:fadeSlide .5s forwards;} @keyframes fadeSlide {to {opacity:1; transform:translateY(0);}} .doc-item {padding:12px;margin:8px 0;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.03);display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:transform .12s,box-shadow .12s;} .doc-item:hover {transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.4);} .doc-info {display:flex;flex-direction:column;} .doc-title {font-weight:700;} .doc-date {font-size:13px;color:var(--muted);} .doc-actions {display:flex;gap:8px;} .doc-actions button {border:0;background:transparent;cursor:pointer;color:var(--muted);padding:4px;transition:color .2s;} .doc-actions button:hover{color:var(--accent);} .pdf-view {width:100%;height:85vh;} .pdf-view embed{width:100%;height:100%;border:none;} .toast {position:fixed;bottom:20px;right:20px;background:var(--accent);color:white;padding:12px 20px;border-radius:10px;opacity:0;transform:translateY(10px);transition:opacity .3s, transform .3s;z-index:9999;} .toast.show{opacity:1; transform:translateY(0);} footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-top:1px solid rgba(255,255,255,.1);margin-top:40px;} </style> </head> <body> <div class="wrap"> <header> <div class="nav-left"> <img src="logo.png" alt="logo"> <h1 id="page-title">Department Of Justice</h1> </div> <div class="nav-right" id="nav-right"> <a href="archives.html"><i data-lucide="arrow-left"></i></a> </div> </header> <div id="doc-card" style="display:none;" class="card"></div> <section class="search-section" id="search-section"> <span class="desc">Rechercher un document dans nos archives</span> <div class="search-container"> <input type="text" id="search" placeholder="Rechercher..."> </div> </section> <div id="list-view"></div> </div> <div class="toast" id="toast">Lien copié !</div> <footer>© 2025 Department Of Justice</footer> <script> lucide.createIcons(); const documentsData = { "Rapports":[ {title:"RAPPORT INTERVENTION DPO_19082025_1",pdfUrl:"Rapport190820251.pdf",date:"19/08/2025"}, {title:"RAPPORT INTERVENTION DPO_20082025_1",pdfUrl:"Rapport200820251.pdf",date:"20/08/2025"}, {title:"RAPPORT INTERVENTION DPO_20082025_2",pdfUrl:"Rapport200820252.pdf",date:"20/08/2025"}, {title:"RAPPORT INTERVENTION DPO_20082025_3",pdfUrl:"Rapport200820253.pdf",date:"20/08/2025"}, {title:"ACCORD : RAPPORT INTERVENTION DPO_20082025_3",pdfUrl:"AccordRapport200820253.pdf",date:"20/08/2025"}, {title:"RAPPORT INTERVENTION DPO_20082025_4",pdfUrl:"Rapport200820254.pdf",date:"20/08/2025"}, {title:"RAPPORT INTERVENTION DPO_21082025_1",pdfUrl:"Rapport210820251.pdf",date:"21/08/2025"}, {title:"RAPPORT INTERVENTION DPO_21082025_2",pdfUrl:"Rapport210820252.pdf",date:"21/08/2025"}, {title:"RAPPORT INTERVENTION DPO_21082025_3",pdfUrl:"Rapport210820253.pdf",date:"21/08/2025"}, ], "Mandats":[ {title:"MANDAT D'ARRÊT DPO_20082025_3",pdfUrl:" Mandat200820251.pdf",date:"20/08/2025"}, {title:"MANDAT D'ARRÊT DPO_22082025_1",pdfUrl:" Mandat220820251.pdf",date:"22/08/2025"}, ], "Audiences":[ ], "Autres":[ {title:"AUTORISATION EXP : DUBOIS NOAH",pdfUrl:"DuboisNoahAutoExp21082025.pdf",date:"21/08/2025"}, ], }; const listView=document.getElementById("list-view"); const pageTitle=document.getElementById("page-title"); const searchSection=document.getElementById("search-section"); const searchInput=document.getElementById("search"); const toast=document.getElementById("toast"); const docCard=document.getElementById("doc-card"); let currentDoc=null; function showToast(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2000);} function isMobile(){return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);} function renderList(data){ listView.innerHTML=""; for(let category in data){ const section=document.createElement("div"); section.className="card"; section.innerHTML=<h2>${category}</h2>; data[category].forEach(doc=>{ const div=document.createElement("div"); div.className="doc-item"; const info=document.createElement("div"); info.className="doc-info"; info.innerHTML=<span class="doc-title">${doc.title}</span><span class="doc-date">${doc.date}</span>; const actions=document.createElement("div"); actions.className="doc-actions"; const openBtn=document.createElement("button"); openBtn.innerHTML=<i data-lucide="file-text"></i>; openBtn.onclick=(e)=>{e.stopPropagation();openPDF(doc.pdfUrl,doc.title,doc.date);}; const dlBtn=document.createElement("button"); dlBtn.innerHTML=<i data-lucide="download"></i>; dlBtn.onclick=(e)=>{e.stopPropagation();window.open(doc.pdfUrl,'_blank');}; const shareBtn=document.createElement("button"); shareBtn.innerHTML=<i data-lucide="share-2"></i>; shareBtn.onclick=(e)=>{e.stopPropagation();shareDoc(doc.title,shareBtn);}; actions.appendChild(openBtn); actions.appendChild(dlBtn); actions.appendChild(shareBtn); div.appendChild(info); div.appendChild(actions); section.appendChild(div); }); listView.appendChild(section); } lucide.createIcons(); } function openPDF(url,title,date=""){ if(isMobile()){window.location.href=url;return;} currentDoc=title; history.replaceState(null,null,archives.html?doc=${encodeURIComponent(title)}); docCard.style.display="block"; docCard.innerHTML= <div class="doc-item"> <div class="doc-info"> <span class="doc-title">${title}</span> ${date?<span class="doc-date">${date}</span>:""} </div> <div class="doc-actions"> <button onclick="goHome()"><i data-lucide="arrow-left"></i></button> <button onclick="window.open('${url}','_blank')"><i data-lucide="download"></i></button> <button id="share-main"><i data-lucide="share-2"></i></button> </div> </div>; document.getElementById("share-main").onclick=()=>shareDoc(title); searchSection.style.display="none"; listView.innerHTML=<div class="pdf-view"><embed src="${url}" type="application/pdf"></div>; lucide.createIcons(); } function goHome(){currentDoc=null;docCard.style.display="none";searchSection.style.display="block";renderList(documentsData);pageTitle.textContent="Department Of Justice";history.replaceState(null,null,"archives.html");} function shareDoc(title,btn=null){if(!title)return;navigator.clipboard.writeText(https://xbananous.github.io/departmentofjustice/archives.html?doc=${encodeURIComponent(title)}).then(()=>{showToast("Lien copié !");if(btn){const icon=btn.querySelector("i");icon.setAttribute("data-lucide","check");lucide.createIcons();setTimeout(()=>{icon.setAttribute("data-lucide","share-2");lucide.createIcons();},1500);}})} searchInput.addEventListener("input",(e)=>{const val=e.target.value.toLowerCase();if(!val){renderList(documentsData);return;}const filtered={};for(let cat in documentsData){filtered[cat]=documentsData[cat].filter(d=>d.title.toLowerCase().includes(val));if(!filtered[cat].length)delete filtered[cat];}renderList(filtered);}); renderList(documentsData); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Department Of Justice - Archives</title>
+<meta name="description" content="Consultez les rapports, audiences et décrets officiels du Department Of Justice.">
+<meta property="og:title" content="Department Of Justice">
+<meta property="og:description" content="Consultez les documents officiels.">
+<meta property="og:image" content="https://xbananous.github.io/departmentofjustice/logo.png">
+<meta property="og:url" content="https://xbananous.github.io/departmentofjustice/archives.html">
+
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+:root {
+  --bg:#0b0f14; --panel:#111823; --soft:#16202d;
+  --ink:#eaf2ff; --muted:#b7c3d9; --accent:#6aa7ff; --danger:#ff5d5d;
+}
+
+body {
+  font-family:Inter,system-ui,sans-serif;
+  background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;
+  color:var(--ink); margin:0;
+}
+
+.wrap {max-width:980px;margin:28px auto;padding:22px}
+header {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+.nav-left {display:flex;align-items:center;gap:10px;}
+.nav-left img {height:32px;}
+.nav-left h1 {font-size:20px;margin:0;font-weight:800;text-transform:uppercase;}
+.nav-right {display:flex;gap:8px;}
+.nav-right a {
+  flex:1;background:var(--soft);
+  border:1px solid rgba(255,255,255,.06);
+  padding:12px;border-radius:12px;
+  color:var(--ink);display:flex;align-items:center;justify-content:center;
+  transition:all .25s ease;cursor:pointer;text-decoration:none;font-weight:600;
+}
+.nav-right a:hover {box-shadow:0 0 0 4px rgba(106,167,255,.18);color:var(--accent);transform:translateY(-3px);}
+
+.search-section {text-align:center;margin-bottom:24px;transition:opacity .3s;}
+.search-section .desc {font-weight:700;font-size:15px;margin-bottom:10px;display:block;}
+.search-container {position:relative;margin:0 auto;width:100%;max-width:600px;box-sizing:border-box;}
+.search-container input[type="text"] {
+  width:100%; padding:14px; border-radius:12px;
+  border:1px solid rgba(255,255,255,.06);
+  background:var(--soft); color:var(--ink); outline:none;
+  font-size:16px; transition:box-shadow .3s; box-sizing:border-box;
+}
+.search-container input[type="text"]:focus {box-shadow:0 0 0 4px rgba(106,167,255,.14);}
+
+.card {background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);margin-bottom:20px;opacity:0;transform:translateY(10px);animation:fadeSlide .5s forwards;}
+@keyframes fadeSlide {to {opacity:1; transform:translateY(0);}}
+
+.doc-item {padding:12px;margin:8px 0;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.03);display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:transform .12s,box-shadow .12s;}
+.doc-item:hover {transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.doc-info {display:flex;flex-direction:column;}
+.doc-title {font-weight:700;}
+.doc-date {font-size:13px;color:var(--muted);}
+.doc-actions {display:flex;gap:8px;}
+.doc-actions button {border:0;background:transparent;cursor:pointer;color:var(--muted);padding:4px;transition:color .2s;}
+.doc-actions button:hover{color:var(--accent);}
+
+.pdf-view {width:100%;height:85vh;}
+.pdf-view embed{width:100%;height:100%;border:none;}
+
+.toast {position:fixed;bottom:20px;right:20px;background:var(--accent);color:white;padding:12px 20px;border-radius:10px;opacity:0;transform:translateY(10px);transition:opacity .3s, transform .3s;z-index:9999;}
+.toast.show{opacity:1; transform:translateY(0);}
+
+footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-top:1px solid rgba(255,255,255,.1);margin-top:40px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="nav-left">
+      <img src="logo.png" alt="logo">
+      <h1 id="page-title">Department Of Justice</h1>
+    </div>
+    <div class="nav-right" id="nav-right">
+      <a href="archives.html"><i data-lucide="arrow-left"></i></a>
+    </div>
+  </header>
+
+  <div id="doc-card" style="display:none;" class="card"></div>
+
+  <section class="search-section" id="search-section">
+    <span class="desc">Rechercher un document dans nos archives</span>
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Rechercher...">
+    </div>
+  </section>
+
+  <div id="list-view"></div>
+</div>
+
+<div class="toast" id="toast">Lien copié !</div>
+
+<footer>© 2025 Department Of Justice</footer>
+
+<script>
+lucide.createIcons();
+const documentsData = {
+  "Rapports":[
+    {title:"RAPPORT INTERVENTION DPO_19082025_1",pdfUrl:"Rapport190820251.pdf",date:"19/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_20082025_1",pdfUrl:"Rapport200820251.pdf",date:"20/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_20082025_2",pdfUrl:"Rapport200820252.pdf",date:"20/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_20082025_3",pdfUrl:"Rapport200820253.pdf",date:"20/08/2025"},
+    {title:"ACCORD : RAPPORT INTERVENTION DPO_20082025_3",pdfUrl:"AccordRapport200820253.pdf",date:"20/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_20082025_4",pdfUrl:"Rapport200820254.pdf",date:"20/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_21082025_1",pdfUrl:"Rapport210820251.pdf",date:"21/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_21082025_2",pdfUrl:"Rapport210820252.pdf",date:"21/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_21082025_3",pdfUrl:"Rapport210820253.pdf",date:"21/08/2025"},
+  ],
+    "Mandats":[
+      {title:"MANDAT D'ARRÊT DPO_20082025_3",pdfUrl:" Mandat200820251.pdf",date:"20/08/2025"},
+      {title:"MANDAT D'ARRÊT DPO_22082025_1",pdfUrl:" Mandat220820251.pdf",date:"22/08/2025"},
+  ],
+  "Audiences":[
+  ],
+  "Autres":[
+    {title:"AUTORISATION EXP : DUBOIS NOAH",pdfUrl:"DuboisNoahAutoExp21082025.pdf",date:"21/08/2025"},
+  ],
+};
+
+const listView=document.getElementById("list-view");
+const pageTitle=document.getElementById("page-title");
+const searchSection=document.getElementById("search-section");
+const searchInput=document.getElementById("search");
+const toast=document.getElementById("toast");
+const docCard=document.getElementById("doc-card");
+let currentDoc=null;
+
+function showToast(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2000);}
+
+function isMobile(){return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);}
+
+function renderList(data){
+  listView.innerHTML="";
+  for(let category in data){
+    const section=document.createElement("div");
+    section.className="card";
+    section.innerHTML=`<h2>${category}</h2>`;
+    data[category].forEach(doc=>{
+      const div=document.createElement("div");
+      div.className="doc-item";
+      const info=document.createElement("div");
+      info.className="doc-info";
+      info.innerHTML=`<span class="doc-title">${doc.title}</span><span class="doc-date">${doc.date}</span>`;
+
+      const actions=document.createElement("div");
+      actions.className="doc-actions";
+
+      const openBtn=document.createElement("button");
+      openBtn.innerHTML=`<i data-lucide="file-text"></i>`;
+      openBtn.onclick=(e)=>{e.stopPropagation();openPDF(doc.pdfUrl,doc.title,doc.date);};
+
+      const dlBtn=document.createElement("button");
+      dlBtn.innerHTML=`<i data-lucide="download"></i>`;
+      dlBtn.onclick=(e)=>{e.stopPropagation();window.open(doc.pdfUrl,'_blank');};
+
+      const shareBtn=document.createElement("button");
+      shareBtn.innerHTML=`<i data-lucide="share-2"></i>`;
+      shareBtn.onclick=(e)=>{e.stopPropagation();shareDoc(doc.title,shareBtn);};
+
+      actions.appendChild(openBtn);
+      actions.appendChild(dlBtn);
+      actions.appendChild(shareBtn);
+
+      div.appendChild(info);
+      div.appendChild(actions);
+      section.appendChild(div);
+    });
+    listView.appendChild(section);
+  }
+  lucide.createIcons();
+}
+
+function openPDF(url,title,date=""){
+  if(isMobile()){window.location.href=url;return;}
+
+  currentDoc=title;
+  history.replaceState(null,null,`archives.html?doc=${encodeURIComponent(title)}`);
+  docCard.style.display="block";
+  docCard.innerHTML=`
+    <div class="doc-item">
+      <div class="doc-info">
+        <span class="doc-title">${title}</span>
+        ${date?`<span class="doc-date">${date}</span>`:""}
+      </div>
+      <div class="doc-actions">
+        <button onclick="goHome()"><i data-lucide="arrow-left"></i></button>
+        <button onclick="window.open('${url}','_blank')"><i data-lucide="download"></i></button>
+        <button id="share-main"><i data-lucide="share-2"></i></button>
+      </div>
+    </div>`;
+  document.getElementById("share-main").onclick=()=>shareDoc(title);
+  searchSection.style.display="none";
+  listView.innerHTML=`<div class="pdf-view"><embed src="${url}" type="application/pdf"></div>`;
+  lucide.createIcons();
+}
+
+function goHome(){currentDoc=null;docCard.style.display="none";searchSection.style.display="block";renderList(documentsData);pageTitle.textContent="Department Of Justice";history.replaceState(null,null,"archives.html");}
+
+function shareDoc(title,btn=null){if(!title)return;navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/archives.html?doc=${encodeURIComponent(title)}`).then(()=>{showToast("Lien copié !");if(btn){const icon=btn.querySelector("i");icon.setAttribute("data-lucide","check");lucide.createIcons();setTimeout(()=>{icon.setAttribute("data-lucide","share-2");lucide.createIcons();},1500);}})}
+
+searchInput.addEventListener("input",(e)=>{const val=e.target.value.toLowerCase();if(!val){renderList(documentsData);return;}const filtered={};for(let cat in documentsData){filtered[cat]=documentsData[cat].filter(d=>d.title.toLowerCase().includes(val));if(!filtered[cat].length)delete filtered[cat];}renderList(filtered);});
+
+renderList(documentsData);
+</script>
+</body>
+</html>
