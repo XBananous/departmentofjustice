@@ -109,20 +109,13 @@ const documentsData = {
   "Rapports":[
     {title:"RAPPORT INTERVENTION DPO_19082025_1",pdfUrl:"Rapport190820251.pdf",date:"19/08/2025"},
     {title:"RAPPORT INTERVENTION DPO_20082025_1",pdfUrl:"Rapport200820251.pdf",date:"20/08/2025"},
-    {title:"RAPPORT INTERVENTION DPO_20082025_2",pdfUrl:"Rapport200820252.pdf",date:"20/08/2025"},
-    {title:"RAPPORT INTERVENTION DPO_20082025_3",pdfUrl:"Rapport200820253.pdf",date:"20/08/2025"},
-    {title:"ACCORD : RAPPORT INTERVENTION DPO_20082025_3",pdfUrl:"AccordRapport200820253.pdf",date:"20/08/2025"},
-    {title:"RAPPORT INTERVENTION DPO_20082025_4",pdfUrl:"Rapport200820254.pdf",date:"20/08/2025"},
-    {title:"RAPPORT INTERVENTION DPO_21082025_1",pdfUrl:"Rapport210820251.pdf",date:"21/08/2025"},
-    {title:"RAPPORT INTERVENTION DPO_21082025_2",pdfUrl:"Rapport210820252.pdf",date:"21/08/2025"},
     {title:"RAPPORT INTERVENTION DPO_21082025_3",pdfUrl:"Rapport210820253.pdf",date:"21/08/2025"},
   ],
-    "Mandats":[
-      {title:"MANDAT D'ARRÊT DPO_20082025_3",pdfUrl:" Mandat200820251.pdf",date:"20/08/2025"},
-      {title:"MANDAT D'ARRÊT DPO_22082025_1",pdfUrl:" Mandat220820251.pdf",date:"22/08/2025"},
+  "Mandats":[
+    {title:"MANDAT D'ARRÊT DPO_20082025_3",pdfUrl:"Mandat200820251.pdf",date:"20/08/2025"},
+    {title:"MANDAT D'ARRÊT DPO_22082025_1",pdfUrl:"Mandat220820251.pdf",date:"22/08/2025"},
   ],
-  "Audiences":[
-  ],
+  "Audiences":[],
   "Autres":[
     {title:"AUTORISATION EXP : DUBOIS NOAH",pdfUrl:"DuboisNoahAutoExp21082025.pdf",date:"21/08/2025"},
   ],
@@ -137,7 +130,6 @@ const docCard=document.getElementById("doc-card");
 let currentDoc=null;
 
 function showToast(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2000);}
-
 function isMobile(){return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);}
 
 function renderList(data){
@@ -183,7 +175,6 @@ function renderList(data){
 
 function openPDF(url,title,date=""){
   if(isMobile()){window.location.href=url;return;}
-
   currentDoc=title;
   history.replaceState(null,null,`archives.html?doc=${encodeURIComponent(title)}`);
   docCard.style.display="block";
@@ -206,12 +197,26 @@ function openPDF(url,title,date=""){
 }
 
 function goHome(){currentDoc=null;docCard.style.display="none";searchSection.style.display="block";renderList(documentsData);pageTitle.textContent="Department Of Justice";history.replaceState(null,null,"archives.html");}
-
 function shareDoc(title,btn=null){if(!title)return;navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/archives.html?doc=${encodeURIComponent(title)}`).then(()=>{showToast("Lien copié !");if(btn){const icon=btn.querySelector("i");icon.setAttribute("data-lucide","check");lucide.createIcons();setTimeout(()=>{icon.setAttribute("data-lucide","share-2");lucide.createIcons();},1500);}})}
 
 searchInput.addEventListener("input",(e)=>{const val=e.target.value.toLowerCase();if(!val){renderList(documentsData);return;}const filtered={};for(let cat in documentsData){filtered[cat]=documentsData[cat].filter(d=>d.title.toLowerCase().includes(val));if(!filtered[cat].length)delete filtered[cat];}renderList(filtered);});
 
-renderList(documentsData);
+// Correction bug ?doc=...
+window.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  if (params.has("doc")) {
+    const title = params.get("doc");
+    for (let cat in documentsData) {
+      const found = documentsData[cat].find(d => d.title === title);
+      if (found) {
+        openPDF(found.pdfUrl, found.title, found.date);
+        break;
+      }
+    }
+  } else {
+    renderList(documentsData);
+  }
+});
 </script>
 </body>
 </html>
