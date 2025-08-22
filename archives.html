@@ -109,18 +109,88 @@ const documentsData = {
   "Rapports":[
     {title:"RAPPORT INTERVENTION DPO_19082025_1",pdfUrl:"Rapport190820251.pdf",date:"19/08/2025"},
     {title:"RAPPORT INTERVENTION DPO_20082025_1",pdfUrl:"Rapport200820251.pdf",date:"20/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_20082025_2",pdfUrl:"Rapport200820252.pdf",date:"20/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_20082025_3",pdfUrl:"Rapport200820253.pdf",date:"20/08/2025"},
+    {title:"ACCORD : RAPPORT INTERVENTION DPO_20082025_3",pdfUrl:"AccordRapport200820253.pdf",date:"20/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_20082025_4",pdfUrl:"Rapport200820254.pdf",date:"20/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_21082025_1",pdfUrl:"Rapport210820251.pdf",date:"21/08/2025"},
+    {title:"RAPPORT INTERVENTION DPO_21082025_2",pdfUrl:"Rapport210820252.pdf",date:"21/08/2025"},
     {title:"RAPPORT INTERVENTION DPO_21082025_3",pdfUrl:"Rapport210820253.pdf",date:"21/08/2025"},
   ],
-  "Mandats":[
-    {title:"MANDAT D'ARRÊT DPO_20082025_3",pdfUrl:"Mandat200820251.pdf",date:"20/08/2025"},
-    {title:"MANDAT D'ARRÊT DPO_22082025_1",pdfUrl:"Mandat220820251.pdf",date:"22/08/2025"},
+    "Mandats":[
+      {title:"MANDAT D'ARRÊT DPO_20082025_3",pdfUrl:" Mandat200820251.pdf",date:"20/08/2025"},
+      {title:"MANDAT D'ARRÊT DPO_22082025_1",pdfUrl:" Mandat220820251.pdf",date:"22/08/2025"},
   ],
-  "Audiences":[],
+  "Audiences":[
+  ],
   "Autres":[
     {title:"AUTORISATION EXP : DUBOIS NOAH",pdfUrl:"DuboisNoahAutoExp21082025.pdf",date:"21/08/2025"},
   ],
+}; 
+
+const webhooks = {
+  "Rapports": "https://discord.com/api/webhooks/1408562768763818204/PQhYBeQTDP5KeelYHZm4Hf1G_VsUzKC8Fja8_Oi-vTkTNJlUDLQv_DcCiqXqmWuDnPXU",
+  "Mandats": "https://discord.com/api/webhooks/1408562935659364542/JQj4Wiy5SJbYCKZYbsq3YD6uVT8352ol48f4glmRxe8JST0wIHOhJfwVxMjMEs2V3eB_",
+  "Audiences": "https://discord.com/api/webhooks/1408563001493033104/VwFr-CLVrw6OeUdyHwtFGqT4xD8Y9WeP1FG5paC8gdRnL0hOpWJy1tpg3cER8KlYD_1K",
+  "Autres": "https://discord.com/api/webhooks/1408563052932104372/XHenKp_83g3fHHX2xdKDgb3XmsRlyE9uVndvtOFEnZO87DxSEvlmpDZ9UROofaYZXd5n"
 };
 
+// === UTILITAIRES ===
+function getYesterday() {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return d.toLocaleDateString("fr-FR");
+}
+
+async function sendDocs() {
+  const yesterday = getYesterday();
+
+  for (let category in documentsData) {
+    const docs = documentsData[category].filter(d => d.date === yesterday);
+    for (let doc of docs) {
+      const embed = {
+        embeds: [
+          {
+            title: doc.title,
+            url: `https://xbananous.github.io/departmentofjustice/${doc.pdfUrl}`,
+            author: { name: category },
+            footer: { text: "📌 Envoi automatique quotidien" },
+            timestamp: new Date().toISOString(),
+          }
+        ],
+        components: [
+          {
+            type: 1,
+            components: [
+              {
+                type: 2,
+                style: 5,
+                label: "📂 Voir le document",
+                url: `https://xbananous.github.io/departmentofjustice/${doc.pdfUrl}`
+              }
+            ]
+          }
+        ]
+      };
+
+      await fetch(webhooks[category], {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(embed)
+      });
+    }
+  }
+}
+
+// === PLANIFICATION (toutes les minutes → vérifie si 23h59) ===
+setInterval(() => {
+  const now = new Date();
+  if (now.getHours() === 23 && now.getMinutes() === 46) {
+    sendDocs();
+  }
+}, 60000); // vérifie chaque minute
+
+// === AFFICHAGE DES DOCS (ton code original corrigé) ===
 const listView=document.getElementById("list-view");
 const pageTitle=document.getElementById("page-title");
 const searchSection=document.getElementById("search-section");
@@ -131,7 +201,6 @@ let currentDoc=null;
 
 function showToast(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2000);}
 function isMobile(){return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);}
-
 function renderList(data){
   listView.innerHTML="";
   for(let category in data){
@@ -195,13 +264,11 @@ function openPDF(url,title,date=""){
   listView.innerHTML=`<div class="pdf-view"><embed src="${url}" type="application/pdf"></div>`;
   lucide.createIcons();
 }
-
 function goHome(){currentDoc=null;docCard.style.display="none";searchSection.style.display="block";renderList(documentsData);pageTitle.textContent="Department Of Justice";history.replaceState(null,null,"archives.html");}
 function shareDoc(title,btn=null){if(!title)return;navigator.clipboard.writeText(`https://xbananous.github.io/departmentofjustice/archives.html?doc=${encodeURIComponent(title)}`).then(()=>{showToast("Lien copié !");if(btn){const icon=btn.querySelector("i");icon.setAttribute("data-lucide","check");lucide.createIcons();setTimeout(()=>{icon.setAttribute("data-lucide","share-2");lucide.createIcons();},1500);}})}
 
 searchInput.addEventListener("input",(e)=>{const val=e.target.value.toLowerCase();if(!val){renderList(documentsData);return;}const filtered={};for(let cat in documentsData){filtered[cat]=documentsData[cat].filter(d=>d.title.toLowerCase().includes(val));if(!filtered[cat].length)delete filtered[cat];}renderList(filtered);});
 
-// Correction bug ?doc=...
 window.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   if (params.has("doc")) {
@@ -210,12 +277,11 @@ window.addEventListener("DOMContentLoaded", () => {
       const found = documentsData[cat].find(d => d.title === title);
       if (found) {
         openPDF(found.pdfUrl, found.title, found.date);
-        break;
+        return;
       }
     }
-  } else {
-    renderList(documentsData);
   }
+  renderList(documentsData);
 });
 </script>
 </body>
