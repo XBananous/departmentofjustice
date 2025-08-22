@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Department Of Justice — Examen Barreau</title>
+<meta name="description" content="Examen type barreau basé sur le Code Pénal.">
+<meta property="og:title" content="Department Of Justice — Examen Barreau">
+<meta property="og:description" content="Passez l'examen de 15 questions tirées du Code Pénal.">
+<meta property="og:image" content="https://xbananous.github.io/departmentofjustice/logo.png">
+<meta property="og:url" content="https://xbananous.github.io/departmentofjustice/index.html">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- html2canvas pour export image -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+:root {
+  --bg:#0b0f14; --panel:#111823; --soft:#16202d;
+  --ink:#eaf2ff; --muted:#b7c3d9; --accent:#6aa7ff; --danger:#ff5d5d; --success:#5dff8a;
+}
+
+body {
+  font-family:Inter,system-ui,sans-serif;
+  background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;
+  color:var(--ink); margin:0;
+}
+
+.wrap {max-width:980px;margin:28px auto;padding:22px}
+header {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+.nav-left {display:flex;align-items:center;gap:10px;}
+.nav-left img {height:32px;}
+.nav-left h1 {font-size:20px;margin:0;font-weight:800;text-transform:uppercase;}
+.nav-right {display:flex;gap:8px;}
+.nav-right button {appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,var(--accent),#3556c7);color:white;display:flex;align-items:center;gap:6px;transition:all .2s ease;}
+.nav-right button:hover{transform:scale(1.05)}
+
+/* Section "connexion" / "recherche" réutilisée pour le champ étudiant */
+.search-section {text-align:center;margin-bottom:24px;transition:opacity .3s;}
+.search-section .desc {font-weight:700;font-size:15px;margin-bottom:10px;display:block;}
+.search-container {position:relative;margin:0 auto;width:100%;max-width:600px;box-sizing:border-box;}
+.search-container input[type="text"] {
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.06);
+  background:var(--soft);
+  color:var(--ink);
+  outline:none;
+  font-size:16px;
+  transition:box-shadow .3s;
+  box-sizing:border-box;
+}
+.search-container input[type="text"]:focus {box-shadow:0 0 0 4px rgba(106,167,255,.14);}
+@media(max-width:880px){
+  .search-container{max-width:95%;margin-left:auto;margin-right:auto;}
+}
+
+.card {background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:18px;box-shadow:0 14px 40px rgba(0,0,0,.45);margin-bottom:20px;opacity:0;transform:translateY(10px);animation:fadeSlide .5s forwards;}
+@keyframes fadeSlide {to {opacity:1; transform:translateY(0);}}
+
+.btn {appearance:none;border:0;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;background:linear-gradient(180deg,var(--accent),#3556c7);color:white;display:inline-flex;align-items:center;gap:8px;transition:all .2s ease;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.14);}
+
+.question {padding:12px;margin:12px 0;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);}
+.question h3 {margin:0 0 8px;}
+.choices label {display:block;margin:6px 0;padding:10px;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);cursor:pointer;transition:transform .12s, box-shadow .12s;}
+.choices label:hover {transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.choices input{margin-right:8px;}
+
+.status {display:flex;gap:10px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:14px;margin:8px 0 0;}
+.kpi {padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);}
+
+.result {padding:14px;margin-top:10px;border-radius:12px;border:1px solid rgba(255,255,255,.08);}
+.correct {background:rgba(93,255,138,.08);border-color:rgba(93,255,138,.25)}
+.incorrect {background:rgba(255,93,93,.08);border-color:rgba(255,93,93,.25)}
+.note {font-size:13px;color:var(--muted)}
+
+.toast {position:fixed;bottom:20px;right:20px;background:var(--accent);color:white;padding:12px 20px;border-radius:10px;opacity:0;transform:translateY(10px);transition:opacity .3s, transform .3s;z-index:9999;}
+.toast.show{opacity:1; transform:translateY(0);}
+
+footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-top:1px solid rgba(255,255,255,.1);margin-top:40px;}
+
+.hidden{display:none !important;}
+.fade-out{animation:fadeOut .35s forwards}@keyframes fadeOut{to{opacity:0;transform:translateY(6px)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="nav-left">
+      <img src="logo.png" alt="logo">
+      <h1 id="page-title">Department Of Justice — Examen</h1>
+    </div>
+    <div class="nav-right" id="nav-right">
+      <button class="btn" id="btn-export" title="Exporter l'image des résultats" style="display:none;">
+        <i data-lucide="image"></i> Exporter l'image
+      </button>
+      <button class="btn btn-ghost" id="btn-restart" style="display:none;">
+        <i data-lucide="rotate-ccw"></i> Recommencer
+      </button>
+    </div>
+  </header>
+
+  <!-- Bandeau de doc actif (réutilisation esthétique) -->
+  <div id="doc-card" class="card hidden"></div>
+
+  <!-- Connexion / Code étudiant -->
+  <section class="search-section" id="login-section">
+    <span class="desc">Entrez votre <b>code étudiant</b> pour commencer l’examen</span>
+    <div class="search-container">
+      <input type="text" id="student-code" placeholder="Code étudiant..." autocomplete="one-time-code">
+    </div>
+    <div style="margin-top:14px;">
+      <button class="btn" id="btn-start"><i data-lucide="play"></i> Commencer l’examen</button>
+    </div>
+    <div class="status" id="login-status"></div>
+  </section>
+
+  <!-- Vue Examen -->
+  <div id="exam-card" class="card hidden">
+    <h2 style="margin:0 0 10px;">Examen — Code Pénal</h2>
+    <div class="status">
+      <span class="kpi" id="kpi-student"></span>
+      <span class="kpi" id="kpi-progress">0 / 15</span>
+      <span class="kpi" id="kpi-cheat">Surveillance activée</span>
+    </div>
+    <div id="exam-form" style="margin-top:10px;"></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+      <button class="btn" id="btn-submit"><i data-lucide="check-circle-2"></i> Valider mes réponses</button>
+      <button class="btn btn-ghost" id="btn-cancel"><i data-lucide="x"></i> Annuler</button>
+    </div>
+    <p class="note" style="margin-top:8px;">⚠️ Quitter l’onglet ou l’application invalide l’examen après 2 avertissements.</p>
+  </div>
+
+  <!-- Résultats -->
+  <div id="result-card" class="card hidden">
+    <h2>Résultats</h2>
+    <p id="score"></p>
+    <div id="corrections" style="margin-top:10px;"></div>
+    <div class="status" style="margin-top:12px;">
+      <span class="kpi" id="kpi-violations"></span>
+      <span class="kpi" id="kpi-questions"></span>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Lien copié !</div>
+
+<footer>© 2025 Department Of Justice</footer>
+
+<script>
+/* =========================
+   Utilitaires UI / Toast & Icons
+========================= */
+const toast = document.getElementById("toast");
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),2200);
+}
+function refreshIcons(){ lucide.createIcons(); }
+
+/* =========================
+   Banque de 30 questions (Code Pénal fourni)
+   Chaque entrée: { q, choices:[], answer:index, ref:"Article ..." }
+========================= */
+const QUESTIONS_BANK = [
+  { q:"Quelle est la durée maximale de la garde à vue sans décision judiciaire ?", choices:["24 heures","48 heures","72 heures","96 heures"], answer:1, ref:"Art. 1.12" },
+  { q:"Quelle est la vitesse maximale autorisée en zone urbaine (sauf indication) ?", choices:["30 km/h","40 km/h","50 km/h","60 km/h"], answer:2, ref:"Art. 2.1.1" },
+  { q:"En zone résidentielle, la limite de vitesse est :", choices:["20 km/h","25 km/h","30 km/h","40 km/h"], answer:2, ref:"Art. 2.1.1" },
+  { q:"Quel taux d’alcoolémie maximal pour un conducteur particulier ?", choices:["0,02%","0,05%","0,08%","0,10%"], answer:2, ref:"Art. 2.1.5" },
+  { q:"Et pour un conducteur professionnel, taux maximal :", choices:["0,02%","0,04%","0,06%","0,08%"], answer:1, ref:"Art. 2.1.5" },
+  { q:"Les véhicules d’urgence peuvent déroger au Code de la Route si :", choices:["Ils activent des signaux lumineux et sonores","Ils roulent de nuit uniquement","Ils sont vides","Le conducteur est seul"], answer:0, ref:"Art. 2.1.3" },
+  { q:"Les limites de vitesse peuvent être adaptées :", choices:["Jamais","Uniquement par décret fédéral","Selon les conditions climatiques","Selon l’âge du conducteur"], answer:2, ref:"Art. 2.1.4" },
+  { q:"Stationnement interdit :", choices:["Sur trottoirs et passages piétons","En zone commerciale à toute heure","Dans son garage privé","Devant chez soi"], answer:0, ref:"Art. 2.1.6" },
+  { q:"Conduite sans ceinture :", choices:["Légal","Avertissement oral","Amende $100 à $300","Prison 5 min"], answer:2, ref:"Infractions mineures" },
+  { q:"Utilisation du téléphone au volant :", choices:["Aucune sanction","Amende $50-$150","Amende $150-$500","Retrait automatique du permis"], answer:2, ref:"Infractions mineures" },
+  { q:"Petit vol à l’étalage :", choices:["$50-$200","$100-$500","$1000-$5000","Prison uniquement"], answer:1, ref:"Infractions mineures" },
+  { q:"Tapage nocturne :", choices:["$50-$200","$100-$300","$300-$600","Aucune"], answer:1, ref:"Infractions mineures" },
+  { q:"Jet de déchets dans la rue :", choices:["$10-$50","$50-$150","$100-$500","$500-$1000"], answer:2, ref:"Infractions mineures" },
+  { q:"Dégradation mineure de biens publics :", choices:["$50-$150","$200-$1,000 + réparation","Prison uniquement","Avertissement"], answer:1, ref:"Infractions mineures" },
+  { q:"Dégradations mineures de propriétés privées :", choices:["$200-$1,000 + réparation","Aucune","$50-$150","Prison 10 min"], answer:0, ref:"Infractions mineures" },
+  { q:"Vente ambulante non autorisée :", choices:["Légal","$200-$1,000 + confiscation","$50-$150","Avertissement"], answer:1, ref:"Infractions mineures" },
+  { q:"Consommation d’alcool dans les lieux publics :", choices:["Légal","$100-$300","$300-$600","Prison 5 min"], answer:1, ref:"Infractions mineures" },
+  { q:"Traversée dangereuse des piétons :", choices:["$50-$200","Aucune","$300-$600","Prison 5 min"], answer:0, ref:"Infractions mineures" },
+  { q:"Drifting sur parking :", choices:["$50-$150","$200-$500","$2,000-$15,000","Aucune"], answer:2, ref:"Infractions mineures" },
+  { q:"Diffamation (définition) :", choices:["Déclaration vraie nuisible","Déclaration fausse qui porte préjudice","Opinion privée","Plainte anonyme"], answer:1, ref:"Art. 3.1" },
+  { q:"Harcèlement (sanction) :", choices:["Aucune","Amende jusqu’à $10,000 et prison jusqu’à 10 min","Prison 30 min obligatoire","Lettre d’excuses"], answer:1, ref:"Art. 4 — Sanctions" },
+  { q:"Menaces de mort :", choices:["Amende seulement","Amende jusqu’à $15,000 et 10-15 min de prison","Aucune","Travaux d’intérêt général uniquement"], answer:1, ref:"Art. 4 — Sanctions" },
+  { q:"Tentative d’assassinat (peine de prison) :", choices:["5-10 min","10-20 min","20-30 min","Aucune"], answer:1, ref:"Art. 4 — Sanctions" },
+  { q:"Cambriolage (peine) :", choices:["5-10 min","10-15 min","15-20 min","30-40 min"], answer:1, ref:"Art. 4 — Sanctions" },
+  { q:"Cambriolage de maison (peine) :", choices:["5-10 min","10-15 min","15-20 min","20-30 min"], answer:0, ref:"Art. 4 — Peines spécifiques" },
+  { q:"Braquage (peine) :", choices:["5-10 min","5-20 min","10-15 min","20-30 min"], answer:1, ref:"Art. 4 — Peines spécifiques" },
+  { q:"Prise d’otage (peine) :", choices:["5-10 min","10-15 min","15-20 min","20-30 min"], answer:1, ref:"Art. 4 — Peines spécifiques" },
+  { q:"Fusillade (peine) :", choices:["5-10 min","10-15 min","15-20 min","20-30 min"], answer:2, ref:"Art. 4 — Peines spécifiques" },
+  { q:"Meurtre (peine) :", choices:["10-15 min","15-20 min","20-30 min","30-45 min"], answer:2, ref:"Art. 4 — Peines spécifiques" },
+  { q:"Conduite d’un véhicule motorisé requiert :", choices:["Permis valide + assurance","Carte d’électeur","Accord du voisin","Badge municipal"], answer:0, ref:"Art. 2.1.2" }
+];
+
+/* =========================
+   État global
+========================= */
+const loginSection = document.getElementById("login-section");
+const examCard     = document.getElementById("exam-card");
+const resultCard   = document.getElementById("result-card");
+const examForm     = document.getElementById("exam-form");
+const kpiStudent   = document.getElementById("kpi-student");
+const kpiProgress  = document.getElementById("kpi-progress");
+const kpiCheat     = document.getElementById("kpi-cheat");
+const btnStart     = document.getElementById("btn-start");
+const btnSubmit    = document.getElementById("btn-submit");
+const btnCancel    = document.getElementById("btn-cancel");
+const btnRestart   = document.getElementById("btn-restart");
+const btnExport    = document.getElementById("btn-export");
+const scoreP       = document.getElementById("score");
+const corrections  = document.getElementById("corrections");
+const loginStatus  = document.getElementById("login-status");
+
+let currentStudent = "";
+let selectedQuestions = [];
+let cheatCount = 0;
+let finished = false;
+
+/* =========================
+   Helpers
+========================= */
+function shuffle(arr){
+  for (let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+function updateProgress(){
+  const answered = [...document.querySelectorAll('input[type="radio"]:checked')].length;
+  kpiProgress.textContent = `${answered} / 15`;
+}
+
+/* =========================
+   Rendu des questions
+========================= */
+function renderExam(){
+  examForm.innerHTML = "";
+  selectedQuestions.forEach((q, idx) => {
+    const qEl = document.createElement("div");
+    qEl.className = "question";
+    qEl.innerHTML = `<h3>Q${idx+1}. ${q.q}</h3>`;
+    const choices = document.createElement("div");
+    choices.className = "choices";
+    q.choices.forEach((c, ci) => {
+      const id = `q${idx}_${ci}`;
+      const row = document.createElement("label");
+      row.setAttribute("for", id);
+      row.innerHTML = `<input type="radio" id="${id}" name="q${idx}" value="${ci}"> ${c}`;
+      choices.appendChild(row);
+    });
+    const ref = document.createElement("div");
+    ref.className = "note";
+    ref.textContent = q.ref;
+    qEl.appendChild(choices);
+    qEl.appendChild(ref);
+    examForm.appendChild(qEl);
+  });
+
+  // écouteurs pour mettre à jour la progression
+  examForm.addEventListener("change", updateProgress);
+}
+
+/* =========================
+   Démarrage / soumission / annulation
+========================= */
+btnStart.addEventListener("click", () => {
+  const code = document.getElementById("student-code").value.trim();
+  if(!code){ showToast("Veuillez entrer votre code étudiant."); return; }
+  currentStudent = code;
+
+  // Tirage aléatoire de 15 questions
+  selectedQuestions = shuffle([...QUESTIONS_BANK]).slice(0,15);
+
+  // Mise à jour UI (animations fluides)
+  loginSection.classList.add("fade-out");
+  setTimeout(()=>{ loginSection.classList.add("hidden"); }, 320);
+  document.getElementById("page-title").textContent = "Examen — Code Pénal";
+  kpiStudent.textContent = `Code: ${currentStudent}`;
+  renderExam();
+  examCard.classList.remove("hidden");
+  refreshIcons();
+
+  // Activer surveillance anti-abandon
+  enableProctoring();
+});
+
+btnCancel.addEventListener("click", () => {
+  if(confirm("Annuler l'examen ? Les réponses seront perdues.")){
+    location.reload();
+  }
+});
+
+btnSubmit.addEventListener("click", submitExam);
+btnRestart.addEventListener("click", ()=>location.reload());
+
+/* =========================
+   Correction + Résultats
+========================= */
+function submitExam(forceInvalid=false){
+  if(finished) return;
+  finished = true;
+
+  let score = 0;
+  corrections.innerHTML = "";
+
+  selectedQuestions.forEach((q,i)=>{
+    const radios = document.getElementsByName("q"+i);
+    let chosen = -1;
+    for (const r of radios){ if(r.checked){ chosen = parseInt(r.value); break; } }
+    const result = document.createElement("div");
+    result.className = "result";
+    if(chosen===q.answer && !forceInvalid){
+      score++;
+      result.classList.add("correct");
+      result.innerHTML = `Q${i+1} ✔ Correct — <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
+    } else {
+      result.classList.add("incorrect");
+      const nv = (chosen>=0) ? q.choices[chosen] : "Non répondu";
+      result.innerHTML = `Q${i+1} ✘ Faux — Votre réponse: <i>${nv}</i>. <br>Réponse correcte : <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
+    }
+    corrections.appendChild(result);
+  });
+
+  // Score & KPIs
+  const total = 15;
+  const msgInvalid = forceInvalid ? " (invalidé)" : "";
+  scoreP.innerHTML = `<b>${currentStudent}</b>, votre score est <b>${score}/${total}</b>${msgInvalid}.`;
+  document.getElementById("kpi-violations").textContent = `Avertissements: ${cheatCount}`;
+  document.getElementById("kpi-questions").textContent = `Questions: ${total}`;
+
+  // Basculer UI
+  examCard.classList.add("fade-out");
+  setTimeout(()=>{
+    examCard.classList.add("hidden");
+    resultCard.classList.remove("hidden");
+    btnExport.style.display = "inline-flex";
+    btnRestart.style.display = "inline-flex";
+    refreshIcons();
+    // Auto-capture
+    setTimeout(captureResults, 300);
+  }, 320);
+
+  // Désactiver surveillance
+  disableProctoring();
+}
+
+/* =========================
+   Export Image (html2canvas)
+========================= */
+btnExport.addEventListener("click", captureResults);
+
+function captureResults(){
+  const target = document.getElementById("result-card");
+  html2canvas(target, {backgroundColor:null, scale:2}).then(canvas=>{
+    const link = document.createElement("a");
+    const ts = new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+    link.download = `Examen_Resultats_${currentStudent}_${ts}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+    showToast("Image des résultats téléchargée.");
+  });
+}
+
+/* =========================
+   Anti-cheat / Proctoring
+   - visibilitychange (changement d’onglet)
+   - window blur/focus (perte/gain de focus)
+   - beforeunload (tentative de quitter la page)
+   Au 1er événement: avertissement
+   Au 2e: examen invalidé (soumission forcée)
+========================= */
+let proctoringEnabled = false;
+const proctorHandlers = {
+  visibility: () => {
+    if(document.hidden && proctoringEnabled) registerCheat("Changement d'onglet détecté");
+  },
+  blur: () => {
+    if(proctoringEnabled) registerCheat("Perte de focus de la fenêtre détectée");
+  },
+  beforeunload: (e) => {
+    if(proctoringEnabled && !finished){
+      registerCheat("Tentative de quitter la page");
+      e.preventDefault();
+      e.returnValue = "";
+      return "";
+    }
+  }
+};
+
+function enableProctoring(){
+  proctoringEnabled = true;
+  document.addEventListener("visibilitychange", proctorHandlers.visibility);
+  window.addEventListener("blur", proctorHandlers.blur);
+  window.addEventListener("beforeunload", proctorHandlers.beforeunload);
+  kpiCheat.textContent = "Surveillance activée";
+}
+
+function disableProctoring(){
+  proctoringEnabled = false;
+  document.removeEventListener("visibilitychange", proctorHandlers.visibility);
+  window.removeEventListener("blur", proctorHandlers.blur);
+  window.removeEventListener("beforeunload", proctorHandlers.beforeunload);
+  kpiCheat.textContent = "Surveillance arrêtée";
+}
+
+function registerCheat(reason){
+  cheatCount++;
+  showToast(`⚠️ ${reason}. Avertissement ${cheatCount}/2`);
+  if(cheatCount>=2){
+    showToast("Examen invalidé pour abandon.");
+    submitExam(true); // forceInvalid = true
+  }
+}
+
+/* =========================
+   Init
+========================= */
+refreshIcons();
+
+// Accessibilité: Enter pour démarrer
+document.getElementById("student-code").addEventListener("keydown", (e)=>{
+  if(e.key==="Enter"){ btnStart.click(); }
+});
+
+</script>
+</body>
+</html>
