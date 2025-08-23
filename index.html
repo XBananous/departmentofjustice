@@ -45,7 +45,7 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
 .hero p{font-size:16px;color:var(--muted);max-width:700px;margin:0 auto;}
 .carousel{position:relative;max-width:800px;margin:30px auto;background:var(--panel);
   border-radius:16px;padding:32px;border:1px solid rgba(255,255,255,.05);box-shadow:var(--shadow);
-  opacity:0;animation:fadeUp .8s ease .3s forwards;min-height:280px; /* hauteur fixe */}
+  opacity:0;animation:fadeUp .8s ease .3s forwards;min-height:280px;}
 .carousel-item{display:none;animation:fade .6s ease;}
 .carousel-item.active{display:block;}
 .carousel-item h3{font-size:22px;margin-bottom:12px;}
@@ -97,6 +97,10 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
       <a href="#presentation" data-target="#presentation"><i data-lucide="building"></i></a>
       <a href="#archives" data-target="#archives"><i data-lucide="folder"></i></a>
       <a href="#barreau" data-target="#barreau"><i data-lucide="scale"></i></a>
+      <a href="#discord" data-target="#discord"><i data-lucide="message-circle"></i></a>
+      <a href="#resultats" data-target="#resultats"><i data-lucide="file-check-2"></i></a>
+      <a href="#registre" data-target="#registre"><i data-lucide="book"></i></a>
+      <a href="#urgence" data-target="#urgence"><i data-lucide="phone-call"></i></a>
       <button id="joinBtn"><i data-lucide="user-plus"></i></button>
     </div>
   </section>
@@ -141,6 +145,29 @@ header h1{margin:0;font-size:20px;font-weight:800;text-transform:uppercase;}
     <h3>Barreau</h3>
     <p>Visitez la page d’examen du barreau pour en savoir plus.</p>
     <a href="barreau.html"><i data-lucide="scale"></i> Voir la page du barreau</a>
+  </section>
+
+  <section id="discord" class="actions slideable">
+    <h3>Discord</h3>
+    <p>Rejoignez notre serveur Discord officiel pour rester informé et échanger avec la communauté.</p>
+    <a href="https://discord.gg/j33b3v3HK3" target="_blank"><i data-lucide="message-circle"></i> Rejoindre le Discord</a>
+  </section>
+
+  <section id="resultats" class="actions slideable">
+    <h3>Résultats du Barreau</h3>
+    <p>Consultez le salon Discord dédié aux résultats de l’examen du barreau et aux conditions d’admission.</p>
+    <a href="https://discord.com/channels/1407404851020828743/1408560748468371496" target="_blank"><i data-lucide="file-check-2"></i> Voir le salon des résultats</a>
+  </section>
+
+  <section id="registre" class="actions slideable">
+    <h3>Registre des Avocats</h3>
+    <p>Consultez le registre des avocats pour vérifier leur inscription et leur statut.</p>
+    <a href="registreavocat.html"><i data-lucide="book"></i> Accéder au registre</a>
+  </section>
+
+  <section id="urgence" class="actions slideable">
+    <h3>Numéro d’Urgence</h3>
+    <p>En cas d’urgence, composez le <strong>991</strong>.</p>
   </section>
 
   <section class="members slideable">
@@ -200,8 +227,9 @@ document.querySelectorAll('.nav-container a[data-target]').forEach(link=>{
 const members = [
   {id:2400481241, name:"X-Bananous", role:"Procureur Général / Président de la Cour Suprême"},
   {id:6034981257, name:"Wesley Del Monte", role:"Procureur de district"},
+  {id:3390737994, name:"Axel Dupond", role:"Procureur Adjoint"},
   {id:4647090120, name:"James Carter", role:"Chef du LAPD"},
-  {id:4647090120, name:"Morginstar J.", role:"Chef de la CHP"},
+{id:4647090120, name:"Morginstar J.", role:"Chef de la CHP"},
 ];
 const track=document.getElementById('memberTrack');
 members.forEach(m=>{
@@ -227,4 +255,3 @@ window.addEventListener('pageshow',()=>{
 </script>
 </body>
 </html>
-
