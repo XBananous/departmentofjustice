@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Department Of Justice - Registre des Avocats</title>
+<meta name="description" content="Consultez le registre officiel des avocats agréés par le DOJ.">
+<meta property="og:title" content="Department Of Justice - Registre des Avocats">
+<meta property="og:description" content="Liste officielle des avocats enregistrés.">
+<meta property="og:image" content="https://xbananous.github.io/departmentofjustice/logo.png">
+<meta property="og:url" content="https://xbananous.github.io/departmentofjustice/registreavocat.html">
+
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+:root {
+  --bg:#0b0f14; --panel:#111823; --soft:#16202d;
+  --ink:#eaf2ff; --muted:#b7c3d9; --accent:#6aa7ff; --danger:#ff5d5d;
+}
+body {
+  font-family:Inter,system-ui,sans-serif;
+  background: radial-gradient(1200px 600px at 80% -10%, #0f1725 0%, #0b0f14 60%) fixed;
+  color:var(--ink); margin:0;
+}
+.wrap {max-width:980px;margin:28px auto;padding:22px}
+header {display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+.nav-left {display:flex;align-items:center;gap:10px;}
+.nav-left img {height:32px;}
+.nav-left h1 {font-size:20px;margin:0;font-weight:800;text-transform:uppercase;}
+.nav-right {display:flex;gap:8px;}
+.nav-right a {
+  flex:1;background:var(--soft);
+  border:1px solid rgba(255,255,255,.06);
+  padding:12px;border-radius:12px;
+  color:var(--ink);display:flex;align-items:center;justify-content:center;
+  transition:all .25s ease;cursor:pointer;text-decoration:none;font-weight:600;
+}
+.nav-right a:hover {box-shadow:0 0 0 4px rgba(106,167,255,.18);color:var(--accent);transform:translateY(-3px);}
+.search-section {
+  text-align: center;
+  margin-bottom: 24px;
+  transition: opacity .3s;
+}
+
+.search-section .desc {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.search-container {
+  position: relative;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 600px;  
+  box-sizing: border-box;
+}
+
+.search-container input[type="text"] {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.06);
+  background: var(--soft);
+  color: var(--ink);
+  outline: none;
+  font-size: 16px;
+  transition: box-shadow .3s;
+  box-sizing: border-box;
+}
+
+.search-container input[type="text"]:focus {
+  box-shadow: 0 0 0 4px rgba(106,167,255,.14);
+}
+.card {
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0)), var(--panel);
+  border:1px solid rgba(255,255,255,.04);
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 14px 40px rgba(0,0,0,.45);
+  margin-bottom:20px;
+  opacity:0;transform:translateY(10px);
+  animation:fadeSlide .5s forwards;
+}
+@keyframes fadeSlide {to {opacity:1; transform:translateY(0);}}
+.card h2 {margin:0 0 10px;font-size:18px;color:var(--accent);}
+.card p {margin:4px 0;color:var(--muted);}
+footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-top:1px solid rgba(255,255,255,.1);margin-top:40px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="nav-left">
+      <img src="logo.png" alt="logo">
+      <h1 id="page-title">Registre des Avocats</h1>
+    </div>
+    <div class="nav-right" id="nav-right">
+      <a href="index.html"><i data-lucide="arrow-left"></i></a>
+    </div>
+  </header>
+
+  <section class="search-section">
+    <span class="desc">Rechercher un avocat dans le registre</span>
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Nom, prénom, Discord, Roblox, résultat...">
+    </div>
+  </section>
+
+  <div id="list-view"></div>
+</div>
+
+<footer>© 2025 Department Of Justice</footer>
+
+<script>
+lucide.createIcons();
+
+const avocatsData = [
+  {nom:"Prokofief", prenom:"Antoine", discord:"xbananous", roblox:"angebleu821", resultat:"15 / 15", appreciation:"Excellent avec félicitations du Jury."},
+{nom:"Del Monte", prenom:"Wesley", discord:"kevwillbg", roblox:"kevwillbg2", resultat:"15 / 15", appreciation:"Excellent avec félicitations du Jury."},
+];
+
+const listView=document.getElementById("list-view");
+const searchInput=document.getElementById("search");
+
+function renderList(data){
+  listView.innerHTML="";
+  if(data.length===0){
+    listView.innerHTML="<p>Aucun avocat trouvé.</p>";
+    return;
+  }
+  data.forEach(avocat=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <h2>${avocat.nom.toUpperCase()} ${avocat.prenom}</h2>
+      <p><strong>Discord :</strong> ${avocat.discord}</p>
+      <p><strong>Roblox :</strong> ${avocat.roblox}</p>
+      <p><strong>Résultat au barreau :</strong> ${avocat.resultat}</p>
+      <p><strong>Appréciation :</strong> ${avocat.appreciation}</p>
+    `;
+    listView.appendChild(card);
+  });
+}
+
+searchInput.addEventListener("input",(e)=>{
+  const val=e.target.value.toLowerCase();
+  const filtered=avocatsData.filter(a=>
+    a.nom.toLowerCase().includes(val) ||
+    a.prenom.toLowerCase().includes(val) ||
+    a.discord.toLowerCase().includes(val) ||
+    a.roblox.toLowerCase().includes(val) ||
+    a.resultat.toLowerCase().includes(val) ||
+    a.appreciation.toLowerCase().includes(val)
+  );
+  renderList(filtered);
+});
+
+renderList(avocatsData);
+</script>
+</body>
+</html>
