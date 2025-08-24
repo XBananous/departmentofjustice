@@ -5,10 +5,6 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Department Of Justice — Examen Barreau</title>
 <meta name="description" content="Passez l'examen du barreau et devenez membre officiel du registre du Department Of Justice.">
-<meta property="og:title" content="Department Of Justice">
-<meta property="og:description" content="Passez l'examen du barreau et devenez membre officiel du registre du Department Of Justice.">
-<meta property="og:url" content="https://xbananous.github.io/departmentofjustice/barreau.html">
-
 <link rel="icon" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest"></script>
@@ -100,33 +96,35 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;ma
       <h1 id="page-title">Department Of Justice</h1>
     </div>
     <div class="nav-right">
-      <!-- Retour vers index sauf en cours d'examen (icone uniquement) -->
+      <!-- Retour vers index avant & après examen (icône uniquement) -->
       <button id="nav-back" class="nav-icon ghost" title="Retour" aria-label="Retour"><i data-lucide="arrow-left"></i></button>
-      <!-- Icones uniquement -->
-      <button id="nav-link" class="nav-icon" title="Partager résultat" aria-label="Partager" hidden><i data-lucide="link-2"></i></button>
     </div>
   </header>
 
   <!-- Card doc (esthétique) -->
   <div id="doc-card" class="card hidden"></div>
 
-  <!-- Login -->
+  <!-- START: now asking for Pseudo Roblox, Pseudo Discord, Nom, Prénom -->
   <section id="login-section" class="search-section card">
-    <span class="desc">Entrez votre <b>code étudiant</b> pour commencer l’examen</span>
-    <div class="search-container">
-      <input type="text" id="student-code" placeholder="Code étudiant..." autocomplete="one-time-code">
+    <span class="desc">Remplissez vos informations pour commencer l’examen</span>
+    <div class="search-container" style="max-width:800px;">
+      <input type="text" id="pseudo-roblox" placeholder="Pseudo Roblox" autocomplete="off" style="margin-bottom:8px;">
+      <input type="text" id="pseudo-discord" placeholder="Pseudo Discord (ex: name#1234)" autocomplete="off" style="margin-bottom:8px;">
+      <input type="text" id="last-name" placeholder="Nom" autocomplete="off" style="margin-bottom:8px;">
+      <input type="text" id="first-name" placeholder="Prénom" autocomplete="off">
     </div>
     <div style="margin-top:14px;">
       <button id="btn-start" class="btn"><i data-lucide="play"></i> Commencer l’examen</button>
     </div>
     <div class="status" id="login-status"></div>
   </section>
+  <!-- END START -->
 
   <!-- Examen -->
   <div id="exam-card" class="card hidden">
     <h2 style="margin:0 0 10px">Examen — Code Pénal</h2>
     <div class="status">
-      <span class="kpi" id="kpi-student">Code: —</span>
+      <span class="kpi" id="kpi-student">Pseudo: —</span>
       <span class="kpi" id="kpi-session">Session: —</span>
       <span class="kpi" id="kpi-progress">0 / 15</span>
       <span class="kpi" id="kpi-timer">07:00</span>
@@ -143,14 +141,16 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;ma
     <p class="note" style="margin-top:8px">⚠️ Quitter l’onglet ou l’application est autorisé <b>une seule fois</b>. Au 2ᵉ événement, l’examen est invalidé.</p>
   </div>
 
-  <!-- Résultats -->
+  <!-- Résultats : on n'affichera PAS les réponses ; on indiquera seulement que c'est pris en compte -->
   <div id="result-card" class="card hidden">
     <h2>Résultats</h2>
-    <p id="score"></p>
-    <div id="corrections" style="margin-top:10px"></div>
-    <div class="status" style="margin-top:12px">
-      <span class="kpi" id="kpi-violations"></span>
-      <span class="kpi" id="kpi-questions"></span>
+    <p id="score">Résultats pris en compte.</p>
+    <div id="result-info" style="margin-top:10px">
+      <div class="note">Votre session a bien été enregistrée et envoyée au service d'administration.</div>
+      <div id="result-kpis" class="status" style="margin-top:8px">
+        <span class="kpi" id="kpi-violations"></span>
+        <span class="kpi" id="kpi-questions"></span>
+      </div>
     </div>
     <p class="note" id="share-hint" style="margin-top:8px"></p>
   </div>
@@ -162,10 +162,10 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;ma
   <div class="modal" role="document">
     <h3 style="margin:0 0 8px">Règlement de l’examen</h3>
     <ul style="margin:0 0 12px 18px;line-height:1.5;color:var(--muted)">
-      <li>Entrez votre <b>code étudiant</b> correct.</li>
+      <li>Entrez vos informations (Pseudo Roblox, Pseudo Discord, Nom, Prénom).</li>
       <li>Vous aurez <b>15 questions</b> tirées aléatoirement (durée 7 minutes).</li>
       <li>Quitter l’onglet/l’application : <b>1 avertissement toléré</b>. Au 2ᵉ, examen invalidé et soumis.</li>
-      <li>À la fin, un <b>lien partageable</b> contiendra vos réponses et score. Si le lien a été modifié, une suspicion sera signalée.</li>
+      <li>À la fin, vos réponses et informations seront envoyées automatiquement via un message au canal d'administration (Discord). Un lien sécurisé permettra la consultation par l'administration. Si le lien est modifié, une suspicion sera signalée.</li>
     </ul>
     <div style="display:flex;gap:8px;justify-content:flex-end;align-items:center">
       <button id="modal-cancel" class="btn ghost"><i data-lucide="x"></i> Annuler</button>
@@ -194,6 +194,14 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;ma
 <footer style="text-align:center;padding:18px;color:var(--muted);border-top:1px solid rgba(255,255,255,.06)">© 2025 Department Of Justice</footer>
 
 <script>
+/* =========================
+   CONFIG: mettre ici votre webhook Discord
+   Remplacez par l'URL complète du webhook Discord :
+   const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/ID/TOKEN';
+   NE PUBLIEZ PAS cette URL publiquement.
+========================= */
+const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1408939325713940561/BgkbiSeUDJ5-aVi86uNcjljICPp3b5n6HISmKQCZBCI6PZxcptTY5iS3sSgPUIPoUF36'; // <-- REMPLACE ICI
+
 /* =========================
    Utilitaires
 ========================= */
@@ -291,27 +299,27 @@ const btnStart = $("#btn-start");
 const btnSubmit = $("#btn-submit");
 const btnCancel = $("#btn-cancel");
 const btnBack = $("#nav-back");
-const navLink = $("#nav-link");
-const btnCopyLink = $("#nav-link"); // same icon used for copying link when available
 
 const scoreP = $("#score");
-const corrections = $("#corrections");
+const resultKpis = $("#result-kpis");
 const shareHint = $("#share-hint");
-const studentInput = $("#student-code");
 
-let currentStudent = "";
+let pseudoRoblox = "";
+let pseudoDiscord = "";
+let lastName = "";
+let firstName = "";
 let sessionCode = "";
 let selectedQuestions = [];
 let cheatCount = 0;
 let finished = false;
 let examTimer = null;
-let timeLeft = 420; // 7 minutes in seconds
+let timeLeft = 420; // 7 minutes
 let proctoringEnabled = false;
-let allowBackButton = true; // show back button unless exam running
+let allowBackButton = true;
 let shareUrlGlobal = "";
 
 /* =========================
-   Helper functions
+   Helpers
 ========================= */
 function showModal(){ rulesModal.classList.add("show"); rulesModal.setAttribute("aria-hidden","false") }
 function hideModal(){ rulesModal.classList.remove("show"); rulesModal.setAttribute("aria-hidden","true") }
@@ -324,22 +332,13 @@ function updateProgress(){
   kpiProgress.textContent = `${answered} / 15`;
 }
 
-/* format mm:ss */
 function formatTime(s){
-  const m = Math.floor(s/60); const ss = s%60;
+  const m = Math.floor(s/60), ss = s%60;
   return `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
 }
+function makeSessionCode(){ const d=new Date(), pad=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${Math.random().toString(36).slice(2,6).toUpperCase()}`; }
 
-/* session code generator */
-function makeSessionCode(){
-  const d = new Date();
-  const pad = n=>String(n).padStart(2,'0');
-  return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
-}
-
-/* =========================
-   Render exam questions
-========================= */
+/* render questions */
 function renderExam(){
   examForm.innerHTML = "";
   selectedQuestions.forEach((q, idx) => {
@@ -356,18 +355,15 @@ function renderExam(){
       row.innerHTML = `<input type="radio" id="${id}" name="q${idx}" value="${ci}"> ${c}`;
       choices.appendChild(row);
     });
-    const ref = document.createElement("div");
-    ref.className = "note";
-    ref.textContent = q.ref;
-    qEl.appendChild(choices);
-    qEl.appendChild(ref);
+    const ref = document.createElement("div"); ref.className="note"; ref.textContent = q.ref;
+    qEl.appendChild(choices); qEl.appendChild(ref);
     examForm.appendChild(qEl);
   });
   examForm.addEventListener("change", updateProgress);
 }
 
 /* =========================
-   Proctoring (1 toléré, 2ème -> invalidation)
+   Proctoring
 ========================= */
 const proctorHandlers = {
   visibility: () => { if(document.hidden && proctoringEnabled) registerCheat("Changement d'onglet détecté"); },
@@ -375,201 +371,202 @@ const proctorHandlers = {
   beforeunload: (e) => {
     if(proctoringEnabled && !finished){
       registerCheat("Tentative de quitter la page");
-      // ask confirmation (some browsers ignore custom text)
       e.preventDefault(); e.returnValue = "";
       return "";
     }
   }
 };
-function enableProctoring(){
-  proctoringEnabled = true; cheatCount = 0;
-  document.addEventListener("visibilitychange", proctorHandlers.visibility);
-  window.addEventListener("blur", proctorHandlers.blur);
-  window.addEventListener("beforeunload", proctorHandlers.beforeunload);
-  kpiCheat.textContent = "Surveillance activée";
-}
-function disableProctoring(){
-  proctoringEnabled = false;
-  document.removeEventListener("visibilitychange", proctorHandlers.visibility);
-  window.removeEventListener("blur", proctorHandlers.blur);
-  window.removeEventListener("beforeunload", proctorHandlers.beforeunload);
-  kpiCheat.textContent = "Surveillance arrêtée";
-}
-function registerCheat(reason){
-  cheatCount++;
-  showToast(`⚠️ ${reason}. Avertissement ${cheatCount}/2`);
-  if(cheatCount>=2){ showToast("Examen invalidé pour abandon."); submitExam(true); }
-}
+function enableProctoring(){ proctoringEnabled=true; cheatCount=0; document.addEventListener("visibilitychange", proctorHandlers.visibility); window.addEventListener("blur", proctorHandlers.blur); window.addEventListener("beforeunload", proctorHandlers.beforeunload); kpiCheat.textContent="Surveillance activée"; }
+function disableProctoring(){ proctoringEnabled=false; document.removeEventListener("visibilitychange", proctorHandlers.visibility); window.removeEventListener("blur", proctorHandlers.blur); window.removeEventListener("beforeunload", proctorHandlers.beforeunload); kpiCheat.textContent="Surveillance arrêtée"; }
+function registerCheat(reason){ cheatCount++; showToast(`⚠️ ${reason}. Avertissement ${cheatCount}/2`); if(cheatCount>=2){ showToast("Examen invalidé pour abandon."); submitExam(true); } }
 
-/* =========================
-   Timer 7 minutes
-========================= */
+/* Timer */
 function startTimer(){
-  timeLeft = 420; // 7*60
-  kpiTimer.textContent = formatTime(timeLeft);
-  examTimer = setInterval(()=>{
-    timeLeft--;
-    kpiTimer.textContent = formatTime(timeLeft);
-    if(timeLeft<=0){ clearInterval(examTimer); showToast("Temps écoulé — soumission automatique"); submitExam(false); }
-  },1000);
+  timeLeft = 420; kpiTimer.textContent = formatTime(timeLeft);
+  examTimer = setInterval(()=>{ timeLeft--; kpiTimer.textContent = formatTime(timeLeft); if(timeLeft<=0){ clearInterval(examTimer); showToast("Temps écoulé — soumission automatique"); submitExam(false); } },1000);
 }
-function stopTimer(){ if(examTimer) clearInterval(examTimer); examTimer = null }
+function stopTimer(){ if(examTimer) clearInterval(examTimer); examTimer=null }
 
 /* =========================
-   Start flow (modal -> cooldown 5s -> start exam)
+   Start flow: collect user info, open modal, cooldown 5s then start
 ========================= */
 btnStart.addEventListener("click", ()=>{
-  const code = studentInput.value.trim();
-  if(!code){ showToast("Veuillez entrer votre code étudiant."); return; }
-  currentStudent = code;
-  // show rules modal
-  showModal();
-  refreshIcons();
+  const r = $("#pseudo-roblox").value.trim();
+  const d = $("#pseudo-discord").value.trim();
+  const ln = $("#last-name").value.trim();
+  const fn = $("#first-name").value.trim();
+  if(!r || !d || !ln || !fn){ showToast("Veuillez remplir tous les champs (Pseudo Roblox, Pseudo Discord, Nom, Prénom)."); return; }
+  pseudoRoblox = r; pseudoDiscord = d; lastName = ln; firstName = fn;
+  showModal(); refreshIcons();
 });
 
-modalCancel.addEventListener("click", ()=>{
-  hideModal();
-});
+$("#modal-cancel").addEventListener("click", ()=>{ hideModal(); });
+
 modalAccept.addEventListener("click", ()=>{
-  // on accepte -> start cooldown 5s, show counter, disable accept
   modalAccept.setAttribute("disabled","disabled");
   modalCancel.setAttribute("disabled","disabled");
   modalCount.style.display = "flex";
-  let cd = 5;
-  modalCountNum.textContent = cd;
+  let cd = 5; modalCountNum.textContent = cd;
   const cdInterval = setInterval(()=>{
     cd--; modalCountNum.textContent = cd;
     if(cd<=0){
       clearInterval(cdInterval);
       modalCount.style.display = "none";
       hideModal();
-      modalAccept.removeAttribute("disabled");
-      modalCancel.removeAttribute("disabled");
+      modalAccept.removeAttribute("disabled"); modalCancel.removeAttribute("disabled");
       beginExamAfterAccept();
     }
   },1000);
 });
 
-/* begin exam */
 function beginExamAfterAccept(){
-  // prepare session
   sessionCode = makeSessionCode();
   selectedQuestions = shuffle([...QUESTIONS_BANK]).slice(0,15);
-  // UI transitions
+  // transitions
   loginSection.classList.add("fade-out");
   setTimeout(()=>{ loginSection.classList.add("hidden"); }, 320);
   setTimeout(()=>{
-    kpiStudent.textContent = `Code: ${currentStudent}`;
+    kpiStudent.textContent = `Pseudo: ${pseudoRoblox}`;
     kpiSession.textContent = `Session: ${sessionCode}`;
     renderExam();
-    examCard.classList.remove("hidden");
-    examCard.classList.add("slide-up");
-    // hide back button while exam in progress
-    btnBack.setAttribute("hidden","true");
-    allowBackButton = false;
+    examCard.classList.remove("hidden"); examCard.classList.add("slide-up");
+    // hide back button while exam running
+    btnBack.setAttribute("hidden","true"); allowBackButton = false;
     refreshIcons();
     enableProctoring();
     startTimer();
-  }, 360);
+  },360);
 }
 
 /* Cancel exam */
 btnCancel.addEventListener("click", ()=>{
   if(confirm("Annuler l'examen ? Les réponses seront perdues.")){
-    // reset page without query
     location.replace(location.pathname);
   }
 });
 
 /* =========================
-   Submit -> build share link (payload + checksum)
+   Submit: collect answers, build encoded link, send webhook, show "Résultats pris en compte"
 ========================= */
 btnSubmit.addEventListener("click", ()=>submitExam(false));
 
-function submitExam(forceInvalid){
+async function submitExam(forceInvalid){
   if(finished) return;
   finished = true;
-  stopTimer();
-  disableProctoring();
+  stopTimer(); disableProctoring();
 
-  const answers = [];
-  const qIdx = []; // indices in bank
-  let score = 0;
-  corrections.innerHTML = "";
-
+  const answers = []; const qIdx = []; let score = 0;
   selectedQuestions.forEach((q,i)=>{
     const bankIndex = QUESTIONS_BANK.indexOf(q);
     qIdx.push(bankIndex);
     const radios = document.getElementsByName("q"+i);
-    let chosen = -1;
-    for(const r of radios){ if(r.checked){ chosen = parseInt(r.value); break; } }
+    let chosen=-1;
+    for(const r of radios){ if(r.checked){ chosen=parseInt(r.value); break; } }
     answers.push(chosen);
-    const div = document.createElement("div");
-    div.className = "result";
-    if(chosen === q.answer && !forceInvalid){
-      score++;
-      div.classList.add("correct");
-      div.innerHTML = `Q${i+1} ✔ Correct — <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
-    } else {
-      div.classList.add("incorrect");
-      const nv = (chosen>=0) ? q.choices[chosen] : "Non répondu";
-      div.innerHTML = `Q${i+1} ✘ Faux — Votre réponse: <i>${nv}</i>.<br>Réponse correcte: <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
-    }
-    corrections.appendChild(div);
+    if(chosen===q.answer && !forceInvalid) score++;
   });
 
-  const total = 15;
-  const invalid = !!forceInvalid;
-  scoreP.innerHTML = `<b>${currentStudent}</b>, votre score est <b>${score}/${total}</b>${invalid ? " (invalidé)" : ""}.`;
-  $("#kpi-violations").textContent = `Avertissements: ${cheatCount}`;
-  $("#kpi-questions").textContent = `Questions: ${total}`;
+  const total = 15; const invalid = !!forceInvalid;
 
-  // build payload with checksum
-  const payload = {
-    v:1, session:sessionCode, student:currentStudent, score, total, invalid, violations:cheatCount, qIdx, ans:answers
-  };
+  // payload + checksum
+  const payload = { v:1, session:sessionCode, studentInfo:{ pseudoRoblox, pseudoDiscord, lastName, firstName }, score, total, invalid, violations:cheatCount, qIdx, ans:answers };
   const json = JSON.stringify(payload);
   const chk = checksumStr(json);
-  const container = {payload, chk};
+  const container = { payload, chk };
   const encoded = b64uEncode(JSON.stringify(container));
   const shareUrl = `${location.origin}${location.pathname}?result=${encoded}`;
-  shareUrlGlobal = shareUrl;
+  shareUrlGlobal = shareUrl; // for debugging if needed
 
-  // UI swap
-  examCard.classList.add("fade-out");
-  setTimeout(()=>{
-    examCard.classList.add("hidden");
-    resultCard.classList.remove("hidden");
-    // show nav icon for copy link (icon only)
-    btnBack.hidden = false; // allow back after exam finished
-    navLink.hidden = false; // use navLink to copy the share url
-    // If we are viewing via link, do not show restart (we handle below)
-    refreshIcons();
-    showToast("Examen soumis. Lien prêt à être copié.");
-    $("#share-hint").textContent = "Copiez le lien via l'icône en haut à droite pour le partager.";
-    // store share url on element
-    navLink.dataset.share = shareUrl;
-  }, 320);
+  // SEND webhook to Discord with button linking to shareUrl
+  try{
+    await sendDiscordWebhook(container, shareUrl);
+    // Show acknowledgement only, no detailed results
+    examCard.classList.add("fade-out");
+    setTimeout(()=>{
+      examCard.classList.add("hidden");
+      // show back + result card
+      btnBack.hidden = false; allowBackButton = true;
+      resultCard.classList.remove("hidden");
+      $("#kpi-violations").textContent = `Avertissements: ${cheatCount}`;
+      $("#kpi-questions").textContent = `Questions: ${total}`;
+      scoreP.textContent = "Résultats pris en compte.";
+      $("#share-hint").textContent = "Vos réponses ont été transmises à l'administration via Discord.";
+      refreshIcons();
+    },320);
+    showToast("Résultats envoyés via webhook.");
+  }catch(err){
+    // webhook error -> still show "Résultats pris en compte" but warn
+    examCard.classList.add("fade-out");
+    setTimeout(()=>{
+      examCard.classList.add("hidden");
+      btnBack.hidden = false; allowBackButton = true;
+      resultCard.classList.remove("hidden");
+      $("#kpi-violations").textContent = `Avertissements: ${cheatCount}`;
+      $("#kpi-questions").textContent = `Questions: ${total}`;
+      scoreP.textContent = "Résultats pris en compte (erreur envoi webhook).";
+      $("#share-hint").textContent = "Erreur lors de l'envoi au service d'administration. Contacter un administrateur.";
+      refreshIcons();
+    },320);
+    console.error("Webhook error:", err);
+    showToast("Erreur envoi webhook.");
+  }
 }
 
-/* copy link via nav icon */
-navLink.addEventListener("click", ()=>{
-  const link = navLink.dataset.share;
-  if(!link){ showToast("Aucun lien disponible."); return; }
-  navigator.clipboard.writeText(link).then(()=>showToast("Lien résultat copié."));
-});
+/* send Discord webhook function
+   - container: {payload, chk}
+   - shareUrl: link to view results (included in embed + button)
+*/
+async function sendDiscordWebhook(container, shareUrl){
+  if(!DISCORD_WEBHOOK_URL || DISCORD_WEBHOOK_URL.includes('XXXX')) {
+    // webhook not configured — throw to let caller handle
+    throw new Error("WEBHOOK_NOT_CONFIGURED");
+  }
 
-/* back button behavior */
-btnBack.addEventListener("click", ()=>{
-  if(!allowBackButton){ showToast("Impossible de revenir pendant l'examen."); return; }
-  location.href = "index.html";
-});
+  // build message: include fields of user info + session + violations + score
+  const p = container.payload;
+  const user = p.studentInfo || {};
+  const embed = {
+    title: "Nouveau résultat d'examen — [Consultez](shareUrl)",
+    description: `Session **${p.session}** — Nouveau résultat soumis.`,
+    color: 3447003,
+    fields: [
+      { name: "Pseudo Roblox", value: user.pseudoRoblox || "—", inline: true },
+      { name: "Pseudo Discord", value: user.pseudoDiscord || "—", inline: true },
+      { name: "Nom", value: user.lastName || "—", inline: true },
+      { name: "Prénom", value: user.firstName || "—", inline: true },
+      { name: "Score", value: `${p.score}/${p.total}`, inline: true },
+      { name: "Invalidé", value: p.invalid ? "Oui" : "Non", inline: true },
+      { name: "Avertissements", value: `${p.violations}`, inline: true },
+      { name: "Checksum", value: container.chk, inline: false }
+    ],
+    timestamp: new Date().toISOString()
+  };
+
+  const body = {
+    username: "Department Of Justice",
+    embeds: [embed],
+    components: [
+    ]
+  };
+
+  const res = await fetch(DISCORD_WEBHOOK_URL, {
+    method: "POST",
+    headers: { "Content-Type":"application/json" },
+    body: JSON.stringify(body)
+  });
+  if(!res.ok) {
+    const text = await res.text().catch(()=>"(no body)");
+    throw new Error(`Webhook failed: ${res.status} ${res.statusText} ${text}`);
+  }
+  return true;
+}
 
 /* =========================
    Restore from result link (if ?result=...)
-   - checks checksum and shows suspicion popup if mismatch
-   - if violations >=2, show pop-up informing invalidation
-   - when viewing link: hide restart/back where requested (no restart)
+   - if someone opens the share link: reconstruct payload (this is for administration or authorized viewers)
+   - if checksum mismatch -> show suspicion popup
+   - When viewing shared link we show full corrections (since admin will view)
+   - But when a test-taker submits, they DO NOT see corrections (only "Pris en compte")
 ========================= */
 (function restoreFromLink(){
   const qp = new URLSearchParams(location.search);
@@ -588,43 +585,43 @@ btnBack.addEventListener("click", ()=>{
   // reconstruct selected questions from qIdx
   if(!Array.isArray(payload.qIdx) || !Array.isArray(payload.ans)) return;
   selectedQuestions = payload.qIdx.map(i => QUESTIONS_BANK[i]).filter(Boolean);
-  currentStudent = payload.student || "Étudiant";
-  sessionCode = payload.session || "(session)";
-  // show results view
+  // show results view (for viewer)
   loginSection.classList.add("hidden");
   examCard.classList.add("hidden");
   resultCard.classList.remove("hidden");
-  // set KPIs
+
+  // fill KPIs
   $("#kpi-violations").textContent = `Avertissements: ${payload.violations || 0}`;
   $("#kpi-questions").textContent = `Questions: ${payload.total || 15}`;
-  scoreP.innerHTML = `<b>${currentStudent}</b> — session <b>${sessionCode}</b> — score <b>${payload.score}/${payload.total}</b>${payload.invalid ? " (invalidé)" : ""}.`;
-  $("#share-hint").textContent = "Affichage d'un résultat partagé.";
+  scoreP.innerHTML = `<b>${payload.studentInfo ? `${payload.studentInfo.pseudoRoblox}` : "Étudiant"}</b> — session <b>${payload.session}</b> — score <b>${payload.score}/${payload.total}</b>${payload.invalid ? " (invalidé)" : ""}.`;
 
-  // populate corrections based on payload.ans
-  corrections.innerHTML = "";
-  selectedQuestions.forEach((q,i)=>{
-    const chosen = payload.ans[i] ?? -1;
-    const div = document.createElement("div");
-    div.className = "result";
-    if(chosen === q.answer && !payload.invalid){
-      div.classList.add("correct");
-      div.innerHTML = `Q${i+1} ✔ Correct — <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
-    } else {
-      div.classList.add("incorrect");
-      const nv = (chosen>=0) ? q.choices[chosen] : "Non répondu";
-      div.innerHTML = `Q${i+1} ✘ Faux — Réponse partagée: <i>${nv}</i>.<br>Réponse correcte: <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
-    }
-    corrections.appendChild(div);
-  });
+  // Show full corrections for viewer
+  corrections = $("#corrections"); // ensure exist
+  if(corrections){
+    corrections.innerHTML = "";
+    selectedQuestions.forEach((q,i)=>{
+      const chosen = payload.ans[i] ?? -1;
+      const div = document.createElement("div");
+      div.className = "result";
+      if(chosen === q.answer && !payload.invalid){
+        div.classList.add("correct");
+        div.innerHTML = `Q${i+1} ✔ Correct — <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
+      } else {
+        div.classList.add("incorrect");
+        const nv = (chosen>=0) ? q.choices[chosen] : "Non répondu";
+        div.innerHTML = `Q${i+1} ✘ Faux — Réponse partagée: <i>${nv}</i>.<br>Réponse correcte: <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
+      }
+      corrections.appendChild(div);
+    });
+  }
 
   // When viewing shared link:
-  // - hide restart/submit buttons (user asked no "recommencer" button when consulting a link)
+  // hide start/submit/cancel buttons (viewer cannot restart)
   $("#btn-start") && $("#btn-start").classList && $("#btn-start").classList.add("hidden");
   $("#btn-submit") && $("#btn-submit").classList && $("#btn-submit").classList.add("hidden");
   $("#btn-cancel") && $("#btn-cancel").classList && $("#btn-cancel").classList.add("hidden");
-  // nav: show copy icon for link, but hide restart/back per request
-  navLink.hidden = false;
-  btnBack.hidden = true;
+  // nav back should be visible to go to index; but as requested back is shown before and at results
+  btnBack.hidden = false;
 
   // if checksum mismatch -> show suspicion popup
   if(tampered){
@@ -638,11 +635,23 @@ btnBack.addEventListener("click", ()=>{
 })();
 
 /* =========================
-   Initialize icons & keyboard
+   Back button behavior
+========================= */
+btnBack.addEventListener("click", ()=>{
+  if(!allowBackButton){ showToast("Impossible de revenir pendant l'examen."); return; }
+  location.href = "index.html";
+});
+
+/* =========================
+   Init
 ========================= */
 refreshIcons();
-studentInput.addEventListener("keydown", (e)=>{ if(e.key === "Enter") btnStart.click() });
+$("#pseudo-roblox").addEventListener("keydown", (e)=>{ if(e.key==="Enter") btnStart.click() });
+$("#pseudo-discord").addEventListener("keydown", (e)=>{ if(e.key==="Enter") btnStart.click() });
+$("#last-name").addEventListener("keydown", (e)=>{ if(e.key==="Enter") btnStart.click() });
+$("#first-name").addEventListener("keydown", (e)=>{ if(e.key==="Enter") btnStart.click() });
 
 </script>
 </body>
 </html>
+
