@@ -530,13 +530,13 @@ async function sendDiscordWebhook(container, shareUrl){
     description: `Session **${p.session}** — Nouveau résultat soumis.`,
     color: 3447003,
     fields: [
-      { name: "Pseudo Roblox", value: user.pseudoRoblox || "—", inline: true },
-      { name: "Pseudo Discord", value: user.pseudoDiscord || "—", inline: true },
-      { name: "Nom", value: user.lastName || "—", inline: true },
-      { name: "Prénom", value: user.firstName || "—", inline: true },
-      { name: "Score", value: `${p.score}/${p.total}`, inline: true },
-      { name: "Invalidé", value: p.invalid ? "Oui" : "Non", inline: true },
-      { name: "Avertissements", value: `${p.violations}`, inline: true },
+      { name: "Pseudo Roblox", value: user.pseudoRoblox || "—", inline: false },
+      { name: "Pseudo Discord", value: user.pseudoDiscord || "—", inline: false },
+      { name: "Nom", value: user.lastName || "—", inline: false },
+      { name: "Prénom", value: user.firstName || "—", inline: false },
+      { name: "Score", value: `${p.score}/${p.total}`, inline: false },
+      { name: "Invalidé", value: p.invalid ? "Oui" : "Non", inline: false },
+      { name: "Avertissements", value: `${p.violations}`, inline: false },
       { name: "Checksum", value: container.chk, inline: false }
     ],
     timestamp: new Date().toISOString()
