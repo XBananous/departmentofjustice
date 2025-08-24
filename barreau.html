@@ -154,6 +154,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:12px;ma
     </div>
     <p class="note" id="share-hint" style="margin-top:8px"></p>
   </div>
+  <div id="corrections" class="corrections"></div>
 
 </div>
 
@@ -567,6 +568,12 @@ async function sendDiscordWebhook(container, shareUrl){
    - When viewing shared link we show full corrections (since admin will view)
    - But when a test-taker submits, they DO NOT see corrections (only "Pris en compte")
 ========================= */
+/* =========================
+   Restore from result link (if ?result=...)
+   - si quelqu’un ouvre le sharelink : reconstruit le payload
+   - si checksum mismatch → suspicion popup
+   - affiche toutes les réponses (corrigé)
+========================= */
 (function restoreFromLink(){
   const qp = new URLSearchParams(location.search);
   const encoded = qp.get("result");
@@ -576,32 +583,35 @@ async function sendDiscordWebhook(container, shareUrl){
   let container = null;
   try{ container = JSON.parse(json); }catch(e){ return; }
   if(!container || !container.payload) return;
+
   const payload = container.payload;
   const providedChk = container.chk || "";
   const recomputed = checksumStr(JSON.stringify(payload));
   const tampered = providedChk !== recomputed;
 
-  // reconstruct selected questions from qIdx
+  // reconstruire les questions depuis qIdx
   if(!Array.isArray(payload.qIdx) || !Array.isArray(payload.ans)) return;
   selectedQuestions = payload.qIdx.map(i => QUESTIONS_BANK[i]).filter(Boolean);
-  // show results view (for viewer)
+
+  // masquer login + exam, afficher résultats
   loginSection.classList.add("hidden");
   examCard.classList.add("hidden");
   resultCard.classList.remove("hidden");
 
-  // fill KPIs
+  // remplir KPI
   $("#kpi-violations").textContent = `Avertissements: ${payload.violations || 0}`;
   $("#kpi-questions").textContent = `Questions: ${payload.total || 15}`;
-  scoreP.innerHTML = `<b>${payload.studentInfo ? `${payload.studentInfo.pseudoRoblox}` : "Étudiant"}</b> — session <b>${payload.session}</b> — score <b>${payload.score}/${payload.total}</b>${payload.invalid ? " (invalidé)" : ""}.`;
+  scoreP.innerHTML = `<b>${payload.studentInfo ? payload.studentInfo.pseudoRoblox : "Étudiant"}</b> — session <b>${payload.session}</b> — score <b>${payload.score}/${payload.total}</b>${payload.invalid ? " (invalidé)" : ""}.`;
 
-  // Show full corrections for viewer
-  corrections = $("#corrections"); // ensure exist
+  // afficher corrections
+  const corrections = $("#corrections");
   if(corrections){
     corrections.innerHTML = "";
     selectedQuestions.forEach((q,i)=>{
       const chosen = payload.ans[i] ?? -1;
       const div = document.createElement("div");
       div.className = "result";
+
       if(chosen === q.answer && !payload.invalid){
         div.classList.add("correct");
         div.innerHTML = `Q${i+1} ✔ Correct — <b>${q.choices[q.answer]}</b> <span class="note">(${q.ref})</span>`;
@@ -614,22 +624,24 @@ async function sendDiscordWebhook(container, shareUrl){
     });
   }
 
-  // When viewing shared link:
-  // hide start/submit/cancel buttons (viewer cannot restart)
-  $("#btn-start") && $("#btn-start").classList && $("#btn-start").classList.add("hidden");
-  $("#btn-submit") && $("#btn-submit").classList && $("#btn-submit").classList.add("hidden");
-  $("#btn-cancel") && $("#btn-cancel").classList && $("#btn-cancel").classList.add("hidden");
-  // nav back should be visible to go to index; but as requested back is shown before and at results
+  // cacher les boutons inutiles
+  $("#btn-start")?.classList.add("hidden");
+  $("#btn-submit")?.classList.add("hidden");
+  $("#btn-cancel")?.classList.add("hidden");
+
+  // autoriser retour vers index
   btnBack.hidden = false;
 
-  // if checksum mismatch -> show suspicion popup
+  // suspicion si lien modifié
   if(tampered){
-    showSuspicion("Suspicion : Le lien partagé a été modifié ou corrompu. Les résultats peuvent ne pas être authentiques.");
+    showSuspicion("⚠️ Suspicion : Le lien partagé a été modifié ou corrompu. Les résultats peuvent ne pas être authentiques.");
   }
-  // if too many violations -> show popup invalidation
+
+  // suspicion si trop d’avertissements
   if((payload.violations || 0) >= 2){
-    showSuspicion("Résultat provenant d'une session avec trop d'avertissements — examen invalidé.");
+    showSuspicion("⚠️ Résultat provenant d'une session avec trop d'avertissements — examen invalidé.");
   }
+
   refreshIcons();
 })();
 
