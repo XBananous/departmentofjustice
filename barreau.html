@@ -527,7 +527,7 @@ async function sendDiscordWebhook(container, shareUrl){
   const user = p.studentInfo || {};
   const embed = {
     title: "Nouveau résultat d'examen",
-    url: shareUrl
+    url: shareUrl,
     description: `Session **${p.session}** — Nouveau résultat soumis.`,
     color: 3447003,
     fields: [
