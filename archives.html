@@ -104,6 +104,22 @@ footer{padding:20px;text-align:center;font-size:14px;color:var(--muted);border-t
 <footer>© 2025 Department Of Justice</footer>
 
 <script>
+window.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const docTitle = params.get("doc");
+  if (docTitle) {
+    // Cherche le document dans documentsData
+    let found = null;
+    for (let cat in documentsData) {
+      found = documentsData[cat].find(d => d.title === docTitle);
+      if (found) break;
+    }
+    if (found) {
+      openPDF(found.pdfUrl, found.title, found.date);
+    }
+  }
+});
+
 lucide.createIcons();
 const documentsData = {
   "Rapports":[
