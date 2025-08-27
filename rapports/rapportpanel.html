@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MDT - Système Rapports</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0f15;--panel:#141b27;--soft:#1b2433;
+  --ink:#eaf2ff;--muted:#97a4bf;--accent:#5d9bff;
+  --danger:#c0392b;--shadow:0 10px 30px rgba(0,0,0,.45);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:Inter,sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;}
+h1{text-align:center;padding:20px 0;font-weight:800;color:var(--accent);animation:fadeIn 1s ease-in-out;}
+.container{max-width:1200px;margin:auto;padding:20px;}
+.card{background:var(--panel);border-radius:14px;padding:20px;box-shadow:var(--shadow);margin-bottom:20px;animation:slideUp .6s ease;transition:transform .2s;}
+.card:hover{transform:translateY(-3px);}
+label{display:block;font-weight:600;margin-top:10px;}
+input,textarea,select{width:100%;padding:10px;margin:6px 0;background:var(--soft);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:var(--ink);transition:.3s;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 6px var(--accent);}
+button{background:var(--accent);border:none;padding:10px 16px;border-radius:8px;color:#fff;font-weight:600;cursor:pointer;margin-top:8px;transition:.3s;}
+button:hover{opacity:.9;transform:scale(1.05);}
+.remove-btn{background:var(--danger);}
+pre{background:var(--soft);padding:15px;border-radius:10px;white-space:pre-wrap;animation:fadeIn .5s ease-in-out;}
+.grid{display:grid;gap:20px;}
+@media(min-width:900px){.grid-2{grid-template-columns:1fr 1fr;}}
+.group{border:1px solid rgba(255,255,255,.1);padding:12px;margin-top:12px;border-radius:8px;animation:fadeIn .4s ease;}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:100;visibility:hidden;opacity:0;transition:.3s;}
+.modal.active{visibility:visible;opacity:1;}
+.modal-content{background:var(--panel);padding:20px;border-radius:12px;max-width:400px;width:90%;text-align:center;animation:scaleUp .3s ease;}
+.modal-content h3{margin-top:0;color:var(--accent);}
+.modal-content button{margin-top:15px;}
+@keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
+@keyframes slideUp {from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+@keyframes scaleUp {from{transform:scale(.8);opacity:0;}to{transform:scale(1);opacity:1;}}
+.hidden{display:none;}
+</style>
+</head>
+<body>
+<h1>📋 Mobile Data Terminal</h1>
+<div class="container">
+  <div id="userIdentification" class="card">
+    <h2>Connexion Agent</h2>
+    <label>Nom :</label><input type="text" id="userNom">
+    <label>Prénom :</label><input type="text" id="userPrenom">
+    <label>Matricule :</label><input type="text" id="userMatricule">
+    <label>Unité :</label><input type="text" id="userUnite" placeholder="Ex: LAPD">
+    <button id="saveUser">Connexion</button>
+  </div>
+
+  <div id="rapportSection" class="hidden">
+    <div class="card">
+      <h2>Agent connecté</h2>
+      <p><span id="userDisplay"></span></p>
+      <button id="modifyUser">Changer d'agent</button>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card" id="formContainer"></div>
+      <div class="card">
+        <h2>Rapport généré</h2>
+        <pre id="reportResult"></pre>
+        <button id="sendWebhook">Envoyer au Webhook Discord</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <h3 id="modalTitle"></h3>
+    <p id="modalMessage"></p>
+    <button onclick="closeModal()">OK</button>
+  </div>
+</div>
+
+<script>
+const validUnites=["LAPD","CHP","DOJ"];
+const webhookURL="https://discord.com/api/webhooks/ID/TOKEN"; // A remplacer
+
+const userIdentification=document.getElementById("userIdentification");
+const rapportSection=document.getElementById("rapportSection");
+const userDisplay=document.getElementById("userDisplay");
+const saveUserBtn=document.getElementById("saveUser");
+const modifyUserBtn=document.getElementById("modifyUser");
+const formContainer=document.getElementById("formContainer");
+const reportResult=document.getElementById("reportResult");
+const sendWebhookBtn=document.getElementById("sendWebhook");
+
+function showModal(title,msg){
+  document.getElementById("modalTitle").innerText=title;
+  document.getElementById("modalMessage").innerText=msg;
+  document.getElementById("modal").classList.add("active");
+}
+function closeModal(){document.getElementById("modal").classList.remove("active");}
+
+function loadUser(){
+  const saved=JSON.parse(localStorage.getItem("userData"));
+  if(saved){
+    userDisplay.textContent=`${saved.nom} ${saved.prenom} (Badge ${saved.matricule}, ${saved.unite})`;
+    userIdentification.classList.add("hidden");
+    rapportSection.classList.remove("hidden");
+    buildForm(saved);
+  }
+}
+saveUserBtn.addEventListener("click",()=>{
+  const nom=document.getElementById("userNom").value.trim();
+  const prenom=document.getElementById("userPrenom").value.trim();
+  const matricule=document.getElementById("userMatricule").value.trim();
+  const unite=document.getElementById("userUnite").value.trim().toUpperCase();
+  if(!nom||!prenom||!matricule||!unite){showModal("Erreur","Tous les champs sont obligatoires");return;}
+  if(!validUnites.includes(unite)){showModal("Erreur","Unité invalide");return;}
+  localStorage.setItem("userData",JSON.stringify({nom,prenom,matricule,unite}));
+  loadUser();
+});
+modifyUserBtn.addEventListener("click",()=>{localStorage.removeItem("userData");location.reload();});
+loadUser();
+
+function buildForm(agent){
+  let html=`<form id="rapportForm">
+  <h2>Détails du rapport</h2>
+  <label>Lieu :</label><input name="lieu" type="text">
+  <label>Date :</label><input name="date" type="date">
+  <label>Heure :</label><input name="heure" type="time">
+  <label>Résumé des faits :</label><textarea name="resume"></textarea>
+
+  <h3>Témoins</h3>
+  <div id="temoins"></div>
+  <button type="button" onclick="addTemoin()">Ajouter témoin</button>
+
+  <h3>Suspects</h3>
+  <div id="suspects"></div>
+  <button type="button" onclick="addSuspect()">Ajouter suspect</button>
+
+  <h3>Agents</h3>
+  <div id="agents"></div>
+  <button type="button" onclick="addAgent()">Ajouter agent</button>
+
+  <h3>Usage de la force</h3>
+  <label>Force utilisée :</label>
+  <select name="force">
+    <option value="">--Sélectionner--</option>
+    <option>Menottage</option>
+    <option>Utilisation légère</option>
+    <option>Force physique</option>
+  </select>
+  <label>Blessures apparentes :</label>
+  <select name="blessures"><option>Oui</option><option>Non</option></select>
+  <label>Assistance médicale :</label>
+  <select name="medical"><option>Oui</option><option>Non</option></select>
+
+  <button type="submit">Générer</button>
+  </form>`;
+  formContainer.innerHTML=html;
+
+  document.getElementById("rapportForm").onsubmit=e=>{
+    e.preventDefault();
+    generateReport(new FormData(e.target),agent);
+  };
+}
+
+function addTemoin(){
+  const div=document.createElement("div");div.className="group";
+  div.innerHTML='<label>Nom :</label><input name="temoinNom[]"><label>Prénom :</label><input name="temoinPrenom[]"><label>Âge :</label><input name="temoinAge[]" type="number"><label>Témoignage :</label><textarea name="temoinTexte[]"></textarea><button type="button" class="remove-btn" onclick="this.parentNode.remove()">Supprimer</button>';
+  document.getElementById("temoins").appendChild(div);
+}
+
+function addSuspect(){
+  const div=document.createElement("div");div.className="group";
+  div.innerHTML='<label>Nom :</label><input name="suspectNom[]"><label>Prénom :</label><input name="suspectPrenom[]"><label>Âge :</label><input name="suspectAge[]" type="number"><label>Droits Miranda lus :</label><select name="suspectMiranda[]"><option>Oui</option><option>Non</option></select><label>Articles violés :</label><input name="suspectArticles[]"><label>Objets saisis :</label><input name="suspectObjets[]"><label>Coopération :</label><select name="suspectCoop[]"><option>Oui</option><option>Non</option></select><label>Motif arrestation :</label><textarea name="suspectMotif[]"></textarea><button type="button" class="remove-btn" onclick="this.parentNode.remove()">Supprimer</button>';
+  document.getElementById("suspects").appendChild(div);
+}
+
+function addAgent(){
+  const div=document.createElement("div");div.className="group";
+  div.innerHTML='<label>Nom :</label><input name="agentNom[]"><label>Prénom :</label><input name="agentPrenom[]"><label>Matricule :</label><input name="agentMatricule[]"><label>Bodycam activée :</label><select name="agentBodycam[]"><option>Oui</option><option>Non</option></select><button type="button" class="remove-btn" onclick="this.parentNode.remove()">Supprimer</button>';
+  document.getElementById("agents").appendChild(div);
+}
+
+function generateReport(data,agent){
+  let report=`## Rapport ${agent.unite}\n**Agent connecté**: ${agent.nom} ${agent.prenom} (Badge ${agent.matricule})\n\n`;
+  for(const [k,v] of data.entries()){
+    if(v) report+=`**${k}** : ${v}\n`;
+  }
+  reportResult.textContent=report;
+  sendWebhookBtn.onclick=()=>sendWebhook(agent,report);
+}
+
+function sendWebhook(agent,reportText){
+  fetch(webhookURL,{
+    method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({embeds:[{title:`Rapport ${agent.unite}`,description:reportText,color:3447003,footer:{text:`Agent ${agent.nom} ${agent.prenom} - Badge ${agent.matricule}`}}]})
+  })
+  .then(r=>{if(r.ok)showModal("Succès","Rapport envoyé sur Discord");else showModal("Erreur","Envoi échoué");})
+  .catch(()=>showModal("Erreur","Problème réseau"));
+}
+</script>
+</body>
+</html>
